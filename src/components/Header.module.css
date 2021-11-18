@@ -1,0 +1,57 @@
+header {
+    display: flex;
+    justify-content: center;
+    height: 100px;
+    width: 100%;
+    background-color: darkred;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: inherit;
+    width: 1000px;
+}
+
+.container a {
+    color: white;
+    text-decoration: none;
+}
+
+.container a:hover {
+    text-decoration: underline;
+}
+
+.container div.loginButtons {
+    display: flex;
+    justify-content: space-between;
+    width: 180px;
+}
+
+.container button.btn {
+    color: white;
+    padding-top: 3px;
+    font-size: 15px;
+    background-color: darkred;
+    border: none;
+}
+
+.container button.btn:hover {
+    text-decoration: underline;
+    
+}
+
+.container input.search {
+    border: 0px none transparent;
+    border-radius: 17px;
+    line-height: 35px;
+    width: 400px;
+    padding: 3px 15px;
+}
+
+.container img {
+    padding-top: 7px;
+    height: 20px;
+    width: 25px;
+}
