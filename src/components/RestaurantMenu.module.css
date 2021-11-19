@@ -1,0 +1,133 @@
+.wrapper {
+    background: rgba(255, 255, 255, 0.279);
+    height: 200vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.restaurantInfoContainer { 
+    display: flex;
+    flex-direction: column;
+    margin: 30px 0px 20px 80px;
+    font-size: 16px;
+    font-weight: 500;
+    pointer-events: none;
+    caret-color: transparent;
+}
+
+.restaurantName {
+    font-size: 50px;
+    font-weight: 700;
+    text-shadow: -2px 2px #9a6969;
+    margin-right: 10px;
+}
+.restaurantFlex {
+    display: flex;
+}
+
+.restaurantFlex div:nth-child(1) {
+    margin-right:15px;  
+}
+
+.categoriesWrapper {
+    background: linear-gradient(to left top, rgb(255,239,239, 0.3), rgba(255, 255, 255, 0.8));
+    box-shadow: -4px 3px 5px 1px rgba(28, 28, 29, 0.592);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 2rem;
+    max-width: 1100px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.categoriesContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 30px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+.categoriesContainer button{
+    border: none;
+    background-color: inherit;
+}
+
+.categoriesContainer button:hover{
+    font-weight: 600;
+}
+
+.menuContainer {
+    background: linear-gradient(to left top, rgb(255,239,239, 0.3), rgba(255, 255, 255, 0.8));
+    max-width: 1100px;
+    width: 50%;
+    height: 90%;
+    padding: 20px;
+    margin: auto;
+    border-radius: 2rem;
+    box-shadow: -8px 8px 5px 7px rgba(28, 28, 29, 0.592);
+    border: 2px solid rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: hidden;
+}
+.menuHeader {
+    font-size: 20px;
+    font-weight: 600;
+    height: 20px;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuItemsContainer {
+    box-shadow: -1px 1px 5px 1px rgba(28, 28, 29, 0.592);
+    transition: all 0.3s ease-in-out;
+    max-width: 600px;
+    width: 100%;
+    max-height: 100px;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.menuItemsContainer:hover {
+    border-color: rgb(3, 3, 3);
+    border-radius: 1rem;
+}
+
+.menuItems {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 300;
+    font-size: 16px;
+    padding: 5px 0px;
+}
+
+.menuItemsFlex button {
+    font-weight: 500;
+    border-radius: 2rem;
+    width: 30px;
+    background-color: rgba(79, 76, 76, 0.129);
+    transition: all 0.3s ease-in-out;
+}
+
+.menuItemsFlex button:hover {
+    border-color: rgb(0, 0, 0);
+}
+
+
+
+
+
+

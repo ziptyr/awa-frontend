@@ -35,14 +35,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/restaurants" element={<Restaurants restaurants={restaurants} />}>
+          <Route path="/restaurants">
+            <Route path="" element={<Restaurants restaurants={restaurants} />}/>
             <Route path=":id" element={
               <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} />
             } />
           </Route>
         </Routes>
 
-        <Footer />
+        {/* <Footer /> */}
       </UserContext.Provider>
     </BrowserRouter>
   );

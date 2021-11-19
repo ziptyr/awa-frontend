@@ -4,6 +4,7 @@ header {
     height: 100px;
     width: 100%;
     background-color: darkred;
+    border-bottom: 2px solid rgb(0, 0, 0);
 }
 
 .container {
