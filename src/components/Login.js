@@ -2,39 +2,44 @@ import React, { useContext } from 'react'
 import { UserContext } from '../UserContext'
 import { loginFunc } from '../loginFunc';
 import styles from './Login.module.css';
+import { Link } from 'react-router-dom';
 
 
-const Login = () => {
 
-    const {user, setUser} = useContext(UserContext);
 
+export default function Login() {
+       
+
+    // const inputPassword;
     return (
-        <div className={styles.container}>
-            {user ? (
-            <div className={styles.title}>Hello {(user.username)}</div>
-            ) : (
-                <div className={styles.title}>Hello </div>)}
-            
-            {user ? (
-                <button className={styles.button}
-                onClick={() => {
-                    setUser(null);
-                }}
-                >
-                Log out
-                </button>
-            ) : (
-            <button className={styles.button}
-            onClick={async () => {
-                const user = await loginFunc();
-                setUser(user);
-            }}
-            >
-            Log in
-            </button>
-            )}
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <div className={styles.loginContainer}>
+                    <div className={styles.headerContainer}>
+                        <div className={styles.header}>Welcome!</div>
+                        <div >Log In or</div>
+                        <div><Link to="/signup">Sign up</Link></div>
+                    </div>
+                    <div className={styles.textContainer}>
+                    <form>
+                        <label>
+                            <div>Username:</div>
+                            <input type="text" />
+                        </label>
+                        <label>
+                            <div>Password:</div>
+                            <input type="password" />
+                        </label>
+                        <div>
+                            <button className={styles.logInBtn} type="submit">Submit</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
 
-export default Login
+
+
