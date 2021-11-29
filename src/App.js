@@ -10,6 +10,7 @@ import { RestaurantMenu } from './components/RestaurantMenu';
 import { menuData } from './data.menu';
 import { restaurantData } from './data.restaurants';
 import Login from './components/Login';
+import SignUp from './components/SignUp';
 import Footer from './components/Footer';
 
 
@@ -35,6 +36,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/restaurants">
             <Route path="" element={<Restaurants restaurants={restaurants} />}/>
             <Route path=":id" element={
