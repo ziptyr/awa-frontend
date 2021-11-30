@@ -1,6 +1,4 @@
 import React, { useContext } from 'react'
-import { UserContext } from '../UserContext'
-import { loginFunc } from '../loginFunc';
 import styles from './Login.module.css';
 import { Link } from 'react-router-dom';
 
@@ -8,9 +6,16 @@ import { Link } from 'react-router-dom';
 
 
 export default function Login() {
-       
+    
+    const handleSignupSubmit = (event) => {
+        event.preventDefault();
+        console.log(event.target.username.value);
+        console.log(event.target.email.value);
+        console.log(event.target.password.value);
+    }
 
-    // const inputPassword;
+
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
@@ -21,15 +26,19 @@ export default function Login() {
                         <div><Link to="/signup">Sign up</Link></div>
                     </div>
                     <div className={styles.textContainer}>
-                    <form>
-                        <label>
-                            <div>Username:</div>
-                            <input type="text" />
-                        </label>
-                        <label>
-                            <div>Password:</div>
-                            <input type="password" />
-                        </label>
+                    <form onSubmit={handleSignupSubmit}>
+                        <div
+                            >Username: <br />
+                            <input type="text" name="username"/>
+                        </div>
+                        <div
+                            >Email: <br />
+                            <input type="text" name="email"/>
+                        </div>
+                        <div>  
+                            Password: <br />
+                            <input type="password" name="password"/>
+                        </div>
                         <div>
                             <button className={styles.logInBtn} type="submit">Submit</button>
                         </div>
