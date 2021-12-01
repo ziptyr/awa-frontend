@@ -18,6 +18,8 @@ header {
 .container a {
     color: white;
     text-decoration: none;
+    display: flex;
+    justify-content: center;
 }
 
 .container a:hover {
@@ -27,15 +29,16 @@ header {
 .container div.loginButtons {
     display: flex;
     justify-content: space-between;
-    width: 180px;
+    width: 200px;
 }
 
 .container button.btn {
     color: white;
-    padding-top: 3px;
     font-size: 15px;
     background-color: darkred;
     border: none;
+    margin-bottom: 1px;
+    cursor: pointer;
 }
 
 .container button.btn:hover {
@@ -45,14 +48,16 @@ header {
 
 .container input.search {
     border: 0px none transparent;
-    border-radius: 17px;
+    border-radius: 2rem;
+    border: 2px solid black;
     line-height: 35px;
     width: 400px;
     padding: 3px 15px;
 }
 
 .container img {
-    padding-top: 7px;
+    padding-top: 2px;
     height: 20px;
     width: 25px;
+    cursor: pointer;
 }

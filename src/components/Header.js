@@ -4,26 +4,33 @@ import styles from './Header.module.css';
 import { UserContext } from '../UserContext'
 
 
-export default function Header() {
+export default function Header(props) {
 
-  const {user, setUser} = useContext(UserContext);
 
   return (
     <header>
-      <div className={styles.container}>
-        <Link to="/">Home</Link>
-        <Link to="/restaurants">Restaurants</Link>
-        <input className={styles.search} type='text' />
-
-        <div className={styles.loginButtons}>
-          <Link to="/login">Login</Link>
-          {user ? null : <Link to="/signup">Sign up</Link>}
-          {user ? <button className={styles.btn} onClick={() =>
-            { setUser(null); }}>Log out</button> : null} 
+        <div className={styles.container}>
+            <Link to="/">Home</Link>
+                <Link to="/restaurants">Restaurants</Link>
+            <input className={styles.search} type='text' />
+                
+            {props.userJWT ? 
+            <>  
+              <div className={styles.loginButtons}>
+                <div><Link to="/account">Account</Link></div>
+                <div><button className={styles.btn} onClick={ props.logOut }>Log out</button></div>
+                <div><Link to="/shoppingcart"><img src="/images/cart.png" alt=""/></Link></div>
+                </div>
+            </>
+            : 
+            <>
+                <Link to="/login">Login</Link>
+                <Link to="/signup">Sign up</Link>
+            </>
+            } 
         </div>
 
-        {user ? <Link to="/"><img src="/images/cart.png" alt=""/></Link> : null}
-      </div>
+      
     </header>
   )
 }
