@@ -1,20 +1,42 @@
-import React, { useContext } from 'react'
+import React, { useState } from 'react'
 import styles from './Login.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Constants from './Constants.json'
 
 
 
 
-export default function Login() {
+
+export default function Login(props) {
     
-    const handleSignupSubmit = (event) => {
+    const navigate = useNavigate();
+
+    const handleLoginSubmit = async (event) => {
         event.preventDefault();
-        console.log(event.target.username.value);
-        console.log(event.target.email.value);
-        console.log(event.target.password.value);
+        try {
+            const result = await axios.post(
+                Constants.API_ADDRESS + '/loginForJWT',
+                null,
+                {
+                    auth: {
+                        username: event.target.username.value,
+                        password: event.target.password.value
+                    }
+                }
+            );
+            
+            const receivedJWT = result.data.token
+                props.login(receivedJWT);
+                    setTimeout(() => {
+                        navigate('/', { replace: true })
+                },1800)
+
+        } catch (error) {
+            console.log(error);
+        }
+
     }
-
-
 
     return (
         <div className={styles.wrapper}>
@@ -22,25 +44,21 @@ export default function Login() {
                 <div className={styles.loginContainer}>
                     <div className={styles.headerContainer}>
                         <div className={styles.header}>Welcome!</div>
-                        <div >Log In or</div>
+                            <div >Log In or</div>
                         <div><Link to="/signup">Sign up</Link></div>
                     </div>
-                    <div className={styles.textContainer}>
-                    <form onSubmit={handleSignupSubmit}>
+                <div className={styles.textContainer}>
+                    <form onSubmit={ handleLoginSubmit }>
                         <div
                             >Username: <br />
                             <input type="text" name="username"/>
-                        </div>
-                        <div
-                            >Email: <br />
-                            <input type="text" name="email"/>
                         </div>
                         <div>  
                             Password: <br />
                             <input type="password" name="password"/>
                         </div>
                         <div>
-                            <button className={styles.logInBtn} type="submit">Submit</button>
+                            <button type="submit" className={styles.logInBtn}>Login</button>
                         </div>
                         </form>
                     </div>
