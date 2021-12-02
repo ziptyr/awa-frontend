@@ -19,7 +19,7 @@ const jwtFromStorage = window.localStorage.getItem("userJWT");
 
 function App() {
 
-  const [userJWT, setUserJWT] = useState(jwtFromStorage); 
+  const [userJWT, setUserJWT] = useState(jwtFromStorage);
 
   const restaurants = restaurantData.map( data => {
    return { ...data, id: uuidv4()}
@@ -54,16 +54,16 @@ function App() {
             }} />
 
         <Routes>
-          <Route path="/" element={ <Home /> } />
-          { authRoutes }
-          <Route path="/restaurants">
-            <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
-            <Route path=":id" element={
-              <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} userJWT={userJWT != null} />
+            <Route path="/" element={ <Home /> } />
+                { authRoutes }
+                    <Route path="/restaurants">
+                    <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
+                    <Route path=":id" element={
+                <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} />
             } />
-          </Route>
-          <Route path="*" element={ <Home /> } />
-        </Routes>
+            </Route>
+                <Route path="*" element={ <Home /> } />
+            </Routes>
 
         {/* <Footer /> */}
     </BrowserRouter>
