@@ -1,7 +1,6 @@
-import React, { useContext} from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
-import { UserContext } from '../UserContext'
 
 
 export default function Header(props) {
@@ -17,9 +16,9 @@ export default function Header(props) {
             {props.userJWT ? 
             <>  
               <div className={styles.loginButtons}>
-                <div><Link to="/account">Account</Link></div>
-                <div><button className={styles.btn} onClick={ props.logOut }>Log out</button></div>
-                <div><Link to="/shoppingcart"><img src="/images/cart.png" alt=""/></Link></div>
+                    <div><Link to="/account">Account</Link></div>
+                        <div><button className={styles.btn} onClick={ props.logOut }>Log out</button></div>
+                    <div><Link to="/shoppingcart"><img src="/images/cart.png" alt=""/></Link></div>
                 </div>
             </>
             : 
