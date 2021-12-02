@@ -1,9 +1,58 @@
-import { React, useState} from 'react'
+import { React, useState, useReducer} from 'react'
 import { useParams } from 'react-router'
 import styles from './RestaurantMenu.module.css'
+    
+
+    const currencyOptions = {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }
+  
+    function getTotal(cart) {
+        const total = cart.reduce((totalCost, item) => totalCost + item.price, 0);
+        return total.toLocaleString(undefined, currencyOptions)
+    }
+    
+
+    //
+    function cartReducer(state, action) {
+        switch(action.type) {
+        case 'add':
+            return [...state, action.product];
+        case 'remove':
+            const productIndex = state.findIndex(item => item.name === action.product.name);
+            if(productIndex < 0) {
+            return state;
+            }
+            const update = [...state];
+            update.splice(productIndex, 1)
+            return update
+        default:
+            return state;
+        }
+    }
+
 
 export const RestaurantMenu = ({menuData, restaurants}) => {
 
+    
+
+    //useState for shopping cart
+    const [cart, setCart] = useReducer(cartReducer, []);
+  
+    console.log(cart.map(item => item.name + " " + item.price)
+    );
+    
+    //function for adding products to cart.
+    function add(product) {
+        setCart({ product, type: 'add' })
+    }
+
+    //function for removing products from cart.
+    function remove(product) {
+        setCart({ product, type: 'remove' });
+    }
+    
     //useState for categories
     const [category, setCategory] = useState("Show All");
 
@@ -46,7 +95,7 @@ export const RestaurantMenu = ({menuData, restaurants}) => {
         <div className={styles.wrapper}>
             <div className={styles.container}>
                 <div className={styles.restaurantInfoContainer}>
-                    <div className={styles.restaurantName}>{restaurant.name}</div>
+                    <div className={styles.restaurantName}>{restaurant.name}{getTotal(cart)}</div>
                         <div>{restaurant.type}  ·</div>
                             <div className={styles.restaurantFlex}>
                                 <div>{restaurant.price}  ·</div>
@@ -63,15 +112,17 @@ export const RestaurantMenu = ({menuData, restaurants}) => {
                                         </div>
                                     <div className={styles.menuContainer}>
                                         <div className={styles.menuHeader}>{category}</div>
-                                            {categoryMenu.map((data, key) => {
+                                            {categoryMenu.map( data => {
                                                 return (
-                                                    <div id={key} className={styles.menuItemsContainer}>
+                                                    <div key={data.id} className={styles.menuItemsContainer}>
                                                         <div className={styles.menuItems}>
                                                             <div>{data.name}</div>
                                                                 <div>{data.description}</div>
                                                                     <span>{data.price}$</span>
                                                                         <div className={styles.menuItemsFlex}>
-                                                                            <button onClick={()=> console.log("hello")}>+</button>
+                                                                            <button onClick={()=> remove(data)}>-</button>
+                                                                            <div></div>
+                                                                            <button onClick={()=> add(data)}>+</button>
                                                                         </div>
                                                             </div>
                                                     </div>       

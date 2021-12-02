@@ -114,10 +114,20 @@
     padding: 5px 0px;
 }
 
+.menuItemsFlex {
+    display: flex;
+    flex-direction: row;
+}
+
+.menuItemsFlex div {
+    width: 30px;
+    background-color: rgb(255, 255, 255);
+}
+
 .menuItemsFlex button {
     font-weight: 500;
     border-radius: 2rem;
-    width: 30px;
+    width: 40px;
     background-color: rgba(79, 76, 76, 0.129);
     transition: all 0.3s ease-in-out;
 }
