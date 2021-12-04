@@ -28,9 +28,6 @@ function App() {
     //State for storing JWT.
     const [userJWT, setUserJWT] = useState(jwtFromStorage);
 
-    //Reducer for cart.
-    const [cart, setCart] = useReducer(cartReducer, []);
-
     //Decoded JWT using jsonwebtoken.decoder.
     const jwtDecoded = jwt.decode(jwtFromStorage);
 
@@ -56,8 +53,8 @@ function App() {
 
     if(userJWT != null) {
         authRoutes =  <>
-        <Route path="/account" element={ <Account cart={cart} />  } />
-        <Route path="/shoppingcart" element={ <ShoppingCart cart={cart}/>} />
+        <Route path="/account" element={ <Account />  } />
+        <Route path="/shoppingcart" element={ <ShoppingCart />} />
         </>
     }
 
@@ -78,7 +75,7 @@ function App() {
                 <Route path="/public/restaurants">
                     <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
                     <Route path=":id" element={
-                        <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} cart={cart} setCart={setCart} />
+                        <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} />
                     } />
                 </Route>
 
