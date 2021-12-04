@@ -6,7 +6,7 @@ export default function RestaurantManagerAdd() {
         <div className={styles.box}>
             <div style={{
                 width: '226px',
-                height: '266px',
+                height: '292px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
