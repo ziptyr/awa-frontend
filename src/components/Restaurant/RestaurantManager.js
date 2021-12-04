@@ -20,21 +20,23 @@ export default function Restaurant({data}) {
           <img src={data.image} alt=""/>
         </Link>
 
-        <button style={{
-          position: 'absolute',
-          backgroundColor: "#00db00",
-          color: "white",
-          fontWeight: "900",
-          border: "solid 2px black",
-          borderRadius: "20px",
-          width: "32px",
-          height: "32px",
-          margin: "6px",
-          right: '40px',
-          top: '2px'
-        }} onClick={() => alert("Editing")}>
-          E
-        </button>
+        <Link to={"manage/" + data.id}>
+          <button style={{
+            position: 'absolute',
+            backgroundColor: "#00db00",
+            color: "white",
+            fontWeight: "900",
+            border: "solid 2px black",
+            borderRadius: "20px",
+            width: "32px",
+            height: "32px",
+            margin: "6px",
+            right: '40px',
+            top: '2px'
+          }}>
+            E
+          </button>
+        </Link>
 
         <button style={{
           position: 'absolute',
