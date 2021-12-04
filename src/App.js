@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useReducer } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import  { v4 as uuidv4 } from 'uuid';
+import  jwt  from 'jsonwebtoken';
+import { JWTContext } from './components/JWTContext';
 
 
 import Header from './components/Header';
@@ -19,47 +21,62 @@ const jwtFromStorage = window.localStorage.getItem("userJWT");
 
 function App() {
 
-  const [userJWT, setUserJWT] = useState(jwtFromStorage);
+    //CONSTS
 
-  const restaurants = restaurantData.map( data => {
-   return { ...data, id: uuidv4()}
-  });
+    //State for storing JWT.
+    const [userJWT, setUserJWT] = useState(jwtFromStorage);
 
-  const menuDataIds = menuData.map( data => {
+    //Reducer for cart.
+    const [cart, setCart] = useReducer(cartReducer, []);
+
+    //Decoded JWT using jsonwebtoken.decoder.
+    const jwtDecoded = jwt.decode(jwtFromStorage);
+
+    //Adding unique ids to restaurantData.
+    const restaurants = restaurantData.map( data => {
     return { ...data, id: uuidv4()}
-  });
+    });
 
-  let authRoutes = <>
-        <Route path="/login" element={ <Login login={ (newJWT) => {
-            setUserJWT(newJWT)
-            window.localStorage.setItem("userJWT", newJWT)
-            } }/>} />
-        <Route path="/signup" element={ <SignUp />} />
-    </>
+    //Adding unique ids to menuData.
+    const menuDataIds = menuData.map( data => {
+        return { ...data, id: uuidv4()}
+    });
+
+    //CONSTS END
+
+    let authRoutes = <>
+            <Route path="/login" element={ <Login login={ (newJWT) => {
+                setUserJWT(newJWT)
+                window.localStorage.setItem("userJWT", newJWT)
+                } }/>} />
+            <Route path="/signup" element={ <SignUp />} />
+        </>
 
     if(userJWT != null) {
         authRoutes =  <>
-        <Route path="/account" element={ <Account jwt={userJWT} />  } />
-        <Route parth="/shoppingcart" element={ <ShoppingCart />} />
+        <Route path="/account" element={ <Account cart={cart} />  } />
+        <Route path="/shoppingcart" element={ <ShoppingCart cart={cart}/>} />
         </>
     }
 
+    
   
   return (
+    <JWTContext.Provider value={jwtDecoded}>
     <BrowserRouter>
       
         <Header userJWT={userJWT != null} logOut={() => {
             setUserJWT(null)
             window.localStorage.removeItem("userJWT");
-            }} />
-
+        }} />
         <Routes>
             <Route path="/" element={ <Home /> } />
+            
                 { authRoutes }
                     <Route path="/restaurants">
-                    <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
+                    <Route path="" element={ <Restaurants restaurants={restaurants}  /> }/>
                     <Route path=":id" element={
-                <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} />
+                <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} cart={cart} setCart={setCart} />
             } />
             </Route>
                 <Route path="*" element={ <Home /> } />
@@ -67,6 +84,7 @@ function App() {
 
         {/* <Footer /> */}
     </BrowserRouter>
+    </JWTContext.Provider>
   );
 }
 
