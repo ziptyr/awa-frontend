@@ -22,6 +22,22 @@ export default function Restaurant({data}) {
 
         <button style={{
           position: 'absolute',
+          backgroundColor: "#00db00",
+          color: "white",
+          fontWeight: "900",
+          border: "solid 2px black",
+          borderRadius: "20px",
+          width: "32px",
+          height: "32px",
+          margin: "6px",
+          right: '40px',
+          top: '2px'
+        }} onClick={() => alert("Editing")}>
+          E
+        </button>
+
+        <button style={{
+          position: 'absolute',
           backgroundColor: "#db0000",
           color: "white",
           fontWeight: "900",
@@ -32,7 +48,7 @@ export default function Restaurant({data}) {
           margin: "6px",
           right: '2px',
           top: '2px'
-        }} onClick={() => alert("hello")}>
+        }} onClick={() => alert("Deleting")}>
           X
         </button>
 
@@ -43,7 +59,9 @@ export default function Restaurant({data}) {
 
           <div className={styles.restInfo}>
             <div>
-              New Orders: X
+              Orders: X
+              <br />
+              New Orders: Y
             </div>
           </div>
         </Link>
