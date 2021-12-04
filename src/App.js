@@ -75,18 +75,10 @@ function App() {
             <Route path="/" element={ <Home /> } />
             
                 { authRoutes }
-<<<<<<< HEAD
-                    <Route path="/restaurants">
-                    <Route path="" element={ <Restaurants restaurants={restaurants}  /> }/>
-                    <Route path=":id" element={
-                <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} cart={cart} setCart={setCart} />
-            } />
-            </Route>
-=======
                 <Route path="/public/restaurants">
                     <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
                     <Route path=":id" element={
-                        <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} />
+                        <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} cart={cart} setCart={setCart} />
                     } />
                 </Route>
 
@@ -96,7 +88,6 @@ function App() {
                         <RestaurantManagerView  restaurants={restaurants} menuData={menuDataIds} />
                     } />
                 </Route>
->>>>>>> main
                 <Route path="*" element={ <Home /> } />
             </Routes>
 
