@@ -32,7 +32,7 @@ export default function Restaurant({data}) {
           margin: "6px",
           right: '2px',
           top: '2px'
-        }}>
+        }} onClick={() => alert("hello")}>
           X
         </button>
 
