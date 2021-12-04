@@ -1,0 +1,6 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background-image: linear-gradient(to left top, rgb(255, 255, 255), rgb(213, 124, 124));
+}

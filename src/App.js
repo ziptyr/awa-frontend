@@ -8,7 +8,9 @@ import { JWTContext } from './components/JWTContext';
 import Header from './components/Header';
 import Home from './components/Home';
 import Restaurants from './components/Restaurants';
+import RestaurantsManager from './components/Restaurant/RestaurantsManager';
 import { RestaurantMenu } from './components/RestaurantMenu';
+import { RestaurantManagerView } from './components/Restaurant/RestaurantManagerView';
 import { menuData } from './data.menu';
 import { restaurantData } from './data.restaurants';
 import Login from './components/Login';
@@ -73,12 +75,28 @@ function App() {
             <Route path="/" element={ <Home /> } />
             
                 { authRoutes }
+<<<<<<< HEAD
                     <Route path="/restaurants">
                     <Route path="" element={ <Restaurants restaurants={restaurants}  /> }/>
                     <Route path=":id" element={
                 <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} cart={cart} setCart={setCart} />
             } />
             </Route>
+=======
+                <Route path="/public/restaurants">
+                    <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
+                    <Route path=":id" element={
+                        <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} />
+                    } />
+                </Route>
+
+                <Route path="/manager/restaurants">
+                    <Route path="" element={ <RestaurantsManager restaurants={restaurants} /> }/>
+                    <Route path=":id" element={
+                        <RestaurantManagerView  restaurants={restaurants} menuData={menuDataIds} />
+                    } />
+                </Route>
+>>>>>>> main
                 <Route path="*" element={ <Home /> } />
             </Routes>
 
