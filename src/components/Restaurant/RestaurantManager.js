@@ -5,31 +5,38 @@ import styles from './RestaurantManager.module.css'
 
 export default function Restaurant({data}) {
           //<img src={data.image} alt=""/>
-
-  return (
-    <Link to={data.id } style={{ textDecoration: 'none' }} >
-      <div className={styles.box}>
-        <div key={data.id}>
-          <div alt={data.image} style={{
+          /*<div alt={data.image} style={{
             backgroundColor: "lightblue",
             backgroundImage: "url(" + data.image + ")",
             textAlign: "right",
             width: "225px",
             height: "225px"
-          }}>
-            <button style={{
-              backgroundColor: "red",
-              color: "white",
-              fontWeight: "bold",
-              border: "solid 2px black",
-              borderRadius: "20px",
-              width: "30px",
-              height: "30px",
-              margin: "6px"
-            }}>
-              X
-            </button>
-          </div>
+          }}>*/
+
+  return (
+    <div className={styles.box}>
+      <div key={data.id} style={{position: 'relative'}}>
+        <Link to={data.id } style={{ textDecoration: 'none' }} >
+          <img src={data.image} alt=""/>
+        </Link>
+
+        <button style={{
+          position: 'absolute',
+          backgroundColor: "#db0000",
+          color: "white",
+          fontWeight: "900",
+          border: "solid 2px black",
+          borderRadius: "20px",
+          width: "32px",
+          height: "32px",
+          margin: "6px",
+          right: '2px',
+          top: '2px'
+        }}>
+          X
+        </button>
+
+        <Link to={data.id } style={{ textDecoration: 'none' }} >
           <div className={styles.title}>
             {data.name}
           </div>
@@ -39,8 +46,8 @@ export default function Restaurant({data}) {
               New Orders: X
             </div>
           </div>
-        </div>
+        </Link>
       </div>
-    </Link>
+    </div>
   )
 }
