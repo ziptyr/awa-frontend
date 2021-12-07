@@ -12,8 +12,6 @@ export default function RestaurantsManagerManage({restaurants}) {
         restaurant = {name: "", address: "", opens: "", closes: "", image: ""};
     }
 
-    console.log(restaurant)
-
     return (
         <div className={styles.container}>
             <div className={styles.gridContainer}>
