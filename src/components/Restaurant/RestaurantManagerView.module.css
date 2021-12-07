@@ -2,14 +2,26 @@
     max-width: 1800px;
 }
 
-.newOrders {
+.newOrders, .inProgressOrders {
     display: grid;
-    grid: 25px / auto auto auto auto auto auto auto;
     margin-bottom: 75px;
 }
 
-.newOrders > div {
+.newOrders > .link, .inProgressOrders > .link {
+    text-decoration: none !important;
+    color: black;
+}
+
+.newOrders > * div, .inProgressOrders > * div {
     border-bottom: 1px solid lightgray;
+}
+
+.newOrders {
+    grid: 25px / auto auto auto auto auto;
+}
+
+.inProgressOrders {
+    grid: 25px / auto auto auto auto auto auto;
 }
 
 .header {
