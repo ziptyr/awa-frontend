@@ -54,10 +54,17 @@ export default function Restaurant({data}) {
           X
         </button>
 
-        <Link to={data.id } style={{ textDecoration: 'none' }} >
+        <Link to={data.id }>
           <div className={styles.title}>
             {data.name}
           </div>
+        </Link>
+
+        <Link to={data.id + "/menu"}>
+          <button className={styles.menuButton}>
+            Menu
+          </button>
+        </Link>
 
           <div className={styles.restInfo}>
             <div>
@@ -66,7 +73,6 @@ export default function Restaurant({data}) {
               New Orders: Y
             </div>
           </div>
-        </Link>
       </div>
     </div>
   )

@@ -39,3 +39,8 @@ border-color: rgb(228, 0, 0);
     font-size: 15;
     margin-left: 20px;
 }
+
+.menuButton {
+    margin: 0px 20px;
+    width: 185px;
+}
