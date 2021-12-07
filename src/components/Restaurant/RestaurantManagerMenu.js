@@ -20,9 +20,11 @@ export default function RestaurantsManagerMenu({restaurants, menuData}) {
     return (
         <div className={styles.container}>
             <div className={styles.left}>
-                <button className={styles.buttonAdd}>
-                    Add
-                </button>
+                <Link to="new">
+                    <button className={styles.buttonAdd}>
+                        Add
+                    </button>
+                </Link>
 
                 {menu.map((item, i) =>
                     <Link key={i} to={item.id}>
