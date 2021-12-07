@@ -9,7 +9,8 @@ function GetRestaurant(restaurants) {
 
     const restaurant = restaurants.find(restaurant => restaurant.id === index.id );
 
-    return (restaurant)
+    if (typeof restaurant === 'undefined') return (null)
+    else return (restaurant)
 }
 
 function GetMenu(menuData, restaurant) {
