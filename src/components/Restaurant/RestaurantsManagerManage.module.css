@@ -18,23 +18,7 @@
     justify-content: right;
 }
 
-.buttons > * {
-    border: 1px solid lightgrey;
-    background-color: #f9f9f9;
+.button {
     width: 100px;
-    text-align: center;
     margin-left: 15px;
-    border-radius: 6px;
-    color: black;
-    text-decoration: none;
-}
-
-.buttons > *:hover {
-    border: 1px solid gray;
-    background-color: #f5f5f5;
-}
-
-.buttons > *:active {
-    border: 1px solid lightgray;
-    background-color: #f0f0f0;
 }
