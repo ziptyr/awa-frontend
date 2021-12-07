@@ -18,9 +18,6 @@ export const RestaurantManagerView = ({menuData, restaurants}) => {
         menu.restaurant === restaurant.name
     )
 
-    console.log(menuData)
-    console.log(restaurant)
-
     return (
         <div className={styles.wrapper}>
             <div className={styles.container}>
