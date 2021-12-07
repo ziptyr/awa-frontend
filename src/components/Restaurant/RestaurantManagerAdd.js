@@ -8,14 +8,7 @@ export default function RestaurantManagerAdd() {
     return (
         <Link to='manage' style={{ textDecoration: 'none' }} >
             <div className={styles.box}>
-                <div style={{
-                    width: '226px',
-                    height: '292px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    fontSize: '150px'
-                }}>
+                <div className={styles.buttonAddRestaurant}>
                     +
                 </div>
             </div>

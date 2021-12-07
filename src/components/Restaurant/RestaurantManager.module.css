@@ -68,3 +68,12 @@ border-color: rgb(228, 0, 0);
     display: inline-block;
     width: 20px;
 }
+
+.buttonAddRestaurant {
+    width: 226px;
+    height: 319px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150px;
+}
