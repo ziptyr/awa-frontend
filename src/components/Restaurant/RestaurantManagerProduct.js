@@ -5,8 +5,6 @@ import styles from './RestaurantManagerProduct.module.css';
 export default function RestaurantManagerProduct({menuData}) {
     const product = GetProduct(menuData);
 
-    console.log(product)
-
     return (
         <div className={styles.container}>
             <div>
