@@ -1,16 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router'
+import {GetRestaurant} from '../Tools';
 import styles from './RestaurantsManagerManage.module.css';
 
 export default function RestaurantsManagerManage({restaurants}) {
 
-    const index = useParams(); 
-
-    let restaurant = restaurants.find(restaurant => restaurant.id === index.id );
-    if ( restaurant == null) {
-        restaurant = {name: "", address: "", opens: "", closes: "", image: ""};
-    }
+    let restaurant = GetRestaurant(restaurants);
 
     return (
         <div className={styles.container}>
