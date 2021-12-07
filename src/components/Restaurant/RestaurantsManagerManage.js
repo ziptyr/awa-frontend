@@ -5,14 +5,22 @@ import styles from './RestaurantsManagerManage.module.css';
 
 export default function RestaurantsManagerManage({restaurants}) {
 
-    const restaurant = {...GetRestaurant(restaurants)};
-    if (typeof restaurant === 'undefined') {
-        restaurant.name = "";
-        restaurant.address = "";
-        restaurant.opens = "";
-        restaurant.closes = "";
-        restaurant.image = "";
-        restaurant.price = "";
+    let foundRestaurant = GetRestaurant(restaurants);
+    let addingNewRestaurant;
+
+    const restaurant = {
+        name: "",
+        address: "",
+        opens: "",
+        closes: "",
+        image: "",
+        price: ""}
+
+    if (foundRestaurant === null) {
+        addingNewRestaurant = true;
+    } else {
+        addingNewRestaurant = false;
+        Object.keys(restaurant).forEach(function(key){ restaurant[key] = foundRestaurant[key] });
     }
 
     const [name, setName] = useState(restaurant.name);
@@ -22,6 +30,26 @@ export default function RestaurantsManagerManage({restaurants}) {
     const [image, setImage] = useState(restaurant.image);
     const [type, setType] = useState(restaurant.type);
     const [price, setPrice] = useState(restaurant.price);
+
+    const ButtonAddRestaurant = () => {
+        return (
+            <button
+                className = {styles.button}
+                onClick = {() => alert("add restaurant")}>
+                    OK
+            </button>
+        )
+    }
+
+    const ButtonEditRestaurant = () => {
+        return (
+            <button
+                className = {styles.button}
+                onClick = {() => alert("edit restaurant")}>
+                    OK
+            </button>
+        )
+    }
 
     return (
         <div className={styles.container}>
@@ -108,10 +136,9 @@ export default function RestaurantsManagerManage({restaurants}) {
 
             <div className={styles.buttons}>
                 <Link to='../..'>
-                    <button className={styles.button}>
-                        OK
-                    </button>
+                    {(addingNewRestaurant) ? <ButtonAddRestaurant /> : <ButtonEditRestaurant />}
                 </Link>
+
                 <Link to='../..'>
                     <button className={styles.button}>
                         Cancel
