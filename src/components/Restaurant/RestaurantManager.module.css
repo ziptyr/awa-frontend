@@ -48,3 +48,17 @@ border-color: rgb(228, 0, 0);
 .menuButton {
     width: 100%;
 }
+
+.buttonEdit {
+    position: absolute;
+    background-color: #db0000;
+    color: white;
+    font-weight: 900;
+    border: solid 2px black;
+    border-radius: 20px;
+    width: 32px;
+    height: 32px;
+    margin: 6px;
+    right: 2px;
+    top: 2px;
+}
