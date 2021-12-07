@@ -17,11 +17,13 @@ export default function RestaurantsManagerMenu({restaurants, menuData}) {
         menu.restaurant === restaurant.name
     )
 
-    console.log(menu)
-
     return (
         <div className={styles.container}>
             <div className={styles.left}>
+                <button className={styles.buttonAdd}>
+                    Add
+                </button>
+
                 {menu.map((item, i) =>
                     <Link key={i} to={item.id}>
                         <div>

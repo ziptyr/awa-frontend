@@ -4,5 +4,11 @@
 }
 
 .left {
+    display: flex;
+    flex-direction: column;
     width: 350px;
+}
+
+.buttonAdd {
+    width: 150px;
 }
