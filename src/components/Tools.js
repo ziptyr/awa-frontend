@@ -8,9 +8,6 @@ function GetRestaurant(restaurants) {
     const index = useParams();
 
     const restaurant = restaurants.find(restaurant => restaurant.id === index.id );
-    if ( restaurant == null) {
-        return <div>No matching restaurant</div>
-    }
 
     return (restaurant)
 }
