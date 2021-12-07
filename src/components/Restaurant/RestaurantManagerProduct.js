@@ -7,29 +7,20 @@ export default function RestaurantManagerProduct({menuData}) {
 
     return (
         <div className={styles.container}>
-            <div>
-                {product.name}
-            </div>
+            <div className={styles.left}>Name:</div>
+            <div className={styles.right}>{product.name}</div>
 
-            <div>
-                {product.category}
-            </div>
+            <div className={styles.left}>Category:</div>
+            <div className={styles.right}>{product.category}</div>
 
-            <div>
-                {product.description}
-            </div>
+            <div className={styles.left}>Description:</div>
+            <div className={styles.right}>{product.description}</div>
 
-            <div>
-                {product.image}
-            </div>
-
-            <div>
-                {product.price}
-            </div>
-
-            <button className={styles.buttonRemove}>
-                Delete
-            </button>
+            <div className={styles.left}>Image:</div>
+            <div className={styles.right}>{product.image}</div>
+        
+            <div className={styles.left}>Price:</div>
+            <div className={styles.right}>{product.price}</div>
         </div>
     )
 }

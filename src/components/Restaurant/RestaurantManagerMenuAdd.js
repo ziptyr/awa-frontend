@@ -1,38 +1,30 @@
 import React from 'react';
-import styles from './RestaurantManagerMenuAdd.module.css';
+import styles from './RestaurantManagerProduct.module.css';
 
 export default function RestaurantManagerMenuAdd({menuData}) {
 
     return (
-        <div className={styles.container}>
-            <div>
-                Name:
-                <input type="text" />
+        <>
+            <div className={styles.container}>
+                <div>Name:</div>
+                <div><input type="text" /></div>
+
+                <div>Category:</div>
+                <div><input type="text" /></div>
+
+                <div>Description:</div>
+                <div><input type="text" /></div>
+
+                <div>Image:</div>
+                <div><input type="url" /></div>
+
+                <div>Price:</div>
+                <div><input type="number" step="0.01" min="0" /></div>
             </div>
 
-            <div>
-                Category:
-                <input type="text" />
-            </div>
-
-            <div>
-                Description:
-                <input type="text" />
-            </div>
-
-            <div>
-                Image:
-                <input type="url" />
-            </div>
-
-            <div>
-                Price:
-                <input type="number" step="0.01" min="0" />
-            </div>
-
-            <button>
+            <button className={styles.buttonSave}>
                 Save product
             </button>
-        </div>
+        </>
     )
 }

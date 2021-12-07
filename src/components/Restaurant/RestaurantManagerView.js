@@ -7,7 +7,10 @@ import styles from './RestaurantManagerView.module.css'
 export const RestaurantManagerView = ({menuData, restaurants}) => {
 
     const restaurant = GetRestaurant(restaurants);
+    if (restaurant === null) return (<div>No restaurant found</div>);
+
     //const menu = GetMenu(menuData, restaurant);
+    //if (menu === null) return (<div>No menu found</div>);
 
     return (
         <div className={styles.wrapper}>

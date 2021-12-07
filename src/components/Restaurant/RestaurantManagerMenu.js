@@ -6,7 +6,10 @@ import styles from './RestaurantManagerMenu.module.css';
 export default function RestaurantsManagerMenu({restaurants, menuData}) {
 
     const restaurant = GetRestaurant(restaurants);
+    if (restaurant === null) return (<div>No restaurant found</div>);
+
     const menu = GetMenu(menuData, restaurant);
+    if (menu === null) return (<div>No menu found</div>);
 
     return (
         <div className={styles.container}>
