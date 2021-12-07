@@ -36,5 +36,15 @@ function GetProduct(menuData) {
     return (product)
 }
 
+function GetNewOrders(orders) {
+    return orders.filter((order) => order.details.orderStatus === 0);
+}
 
-export {GetRestaurant, GetMenu, GetProduct};
+function GetInProgressOrders(orders) {
+    return orders.filter((order) => (
+        order.details.orderStatus !== 0 && order.details.orderStatus < 4
+    ));
+}
+
+
+export {GetRestaurant, GetMenu, GetProduct, GetNewOrders, GetInProgressOrders};
