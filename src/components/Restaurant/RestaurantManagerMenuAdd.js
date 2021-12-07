@@ -1,34 +1,37 @@
 import React from 'react';
-import {GetProduct} from '../Tools';
 import styles from './RestaurantManagerMenuAdd.module.css';
 
 export default function RestaurantManagerMenuAdd({menuData}) {
-    const product = GetProduct(menuData);
 
     return (
         <div className={styles.container}>
             <div>
-                {product.name}
+                Name:
+                <input type="text" />
             </div>
 
             <div>
-                {product.category}
+                Category:
+                <input type="text" />
             </div>
 
             <div>
-                {product.description}
+                Description:
+                <input type="text" />
             </div>
 
             <div>
-                {product.image}
+                Image:
+                <input type="url" />
             </div>
 
             <div>
-                {product.price}
+                Price:
+                <input type="number" step="0.01" min="0" />
             </div>
 
-            <button className={styles.buttonRemove}>
-                Delete
+            <button>
+                Save product
             </button>
         </div>
     )
