@@ -60,12 +60,13 @@ export default function Restaurant({data}) {
           </div>
         </Link>
 
-        <Link to={data.id + "/menu"}>
+        <Link to={"menu/" + data.id}>
           <button className={styles.menuButton}>
             Menu
           </button>
         </Link>
 
+        <Link to={data.id}>
           <div className={styles.restInfo}>
             <div>
               Orders: X
@@ -73,6 +74,7 @@ export default function Restaurant({data}) {
               New Orders: Y
             </div>
           </div>
+        </Link>
       </div>
     </div>
   )

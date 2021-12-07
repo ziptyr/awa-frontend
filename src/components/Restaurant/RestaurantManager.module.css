@@ -40,7 +40,11 @@ border-color: rgb(228, 0, 0);
     margin-left: 20px;
 }
 
+.menuBox {
+    display: flex;
+    justify-content: center;
+}
+
 .menuButton {
-    margin: 0px 20px;
-    width: 185px;
+    width: 100%;
 }
