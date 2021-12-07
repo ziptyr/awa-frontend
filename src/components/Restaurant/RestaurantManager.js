@@ -30,15 +30,19 @@ export default function Restaurant({data}) {
           <div className={styles.title}>
             {data.name}
           </div>
+
+          <div className={styles.marginDiv} />
         </Link>
 
         <Link to={"menu/" + data.id}>
-          <button className={styles.menuButton}>
+          <button className={styles.buttonMenu}>
             Menu
           </button>
         </Link>
 
         <Link to={data.id}>
+          <div className={styles.marginDiv} />
+
           <div className={styles.restInfo}>
             <div>
               Orders: X
