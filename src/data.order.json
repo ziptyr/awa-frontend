@@ -15,12 +15,6 @@
         "productId": 2,
         "amount": 3,
         "productPrice": 24.5
-      },
-      {
-        "orderId": 1,
-        "productId": 1,
-        "amount": 1,
-        "productPrice": 24.5
       }
     ]
   },
