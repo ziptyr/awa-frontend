@@ -2,7 +2,7 @@ import { useState, useReducer } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import  { v4 as uuidv4 } from 'uuid';
 import  jwt  from 'jsonwebtoken';
-import { JWTContext } from './components/JWTContext';
+import { Context } from './components/Context';
 
 
 import Header from './components/Header';
@@ -19,7 +19,17 @@ import Account from './components/Account';
 import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
 
+const currencyOptions = {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+}
+
 const jwtFromStorage = window.localStorage.getItem("userJWT");
+
+//Adding unique ids to menuData.
+const menuDataIds = menuData.map( data => {
+    return { ...data, id: uuidv4()}
+});
 
 function App() {
 
@@ -28,20 +38,75 @@ function App() {
     //State for storing JWT.
     const [userJWT, setUserJWT] = useState(jwtFromStorage);
 
+    //useState for shopping cart
+    const [cart, setCart] = useReducer(cartReducer, []);  
+
     //Decoded JWT using jsonwebtoken.decoder.
     const jwtDecoded = jwt.decode(jwtFromStorage);
 
     //Adding unique ids to restaurantData.
     const restaurants = restaurantData.map( data => {
-    return { ...data, id: uuidv4()}
-    });
-
-    //Adding unique ids to menuData.
-    const menuDataIds = menuData.map( data => {
         return { ...data, id: uuidv4()}
-    });
+        });
+    
 
     //CONSTS END
+
+    //FUNCTIONS
+
+    //Getting cart total via .reduce()
+    function getTotal(cart) {
+        const total = cart.reduce((totalCost, item) => totalCost + item.price, 0);
+        return total.toLocaleString(undefined, currencyOptions)
+    }
+    
+    //Reducer arg function for useReducer()
+    function cartReducer(state, action) {
+        switch(action.type) {
+        case 'add':
+            return [...state, action.data];
+        case 'remove':
+            const productIndex = state.findIndex(item => item.name === action.data.name);
+            if(productIndex < 0) {
+            return state;
+            }
+            const update = [...state];
+            update.splice(productIndex, 1)
+            return update
+        case 'empty':
+            const empty = [];
+            return empty;
+        default:
+            return state;
+        }
+    }
+
+    //Function for adding products to cart.
+    function add(data) {
+        const restaurant = data.restaurant;
+        if(cart.length < 1) {
+             setCart({ data, type: 'add' })
+        } else {
+            let id = cart.length -1;
+            if(cart[id].restaurant != restaurant)
+                alert("Cart contains products from multiple restaurants, please empty cart before continuing.");
+            else
+            setCart({ data, type: 'add' }) 
+         
+        }
+    }
+        
+    //Function for removing products from cart.
+    function remove(data) {
+        setCart({ data, type: 'remove' });
+    }
+
+    //Function for emptying shopping cart.
+    function empty(data) {
+        setCart({ data, type: 'empty' });
+    }
+
+    //FUNCTIONS ENDS
 
     let authRoutes = <>
             <Route path="/login" element={ <Login login={ (newJWT) => {
@@ -61,7 +126,10 @@ function App() {
     
   
   return (
-    <JWTContext.Provider value={jwtDecoded}>
+    <Context.Provider value={{
+        jwtDecoded, add,  remove, empty,
+         getTotal,  cart,  setCart, currencyOptions
+    }}>
     <BrowserRouter>
       
         <Header userJWT={userJWT != null} logOut={() => {
@@ -74,14 +142,14 @@ function App() {
                 { authRoutes }
                 <Route path="/public/restaurants">
                     <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
-                    <Route path=":id" element={
-                        <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds} />
+                    <Route path=":name" element={
+                        <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds}  />
                     } />
                 </Route>
 
                 <Route path="/manager/restaurants">
                     <Route path="" element={ <RestaurantsManager restaurants={restaurants} /> }/>
-                    <Route path=":id" element={
+                    <Route path=":name" element={
                         <RestaurantManagerView  restaurants={restaurants} menuData={menuDataIds} />
                     } />
                 </Route>
@@ -90,7 +158,7 @@ function App() {
 
         {/* <Footer /> */}
     </BrowserRouter>
-    </JWTContext.Provider>
+    </Context.Provider>
   );
 }
 
