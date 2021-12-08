@@ -4,7 +4,7 @@ import { Link, Outlet } from 'react-router-dom';
 import styles from './RestaurantManagerView.module.css'
 
 
-export const RestaurantManagerView = ({menuData, restaurants, orders}) => {
+export const RestaurantManagerView = ({restaurants, orders}) => {
 
     const restaurant = GetRestaurant(restaurants);
     if (restaurant === null) return (<div>No restaurant found</div>);
