@@ -6,9 +6,9 @@ import styles from './Restaurant.module.css'
 export default function Restaurant({data}) {
 
   return (
-    <Link to={data.id } style={{ textDecoration: 'none' }} >
+    <Link to={data.name } style={{ textDecoration: 'none' }} >
       <div className={styles.box}>
-        <div key={data.id}>
+        <div key={data.name}>
           <img src={data.image} alt=""/>
           <div className={styles.title}>
             {data.name}
