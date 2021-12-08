@@ -51,7 +51,12 @@ export default function RestaurantManagerOrder({restaurants, orders}) {
                 )
             })}
 
-            {(order.details.orderStatus == 0) ? <input type="time" /> : null}
+            {(order.details.orderStatus == 0) ? (
+                    <>
+                        <input type="time" />
+                        <br />
+                    </>
+                ) : null}
 
             <button onClick={() => alert("send status update")}>
                 Status to: {orderStatuses[order.details.orderStatus + 1]}
