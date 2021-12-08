@@ -36,6 +36,17 @@ function GetProduct(menuData) {
     return (product)
 }
 
+function GetOrder(orders) {
+
+    //Finding the correct product to display using useParams().
+    const index = useParams();
+
+
+    const order = orders.find(order => order.details.orderId == index.orderId);
+    if (typeof order === 'undefined') return (null)
+    else return (order)
+}
+
 function GetNewOrders(orders) {
     return orders.filter((order) => order.details.orderStatus === 0);
 }
@@ -47,4 +58,11 @@ function GetInProgressOrders(orders) {
 }
 
 
-export {GetRestaurant, GetMenu, GetProduct, GetNewOrders, GetInProgressOrders};
+export {
+    GetRestaurant,
+    GetMenu,
+    GetProduct,
+    GetNewOrders,
+    GetInProgressOrders,
+    GetOrder
+};
