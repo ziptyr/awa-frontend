@@ -15,8 +15,10 @@ import RestaurantManagerMenuAdd from './components/Restaurant/RestaurantManagerM
 import RestaurantManagerProduct from './components/Restaurant/RestaurantManagerProduct';
 import { RestaurantMenu } from './components/RestaurantMenu';
 import { RestaurantManagerView } from './components/Restaurant/RestaurantManagerView';
+import RestaurantManagerOrder from './components/Restaurant/RestaurantManagerOrder';
 import { menuData } from './data.menu';
 import { restaurantData } from './data.restaurants';
+import orders from './data.order.json';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Account from './components/Account';
@@ -84,28 +86,53 @@ function App() {
                 </Route>
 
                 <Route path="/manager/restaurants">
-                    <Route path="" element={ <RestaurantsManager restaurants={restaurants} /> }/>
-                    <Route path=":id" element={
-                        <RestaurantManagerView  restaurants={restaurants} menuData={menuDataIds} />
-                    } />
-                    <Route path="/manager/restaurants/manage">
-                        <Route path="" element={<RestaurantsManagerManage restaurants={[{}]} />} />
-                        <Route path=":id" element={<RestaurantsManagerManage restaurants={restaurants} menuData={menuDataIds} />} />
+                    <Route path="" element={<RestaurantsManager restaurants={restaurants} /> }/>
+                    <Route
+                        path=":id"
+                        element={<RestaurantManagerView
+                            restaurants={restaurants}
+                            menuData={menuDataIds}
+                            orders={orders} />
+                    }>
+                        <Route
+                            path=":orderId"
+                            element={<RestaurantManagerOrder
+                                restaurants={restaurants}
+                                menuData={menuDataIds}
+                                orders={orders} />}
+                        />
                     </Route>
+
+                    <Route path="/manager/restaurants/manage">
+                        <Route
+                            path=""
+                            element={<RestaurantsManagerManage
+                                restaurants={restaurants} />}
+                        />
+                        <Route
+                            path=":id"
+                            element={<RestaurantsManagerManage
+                                restaurants={restaurants}
+                                menuData={menuDataIds} />}
+                        />
+                    </Route>
+
                     <Route
                         path="/manager/restaurants/menu/:id"
                         element={<RestaurantManagerMenu
                             restaurants={restaurants}
-                            menuData={menuDataIds} />
-                    } >
+                            menuData={menuDataIds} />}
+                    >
                         <Route path="new" element={<RestaurantManagerMenuAdd />} />
-                        <Route path=":productId" element={
-                            <RestaurantManagerProduct
+                        <Route
+                            path=":productId"
+                            element={<RestaurantManagerProduct
                                 restaurants={restaurants}
-                                menuData={menuDataIds} />
-                        } />
+                                menuData={menuDataIds} /> }
+                        />
                     </Route>
                 </Route>
+
                 <Route path="*" element={ <Home /> } />
             </Routes>
 
