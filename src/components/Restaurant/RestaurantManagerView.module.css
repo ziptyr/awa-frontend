@@ -1,30 +1,32 @@
 .container {
-    max-width: 1800px;
+    display: flex;
 }
 
-.newOrders, .inProgressOrders {
-    display: grid;
-    margin-bottom: 75px;
+.left {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
 }
 
-.newOrders > .link, .inProgressOrders > .link {
-    text-decoration: none !important;
-    color: black;
+.leftRow, .leftRowHeader {
+    display: flex;
+    flex-direction: row;
 }
 
-.newOrders > * div, .inProgressOrders > * div {
+.leftRowHeader {
+    font-weight: bold;
+}
+
+.leftRow {
     border-bottom: 1px solid lightgray;
 }
 
-.newOrders {
-    grid: 25px / auto auto auto auto auto;
+.leftRow:hover {
+    color: red;
+    background-color: lightyellow;
 }
 
-.inProgressOrders {
-    grid: 25px / auto auto auto auto auto auto;
-}
-
-.header {
-    border-bottom: 0px !important;
-    font-weight: 900;
-}
+.leftCell:nth-child(1), .leftCellHeader:nth-child(1) { width: 150px; }
+.leftCell:nth-child(2), .leftCellHeader:nth-child(2) { width: 200px; }
+.leftCell:nth-child(3), .leftCellHeader:nth-child(3) { width: 100px; }

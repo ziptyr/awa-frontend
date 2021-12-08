@@ -1,0 +1,171 @@
+import { React, useState} from 'react'
+import {GetRestaurant, GetNewOrders, GetInProgressOrders} from '../Tools';
+import { Link } from 'react-router-dom';
+import styles from './RestaurantManagerView.module.css'
+
+
+export const RestaurantManagerView = ({menuData, restaurants, orders}) => {
+
+    const restaurant = GetRestaurant(restaurants);
+    if (restaurant === null) return (<div>No restaurant found</div>);
+
+    const newOrders = GetNewOrders(orders);
+    const inProgressOrders = GetInProgressOrders(orders);
+
+    //const menu = GetMenu(menuData, restaurant);
+    //if (menu === null) return (<div>No menu found</div>);
+
+    const orderPrettyKeys = {
+        'orderId': 'Order ID',
+        'restaurantId': 'Restaurant ID',
+        'username': 'Customer',
+        'orderStatus': 'Order Status',
+        'orderDate': 'Date',
+        'total': 'Price',
+        'deliveryAddress': 'Address'
+    };
+
+    const newOrderKeys = [
+        'orderId',
+        'username',
+        'orderDate',
+        'total',
+        'deliveryAddress'
+    ];
+
+    const inProgressOrderKeys = [
+        'orderId',
+        'username',
+        'orderStatus',
+        'orderDate',
+        'total',
+        'deliveryAddress'
+    ];
+
+    const newOrderPrettyKeys = newOrderKeys.map((k) => orderPrettyKeys[k]);
+    const inProgressOrderPrettyKeys = inProgressOrderKeys.map((k) => orderPrettyKeys[k]);
+
+    const productPrettyKeys = {
+        'amount': 'Amount',
+        'orderId': 'Order ID',
+        'productId': 'Product ID',
+        'productPrice': 'Product Price'
+    };
+
+    const productKeys = [
+        'amount',
+        'orderId',
+        'productId',
+        'productPrice'
+    ];
+
+    /*const MapKeys = ({keys}) => {
+        return (
+            keys.map((name, i) => (
+                <div key={i} className={styles.header}>
+                    {name}
+                </div>
+            ))
+        )
+    }
+
+    const MapOrderDetails = ({orders, keys}) => {
+        return (orders.map((order, orderIndex) =>
+            keys.map((key, keyIndex) => {
+                return (
+                    <Link to={'' + order.details.orderId} className={styles.link}>
+                        <div key={orderIndex + '-' + keyIndex}>
+                            <div>{order.details[key]}</div>
+                        </div>
+                    </Link>
+                )
+            })
+        ))
+    }*/
+                //<MapKeys keys={newOrderPrettyKeys} />
+                //<MapOrderDetails keys={newOrderKeys} orders={newOrders} />
+
+                //<MapKeys keys={inProgressOrderPrettyKeys} />
+                //<MapOrderDetails keys={inProgressOrderKeys} orders={inProgressOrders} />
+
+    const MapProducts = ({order, keys}) => {
+        return (
+            order.products.map((product, iRow) => {
+            return (
+                <div className={styles.rowProduct}>
+                    {Object.values(product).map((val, iCell) => {
+                        return (
+                            <div className={styles.cell}>
+                                {val}
+                            </div>
+                        )
+                    })}
+                </div>
+            )
+        }))
+    }
+
+    const MapProductKeys = ({keys, prettyKeys}) => {
+        return(
+            <div className={styles.headersProduct}>
+                {keys.map((key, i) => 
+                    <div key={i} className={styles.cell}>
+                        {prettyKeys[key]}
+                    </div>
+                )}
+            </div>
+        )
+    }
+
+    const MapOrders = ({orders, keys}) => {
+        return (orders.map((order, iRow) => {
+            return (
+                <>
+                    <Link key={iRow} to={'' + order.details.orderId} className={styles.rowLink}>
+                        <div className={styles.rowOrders}>
+                            {keys.map((key, iCell) =>
+                                <div key={order.details.orderId + '-' + iCell} className={styles.cell}>
+                                    {order.details[key]}
+                                </div>
+                            )}
+                        </div>
+                    </Link>
+                    <MapProductKeys keys={productKeys} prettyKeys={productPrettyKeys} />
+                    <div style={{marginBottom: "10px"}}>
+                        <MapProducts order={order} />
+                    </div>
+                </>
+            )
+        }))
+    }
+
+    const MapOrderKeys = ({keys, prettyKeys}) => {
+        return(
+            <div className={styles.headersOrder}>
+                {keys.map((key, i) => 
+                    <div key={i} className={styles.cell}>
+                        {prettyKeys[key]}
+                    </div>
+                )}
+            </div>
+        )
+    }
+
+    console.log(newOrders[0])
+
+    return (
+        <div className={styles.container}>
+            <h3>New Orders</h3>
+            <div className={styles.newOrders}>
+                <MapOrderKeys keys={newOrderKeys} prettyKeys={orderPrettyKeys} />
+                <MapOrders orders={newOrders} keys={newOrderKeys} />
+            </div>
+
+            <h3>In Progress</h3>
+            <div className={styles.inProgressOrders}>
+                <MapOrderKeys keys={inProgressOrderKeys} prettyKeys={orderPrettyKeys} />
+                <MapOrders orders={inProgressOrders} keys={inProgressOrderKeys} />
+            </div>
+        </div>                  
+    )
+}
