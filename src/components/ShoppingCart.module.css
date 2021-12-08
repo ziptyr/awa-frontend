@@ -1,0 +1,60 @@
+.wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    height: 500px;
+    width: 800px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.shoppingCartContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 2px solid black;
+    border-radius: 2em;
+}
+
+.cartHeader {
+    font-size: 20px;
+    margin: 20px 0px 0px 20px;
+    text-align: center;
+}
+
+.cartInfo {
+    display: flex;
+    gap: 5rem;
+    margin-bottom: 30px;
+}
+.cartInfo div {
+    text-align: center;
+    width: 70px;
+    border: 1px solid black;
+}
+
+.cartItems {
+    font-size: 20px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 400;
+    height: 100%;
+    margin-bottom: 20px;
+}
+.cartItemsFlex {
+    display: flex;
+    gap: 2rem;
+    padding: 3px;
+    border: 0.7px solid black;
+    margin-bottom: 2px;
+}
+
+.cartTotal {
+    font-size: 20px;
+}
