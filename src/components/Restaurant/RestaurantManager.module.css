@@ -39,3 +39,41 @@ border-color: rgb(228, 0, 0);
     font-size: 15;
     margin-left: 20px;
 }
+
+.menuBox {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonMenu {
+    width: 185px;
+}
+
+.buttonEdit {
+    position: absolute;
+    background-color: #db0000;
+    color: white;
+    font-weight: 900;
+    border: solid 2px black;
+    border-radius: 20px;
+    width: 32px;
+    height: 32px;
+    margin: 6px;
+    right: 2px;
+    top: 2px;
+}
+
+.marginDiv {
+    background-color: white;
+    display: inline-block;
+    width: 20px;
+}
+
+.buttonAddRestaurant {
+    width: 226px;
+    height: 319px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150px;
+}

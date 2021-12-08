@@ -1,47 +1,57 @@
-import { React, useState, useReducer} from 'react'
-import { useParams } from 'react-router'
+import { React, useState} from 'react'
+import {GetRestaurant, GetNewOrders, GetInProgressOrders} from '../Tools';
+import { Link, Outlet } from 'react-router-dom';
 import styles from './RestaurantManagerView.module.css'
 
 
-export const RestaurantManagerView = ({menuData, restaurants}) => {
+export const RestaurantManagerView = ({restaurants, orders}) => {
 
-    //Finding the correct restaurant to display using useParams().
-    const index = useParams(); 
+    const restaurant = GetRestaurant(restaurants);
+    if (restaurant === null) return (<div>No restaurant found</div>);
 
-    const restaurant = restaurants.find(restaurant => restaurant.id === index.id );
-    if ( restaurant == null) {
-        return <div>No matching restaurant</div>
-    }
+    const newOrders = GetNewOrders(orders);
+    const inProgressOrders = GetInProgressOrders(orders);
 
-    //Filtering the correct menu to display using the above function result.
-    const specificMenu = menuData.filter(menu => 
-        menu.restaurant === restaurant.name
-    )
+    console.log(orders[0])
 
-    console.log(menuData)
-    console.log(restaurant)
+    const leftOrderKeys = {
+        'orderId': 'ID',
+        'username': 'Name',
+        'orderStatus': 'Status'
+    };
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <div className={styles.restaurantInfoContainer}>
-                    <div className={styles.restaurantName}>
-                        {restaurant.name}
-                    </div>
+        <div className={styles.container}>
+            <div className={styles.left}>
+                <div className={styles.leftRowHeader}>
+                    {Object.values(leftOrderKeys).map((key) => {
+                        return (
+                            <div className={styles.leftCellHeader}>
+                                {key}
+                            </div>
+                        )
+                    })}
                 </div>
 
-                <div className={styles.categoriesWrapper}>
-                    <div className={styles.categoriesContainer}>
-                        asdfasdfölkj
-                    </div>
-                </div>
+                {orders.map(order => {
+                    return (
+                        <Link to={'' + order.details.orderId}>
+                            <div className={styles.leftRow}>
+                                {Object.keys(leftOrderKeys).map((key) => {
+                                    return (
+                                        <div className={styles.leftCell}>
+                                            {order.details[key]}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </Link>
+                    )
+                })}
+            </div>
 
-                <div className={styles.menuContainer}>
-                    <div className={styles.menuHeader}>
-                        asd
-                    </div>
-                </div>    
-
+            <div className={styles.right}>
+                <Outlet />
             </div>
         </div>                  
     )

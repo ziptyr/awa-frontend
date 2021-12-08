@@ -20,42 +20,28 @@ export default function Restaurant({data}) {
           <img src={data.image} alt=""/>
         </Link>
 
-        <button style={{
-          position: 'absolute',
-          backgroundColor: "#00db00",
-          color: "white",
-          fontWeight: "900",
-          border: "solid 2px black",
-          borderRadius: "20px",
-          width: "32px",
-          height: "32px",
-          margin: "6px",
-          right: '40px',
-          top: '2px'
-        }} onClick={() => alert("Editing")}>
-          E
-        </button>
+        <Link to={"manage/" + data.id}>
+          <button className={styles.buttonEdit}>
+            E
+          </button>
+        </Link>
 
-        <button style={{
-          position: 'absolute',
-          backgroundColor: "#db0000",
-          color: "white",
-          fontWeight: "900",
-          border: "solid 2px black",
-          borderRadius: "20px",
-          width: "32px",
-          height: "32px",
-          margin: "6px",
-          right: '2px',
-          top: '2px'
-        }} onClick={() => alert("Deleting")}>
-          X
-        </button>
-
-        <Link to={data.id } style={{ textDecoration: 'none' }} >
+        <Link to={data.id }>
           <div className={styles.title}>
             {data.name}
           </div>
+
+          <div className={styles.marginDiv} />
+        </Link>
+
+        <Link to={"menu/" + data.id}>
+          <button className={styles.buttonMenu}>
+            Menu
+          </button>
+        </Link>
+
+        <Link to={data.id}>
+          <div className={styles.marginDiv} />
 
           <div className={styles.restInfo}>
             <div>

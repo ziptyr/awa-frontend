@@ -1,0 +1,96 @@
+[
+  {
+    "details": {
+      "orderId": 1,
+      "restaurantId": 1,
+      "username": "name",
+      "orderStatus": 0,
+      "orderDate": "2021-12-02",
+      "total": 98.0,
+      "deliveryAddress": "address"
+    },
+    "products": [
+      {
+        "orderId": 1,
+        "productId": 2,
+        "amount": 3,
+        "productPrice": 24.5
+      }
+    ]
+  },
+  {
+    "details": {
+      "orderId": 2,
+      "restaurantId": 1,
+      "username": "name",
+      "orderStatus": 1,
+      "orderDate": "2021-12-02",
+      "total": 98.0,
+      "deliveryAddress": "address"
+    },
+    "products": [
+      {
+        "orderId": 1,
+        "productId": 2,
+        "amount": 3,
+        "productPrice": 24.5
+      },
+      {
+        "orderId": 1,
+        "productId": 1,
+        "amount": 1,
+        "productPrice": 24.5
+      }
+    ]
+  },
+  {
+    "details": {
+      "orderId": 3,
+      "restaurantId": 1,
+      "username": "name",
+      "orderStatus": 2,
+      "orderDate": "2021-12-02",
+      "total": 98.0,
+      "deliveryAddress": "address"
+    },
+    "products": [
+      {
+        "orderId": 1,
+        "productId": 2,
+        "amount": 3,
+        "productPrice": 24.5
+      },
+      {
+        "orderId": 1,
+        "productId": 1,
+        "amount": 1,
+        "productPrice": 24.5
+      }
+    ]
+  },
+  {
+    "details": {
+      "orderId": 4,
+      "restaurantId": 1,
+      "username": "name",
+      "orderStatus": 0,
+      "orderDate": "2021-12-02",
+      "total": 98.0,
+      "deliveryAddress": "address"
+    },
+    "products": [
+      {
+        "orderId": 1,
+        "productId": 2,
+        "amount": 3,
+        "productPrice": 24.5
+      },
+      {
+        "orderId": 1,
+        "productId": 1,
+        "amount": 1,
+        "productPrice": 24.5
+      }
+    ]
+  }
+]
