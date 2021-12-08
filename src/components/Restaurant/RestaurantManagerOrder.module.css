@@ -1,0 +1,16 @@
+.headersRow, .productsRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.headersRow {
+    font-weight: bold;
+}
+
+.headersCol, .productsCol {
+    width: 200px;
+}
+
+.productsRow {
+    border-bottom: 1px solid lightgray;
+}
