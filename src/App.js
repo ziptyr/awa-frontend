@@ -4,7 +4,6 @@ import  { v4 as uuidv4 } from 'uuid';
 import  jwt  from 'jsonwebtoken';
 import { Context } from './components/Context';
 
-
 import Header from './components/Header';
 import Home from './components/Home';
 import Restaurants from './components/Restaurants';
@@ -25,12 +24,17 @@ import Account from './components/Account';
 import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
 
+
+// axios constants
+const axios = require('axios').default;
+
+
 const currencyOptions = {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
 }
 
-const jwtFromStorage = window.localStorage.getItem("userJWT");
+const jwtFromStorage = window.localStorage.getItem("access_token");
 
 //Adding unique ids to menuData.
 const menuDataIds = menuData.map( data => {
@@ -189,7 +193,7 @@ function App() {
   return (
     <Context.Provider value={{
         jwtDecoded, add,  remove, empty,
-         getTotal,  cart,  setCart, currencyOptions
+        getTotal,  cart,  setCart, currencyOptions
     }}>
         <BrowserRouter>
             <Header userJWT={userJWT != null} logOut={() => {
