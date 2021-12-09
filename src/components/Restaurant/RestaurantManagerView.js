@@ -6,7 +6,6 @@ import styles from './RestaurantManagerView.module.css'
 
 export const RestaurantManagerView = ({restaurants, orders}) => {
 
-    console.log('hello')
     console.log(restaurants)
 
     const restaurant = GetRestaurant(restaurants);

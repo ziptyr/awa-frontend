@@ -21,9 +21,9 @@ export default function Restaurants() {
             .then(function (response) {
             // handle success
             //console.log(response);
-            console.log(response.data)
             //restaurants = response.data;
-            setRestaurants([...response.data])
+            //console.log('RestaurantsManager.js')
+            setRestaurants(response.data)
         })
             .catch(function (error) {
             // handle error
@@ -33,8 +33,6 @@ export default function Restaurants() {
             // always executed
         });
     }, []);
-
-    console.log(restaurants)
 
     return (
         <div className={styles.container}>

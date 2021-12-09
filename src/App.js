@@ -55,7 +55,7 @@ function App() {
     //Decoded JWT using jsonwebtoken.decoder.
     const jwtDecoded = jwt.decode(userJWT);
 
-    const AXIOS_HEADERS = {headers: {'Authorization': 'Bearer ' + userJWT}};
+    let AXIOS_HEADERS;
 
     ////Adding unique ids to restaurantData.
     //const restaurants = restaurantData.map( data => {
@@ -64,27 +64,33 @@ function App() {
 
     //CONSTS END
 
-    let restaurantPath;
-    if (jwtDecoded == null) {
-        console.log(jwtDecoded)
-        restaurantPath = '/public/restaurants';
-    } else if (jwtDecoded.role === 'CUSTOMER') {
-        console.log(jwtDecoded)
-        restaurantPath = '/public/restaurants';
-    } else if (jwtDecoded.role === 'MANAGER') {
-        console.log(jwtDecoded)
-        restaurantPath = '/manager/restaurants';
+    function getRequestPathRestaurants() {
+        let restaurantPath;
+        if (jwtDecoded == null) {
+            console.log('public')
+            AXIOS_HEADERS = null;
+            restaurantPath = '/public/restaurants';
+        } else if (jwtDecoded.role === 'CUSTOMER') {
+            console.log(jwtDecoded.role)
+            AXIOS_HEADERS = {headers: {'Authorization': 'Bearer ' + userJWT}};
+            restaurantPath = '/public/restaurants';
+        } else if (jwtDecoded.role === 'MANAGER') {
+            console.log(jwtDecoded.role)
+            AXIOS_HEADERS = {headers: {'Authorization': 'Bearer ' + userJWT}};
+            restaurantPath = '/manager/restaurants';
+        }
+        return restaurantPath;
     }
 
     //let restaurants = [];
     const [restaurants, setRestaurants] = useState();
 
     useEffect(() => {
+        let restaurantPath = getRequestPathRestaurants()
         axios.get(HEROKU + restaurantPath, AXIOS_HEADERS)
             .then(function (response) {
             // handle success
             //restaurants = response.data;
-            console.log('App.js')
             console.log(response.data);
             setRestaurants(response.data)
         })
@@ -94,6 +100,7 @@ function App() {
         })
             .then(function () {
             // always executed
+            console.log(AXIOS_HEADERS)
         });
     }, []);
 
