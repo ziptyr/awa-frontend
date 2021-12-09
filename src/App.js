@@ -1,4 +1,4 @@
-import { useState, useReducer } from 'react';
+import { useState, useReducer, useEffect } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import  { v4 as uuidv4 } from 'uuid';
 import  jwt  from 'jsonwebtoken';
@@ -27,6 +27,7 @@ import Footer from './components/Footer';
 
 // axios constants
 const axios = require('axios').default;
+const HEROKU = 'https://awa-2021-t35.herokuapp.com';
 
 
 const currencyOptions = {
@@ -54,13 +55,47 @@ function App() {
     //Decoded JWT using jsonwebtoken.decoder.
     const jwtDecoded = jwt.decode(userJWT);
 
-    //Adding unique ids to restaurantData.
-    const restaurants = restaurantData.map( data => {
-        return { ...data, id: uuidv4()}
-        });
-    
+    const AXIOS_HEADERS = {headers: {'Authorization': 'Bearer ' + userJWT}};
+
+    ////Adding unique ids to restaurantData.
+    //const restaurants = restaurantData.map( data => {
+    //    return { ...data, id: uuidv4()}
+    //    });
 
     //CONSTS END
+
+    let restaurantPath;
+    if (jwtDecoded == null) {
+        console.log(jwtDecoded)
+        restaurantPath = '/public/restaurants';
+    } else if (jwtDecoded.role === 'CUSTOMER') {
+        console.log(jwtDecoded)
+        restaurantPath = '/public/restaurants';
+    } else if (jwtDecoded.role === 'MANAGER') {
+        console.log(jwtDecoded)
+        restaurantPath = '/manager/restaurants';
+    }
+
+    //let restaurants = [];
+    const [restaurants, setRestaurants] = useState();
+
+    useEffect(() => {
+        axios.get(HEROKU + restaurantPath, AXIOS_HEADERS)
+            .then(function (response) {
+            // handle success
+            //restaurants = response.data;
+            console.log('App.js')
+            console.log(response.data);
+            setRestaurants(response.data)
+        })
+            .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+            .then(function () {
+            // always executed
+        });
+    }, []);
 
     //FUNCTIONS
 
@@ -193,7 +228,8 @@ function App() {
   return (
     <Context.Provider value={{
         jwtDecoded, add,  remove, empty,
-        getTotal,  cart,  setCart, currencyOptions
+        getTotal,  cart,  setCart, currencyOptions,
+        userJWT
     }}>
         <BrowserRouter>
             <Header userJWT={userJWT != null} logOut={() => {

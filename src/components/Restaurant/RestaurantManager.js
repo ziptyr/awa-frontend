@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styles from './RestaurantManager.module.css'
 
 
-export default function Restaurant({data}) {
+export default function RestaurantManager({data}) {
           //<img src={data.image} alt=""/>
           /*<div alt={data.image} style={{
             backgroundColor: "lightblue",
@@ -13,34 +13,36 @@ export default function Restaurant({data}) {
             height: "225px"
           }}>*/
 
+  console.log(data)
+
   return (
     <div className={styles.box}>
       <div key={data.id} style={{position: 'relative'}}>
-        <Link to={data.id } style={{ textDecoration: 'none' }} >
-          <img src={data.image} alt=""/>
+        <Link to={'' + data.restaurantId} style={{ textDecoration: 'none' }} >
+          <img src={data.image} alt={data.image} width="225px" />
         </Link>
 
-        <Link to={"manage/" + data.id}>
+        <Link to={'manage/' + data.restaurantId}>
           <button className={styles.buttonEdit}>
             E
           </button>
         </Link>
 
-        <Link to={data.id }>
+        <Link to={'' + data.restaurantId}>
           <div className={styles.title}>
-            {data.name}
+            {data.restaurantName}
           </div>
 
           <div className={styles.marginDiv} />
         </Link>
 
-        <Link to={"menu/" + data.id}>
+        <Link to={'menu/' + data.restaurantId}>
           <button className={styles.buttonMenu}>
             Menu
           </button>
         </Link>
 
-        <Link to={data.id}>
+        <Link to={'' + data.restaurantId}>
           <div className={styles.marginDiv} />
 
           <div className={styles.restInfo}>
@@ -55,3 +57,6 @@ export default function Restaurant({data}) {
     </div>
   )
 }
+
+/*
+*/
