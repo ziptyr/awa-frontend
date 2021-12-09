@@ -10,7 +10,7 @@ export default function Header(props) {
     <header>
         <div className={styles.container}>
             <Link to="/">Home</Link>
-                <Link to="/public/restaurants">Restaurants</Link>
+                <Link to="/restaurants">Restaurants</Link>
             <input className={styles.search} type='text' />
                 
             {props.userJWT ? 
@@ -28,8 +28,6 @@ export default function Header(props) {
             </>
             } 
         </div>
-
-      
     </header>
   )
 }
