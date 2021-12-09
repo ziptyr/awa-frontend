@@ -55,11 +55,8 @@ function App() {
     //Decoded JWT using jsonwebtoken.decoder.
     const jwtDecoded = jwt.decode(userJWT);
 
-
-    ////Adding unique ids to restaurantData.
-    //const restaurants = restaurantData.map( data => {
-    //    return { ...data, id: uuidv4()}
-    //    });
+    //Restaurants useStates
+    const [restaurants, setRestaurants] = useState();
 
     //CONSTS END
 
@@ -69,15 +66,15 @@ function App() {
         let decoded = decoder.decode(codedJWT);
 
         if (decoded == null) {
-            console.log('public')
+            console.log('role: public');
             axiosHeaders = null;
             restaurantPath = '/public/restaurants';
         } else if (decoded.role === 'CUSTOMER') {
-            console.log(decoded.role)
+            console.log('role: ' + decoded.role);
             axiosHeaders = {headers: {'Authorization': 'Bearer ' + codedJWT}};
             restaurantPath = '/public/restaurants';
         } else if (decoded.role === 'MANAGER') {
-            console.log(decoded.role)
+            console.log('role: ' + decoded.role);
             axiosHeaders = {headers: {'Authorization': 'Bearer ' + codedJWT}};
             restaurantPath = '/manager/restaurants';
         }
@@ -85,16 +82,13 @@ function App() {
         return {'axiosHeaders': axiosHeaders, 'restaurantPath': restaurantPath};
     }
 
-    const [restaurants, setRestaurants] = useState();
-
     function requestRestaurants(getPath, decoder, url, setData, codedJWT) {
         let {axiosHeaders, restaurantPath} = getPath(decoder, codedJWT);
 
         axios.get(url + restaurantPath, axiosHeaders)
             .then(function (response) {
             // handle success
-            //restaurants = response.data;
-            console.log(response.data);
+            //console.log(response.data);
             setData(response.data)
         })
             .catch(function (error) {
@@ -103,7 +97,7 @@ function App() {
         })
             .then(function () {
             // always executed
-            console.log(axiosHeaders)
+            console.log('App.js requestRestaurants() executed');
         });
     }
 
