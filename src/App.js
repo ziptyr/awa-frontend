@@ -56,7 +56,8 @@ function App() {
     const jwtDecoded = jwt.decode(userJWT);
 
     //Restaurants useStates
-    const [restaurants, setRestaurants] = useState();
+    // - useState needs empty array as initial value
+    const [restaurants, setRestaurants] = useState([]);
 
     //CONSTS END
 
