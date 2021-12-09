@@ -23,11 +23,11 @@ import SignUp from './components/SignUp';
 import Account from './components/Account';
 import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
+import Constants from './components/Constants.json'
 
 
 // axios constants
 const axios = require('axios').default;
-const HEROKU = 'https://awa-2021-t35.herokuapp.com';
 
 
 const currencyOptions = {
@@ -55,7 +55,6 @@ function App() {
     //Decoded JWT using jsonwebtoken.decoder.
     const jwtDecoded = jwt.decode(userJWT);
 
-    let AXIOS_HEADERS;
 
     ////Adding unique ids to restaurantData.
     //const restaurants = restaurantData.map( data => {
@@ -64,35 +63,39 @@ function App() {
 
     //CONSTS END
 
-    function getRequestPathRestaurants() {
+    function getRequestPathRestaurants(decoder, codedJWT) {
+        let axiosHeaders;
         let restaurantPath;
-        if (jwtDecoded == null) {
+        let decoded = decoder.decode(codedJWT);
+
+        if (decoded == null) {
             console.log('public')
-            AXIOS_HEADERS = null;
+            axiosHeaders = null;
             restaurantPath = '/public/restaurants';
-        } else if (jwtDecoded.role === 'CUSTOMER') {
-            console.log(jwtDecoded.role)
-            AXIOS_HEADERS = {headers: {'Authorization': 'Bearer ' + userJWT}};
+        } else if (decoded.role === 'CUSTOMER') {
+            console.log(decoded.role)
+            axiosHeaders = {headers: {'Authorization': 'Bearer ' + codedJWT}};
             restaurantPath = '/public/restaurants';
-        } else if (jwtDecoded.role === 'MANAGER') {
-            console.log(jwtDecoded.role)
-            AXIOS_HEADERS = {headers: {'Authorization': 'Bearer ' + userJWT}};
+        } else if (decoded.role === 'MANAGER') {
+            console.log(decoded.role)
+            axiosHeaders = {headers: {'Authorization': 'Bearer ' + codedJWT}};
             restaurantPath = '/manager/restaurants';
         }
-        return restaurantPath;
+
+        return {'axiosHeaders': axiosHeaders, 'restaurantPath': restaurantPath};
     }
 
-    //let restaurants = [];
     const [restaurants, setRestaurants] = useState();
 
-    useEffect(() => {
-        let restaurantPath = getRequestPathRestaurants()
-        axios.get(HEROKU + restaurantPath, AXIOS_HEADERS)
+    function requestRestaurants(getPath, decoder, url, setData, codedJWT) {
+        let {axiosHeaders, restaurantPath} = getPath(decoder, codedJWT);
+
+        axios.get(url + restaurantPath, axiosHeaders)
             .then(function (response) {
             // handle success
             //restaurants = response.data;
             console.log(response.data);
-            setRestaurants(response.data)
+            setData(response.data)
         })
             .catch(function (error) {
             // handle error
@@ -100,8 +103,23 @@ function App() {
         })
             .then(function () {
             // always executed
-            console.log(AXIOS_HEADERS)
+            console.log(axiosHeaders)
         });
+    }
+
+    // easy way to use app.js restaurants axios request
+    const reqRestaurants = {
+        'fnc': requestRestaurants,
+        'args': [
+            getRequestPathRestaurants,
+            jwt,
+            Constants.API_ADDRESS,
+            setRestaurants
+        ]
+    };
+
+    useEffect(() => {
+        reqRestaurants.fnc(...reqRestaurants.args, userJWT);
     }, []);
 
     //FUNCTIONS
@@ -159,12 +177,16 @@ function App() {
     }
 
     //FUNCTIONS ENDS
+    //requestRestaurants(getRequestPathRestaurants, Constants.API_ADDRESS, setRestaurants);
 
     let authRoutes = <>
-            <Route path="/login" element={ <Login login={ (newJWT) => {
-                setUserJWT(newJWT)
-                window.localStorage.setItem("userJWT", newJWT)
-                } }/>} />
+            <Route path="/login" element={ <Login
+                login={ (newJWT) => {
+                    setUserJWT(newJWT);
+                    window.localStorage.setItem("userJWT", newJWT);
+                    reqRestaurants.fnc(...reqRestaurants.args, newJWT);
+                } }
+            />} />
             <Route path="/signup" element={ <SignUp />} />
         </>
 
@@ -240,8 +262,9 @@ function App() {
     }}>
         <BrowserRouter>
             <Header userJWT={userJWT != null} logOut={() => {
-                setUserJWT(null)
+                setUserJWT(null);
                 window.localStorage.removeItem("userJWT");
+                reqRestaurants.fnc(...reqRestaurants.args, null);
             }} />
 
             <Routes>

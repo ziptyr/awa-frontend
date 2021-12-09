@@ -31,11 +31,9 @@ export default function Login(props) {
                     setTimeout(() => {
                         navigate('/', { replace: true })
                 },1800)
-
         } catch (error) {
             console.log(error);
         }
-
     }
 
     return (
