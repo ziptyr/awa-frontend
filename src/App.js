@@ -35,7 +35,7 @@ const currencyOptions = {
     maximumFractionDigits: 2,
 }
 
-const jwtFromStorage = window.localStorage.getItem("access_token");
+const jwtFromStorage = window.localStorage.getItem("userJWT");
 
 //Adding unique ids to menuData.
 const menuDataIds = menuData.map( data => {
