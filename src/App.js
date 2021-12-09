@@ -48,7 +48,7 @@ function App() {
     const [cart, setCart] = useReducer(cartReducer, []);  
 
     //Decoded JWT using jsonwebtoken.decoder.
-    const jwtDecoded = jwt.decode(jwtFromStorage);
+    const jwtDecoded = jwt.decode(userJWT);
 
     //Adding unique ids to restaurantData.
     const restaurants = restaurantData.map( data => {
@@ -65,7 +65,7 @@ function App() {
         const total = cart.reduce((totalCost, item) => totalCost + item.price, 0);
         return total.toLocaleString(undefined, currencyOptions)
     }
-    
+
     //Reducer arg function for useReducer()
     function cartReducer(state, action) {
         switch(action.type) {
@@ -101,7 +101,7 @@ function App() {
          
         }
     }
-        
+
     //Function for removing products from cart.
     function remove(data) {
         setCart({ data, type: 'remove' });
@@ -129,83 +129,83 @@ function App() {
         </>
     }
 
-    
-  
-  return (
-    <Context.Provider value={{
-        jwtDecoded, add,  remove, empty,
-         getTotal,  cart,  setCart, currencyOptions
-    }}>
-    <BrowserRouter>
-      
-        <Header userJWT={userJWT != null} logOut={() => {
-            setUserJWT(null)
-            window.localStorage.removeItem("userJWT");
-        }} />
-        <Routes>
-            <Route path="/" element={ <Home /> } />
-            
-                { authRoutes }
-                <Route path="/public/restaurants">
-                    <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
-                    <Route path=":name" element={
-                        <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds}  />
-                    } />
-                </Route>
+    // Restaurants routes for customers and non-logged in
+    let restaurantsRoutes = <>
+            <Route path="/restaurants">
+                <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
+                <Route path=":name" element={
+                    <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds}  /> } />
+            </Route>
+        </>
 
-                <Route path="/manager/restaurants">
+    // Restaurants routes for managers
+    if (jwtDecoded != null) {
+        if (jwtDecoded.role === 'MANAGER') {
+            restaurantsRoutes = <>
+                <Route path="/restaurants">
                     <Route path="" element={<RestaurantsManager restaurants={restaurants} /> }/>
-                    <Route
-                        path=":id"
+                    <Route path=":id"
                         element={<RestaurantManagerView
                             restaurants={restaurants}
                             menuData={menuDataIds}
                             orders={orders} />
                     }>
-                        <Route
-                            path=":orderId"
+                        <Route path=":orderId"
                             element={<RestaurantManagerOrder
                                 restaurants={restaurants}
                                 menuData={menuDataIds}
-                                orders={orders} />}
-                        />
+                                orders={orders} />} />
                     </Route>
 
-                    <Route path="/manager/restaurants/manage">
+                    <Route path="/restaurants/manage">
                         <Route
                             path=""
                             element={<RestaurantsManagerManage
-                                restaurants={restaurants} />}
-                        />
+                                restaurants={restaurants} />} />
                         <Route
                             path=":id"
                             element={<RestaurantsManagerManage
                                 restaurants={restaurants}
-                                menuData={menuDataIds} />}
-                        />
+                                menuData={menuDataIds} />} />
                     </Route>
 
-                    <Route
-                        path="/manager/restaurants/menu/:id"
+                    <Route path="/restaurants/menu/:id"
                         element={<RestaurantManagerMenu
                             restaurants={restaurants}
                             menuData={menuDataIds} />}
                     >
                         <Route path="new" element={<RestaurantManagerMenuAdd />} />
-                        <Route
-                            path=":productId"
+                        <Route path=":productId"
                             element={<RestaurantManagerProduct
                                 restaurants={restaurants}
-                                menuData={menuDataIds} /> }
-                        />
+                                menuData={menuDataIds} /> } />
                     </Route>
                 </Route>
+            </>
+        }
+    }
 
-                <Route path="*" element={ <Home /> } />
-            </Routes>
 
-        {/* <Footer /> */}
-    </BrowserRouter>
+  return (
+    <Context.Provider value={{
+        jwtDecoded, add,  remove, empty,
+         getTotal,  cart,  setCart, currencyOptions
+    }}>
+        <BrowserRouter>
+            <Header userJWT={userJWT != null} logOut={() => {
+                setUserJWT(null)
+                window.localStorage.removeItem("userJWT");
+            }} />
+
+            <Routes>
+                <Route path="/" element={ <Home /> } />
+                    { authRoutes }
+                    { restaurantsRoutes }
+                    <Route path="*" element={ <Home /> } />
+                </Routes>
+
+            {/* <Footer /> */}
+        </BrowserRouter>
     </Context.Provider>
   );
 }
