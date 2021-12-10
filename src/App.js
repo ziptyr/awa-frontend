@@ -44,6 +44,68 @@ const menuDataIds = menuData.map( data => {
 
 function App() {
 
+    //CLASSES
+
+    class RequestGetRestaurants {
+        /**
+         * Requests and sets restaurants
+         */
+
+        #baseUrl;
+        #decoder;
+        #setData;
+
+        constructor() {
+            this.#baseUrl = Constants.API_ADDRESS;
+            this.#decoder = jwt;
+            this.#setData = setRestaurants;
+        }
+
+        getHeaders(codedJWT) {
+            let axiosHeaders;
+
+            if (this.#decoder.decode(codedJWT) == null) axiosHeaders = null;
+            else axiosHeaders = {'headers': {'Authorization': 'Bearer ' + codedJWT}};
+
+            return axiosHeaders;
+        }
+
+        getUrl(codedJWT) {
+            let restaurantsUrl;
+            let decoded = this.#decoder.decode(codedJWT);
+
+            if (decoded == null) {
+                restaurantsUrl = '/public/restaurants';
+            } else if (decoded.role === 'CUSTOMER') {
+                restaurantsUrl = '/public/restaurants';
+            } else if (decoded.role === 'MANAGER') {
+                restaurantsUrl = '/manager/restaurants';
+            }
+
+            return this.#baseUrl + restaurantsUrl;
+        }
+
+        get(codedJWT) {
+            /**
+             * request restaurants from backend and save results to useState
+             */
+
+            axios.get(this.getUrl(codedJWT), this.getHeaders(codedJWT))
+                .then((response) => {
+                    //console.log(response.data);
+                    this.#setData(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .then(() => {
+                    console.log('App.js requestRestaurants() executed');
+                });
+        }
+    }
+
+    //CLASSES END
+
     //CONSTS
 
     //State for storing JWT.
@@ -59,63 +121,17 @@ function App() {
     // - useState needs empty array as initial value
     const [restaurants, setRestaurants] = useState([]);
 
+    //Restaurants updating method
+    const requestGetRestaurants = new RequestGetRestaurants();
+
     //CONSTS END
 
-    function getRequestPathRestaurants(decoder, codedJWT) {
-        let axiosHeaders;
-        let restaurantPath;
-        let decoded = decoder.decode(codedJWT);
+    const editRestaurant = (restaurants, id, values) => {
+        let index = restaurants.findIndex((restaurant) => restaurant.restaurantId == id);
+        restaurants[index] = values;
 
-        if (decoded == null) {
-            console.log('role: public');
-            axiosHeaders = null;
-            restaurantPath = '/public/restaurants';
-        } else if (decoded.role === 'CUSTOMER') {
-            console.log('role: ' + decoded.role);
-            axiosHeaders = {headers: {'Authorization': 'Bearer ' + codedJWT}};
-            restaurantPath = '/public/restaurants';
-        } else if (decoded.role === 'MANAGER') {
-            console.log('role: ' + decoded.role);
-            axiosHeaders = {headers: {'Authorization': 'Bearer ' + codedJWT}};
-            restaurantPath = '/manager/restaurants';
-        }
-
-        return {'axiosHeaders': axiosHeaders, 'restaurantPath': restaurantPath};
+        setRestaurants(restaurants);
     }
-
-    function requestRestaurants(getPath, decoder, url, setData, codedJWT) {
-        let {axiosHeaders, restaurantPath} = getPath(decoder, codedJWT);
-
-        axios.get(url + restaurantPath, axiosHeaders)
-            .then(function (response) {
-            // handle success
-            //console.log(response.data);
-            setData(response.data)
-        })
-            .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-            .then(function () {
-            // always executed
-            console.log('App.js requestRestaurants() executed');
-        });
-    }
-
-    // easy way to use app.js restaurants axios request
-    const reqRestaurants = {
-        'fnc': requestRestaurants,
-        'args': [
-            getRequestPathRestaurants,
-            jwt,
-            Constants.API_ADDRESS,
-            setRestaurants
-        ]
-    };
-
-    useEffect(() => {
-        reqRestaurants.fnc(...reqRestaurants.args, userJWT);
-    }, []);
 
     //FUNCTIONS
 
@@ -174,12 +190,16 @@ function App() {
     //FUNCTIONS ENDS
     //requestRestaurants(getRequestPathRestaurants, Constants.API_ADDRESS, setRestaurants);
 
+    useEffect(() => {
+        requestGetRestaurants.get(userJWT);
+    }, []);
+
     let authRoutes = <>
             <Route path="/login" element={ <Login
                 login={ (newJWT) => {
                     setUserJWT(newJWT);
                     window.localStorage.setItem("userJWT", newJWT);
-                    reqRestaurants.fnc(...reqRestaurants.args, newJWT);
+                    requestGetRestaurants.get(newJWT);
                 } }
             />} />
             <Route path="/signup" element={ <SignUp />} />
@@ -259,7 +279,7 @@ function App() {
             <Header userJWT={userJWT != null} logOut={() => {
                 setUserJWT(null);
                 window.localStorage.removeItem("userJWT");
-                reqRestaurants.fnc(...reqRestaurants.args, null);
+                requestGetRestaurants.get(null);
             }} />
 
             <Routes>
