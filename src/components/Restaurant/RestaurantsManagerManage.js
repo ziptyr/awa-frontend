@@ -1,35 +1,38 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import {GetRestaurant} from '../Tools';
+import { useParams } from 'react-router';
 import styles from './RestaurantsManagerManage.module.css';
+import {useData} from '../DataProvider';
 
-export default function RestaurantsManagerManage({restaurants}) {
+export default function RestaurantsManagerManage() {
 
-    let foundRestaurant = GetRestaurant(restaurants);
-    let addingNewRestaurant;
+    const {restaurants, getRestaurant} = useData();
+    const params = useParams();
 
-    const restaurant = {
-        name: "",
-        address: "",
-        opens: "",
-        closes: "",
-        image: "",
-        price: ""}
+    let foundRestaurant = false;
+    let restaurant = restaurants.find((r) => r.restaurantId == params.id);
 
-    if (foundRestaurant === null) {
-        addingNewRestaurant = true;
+    if (typeof restaurant === 'undefined') {
+        restaurant = {
+            'restaurantName': '',
+            'address': '',
+            'opens': '',
+            'closes': '',
+            'image': '',
+            'type': 'Casual',
+            'priceLevel': 0
+        };
     } else {
-        addingNewRestaurant = false;
-        Object.keys(restaurant).forEach(function(key){ restaurant[key] = foundRestaurant[key] });
+        foundRestaurant = true;
     }
 
-    const [name, setName] = useState(restaurant.name);
-    const [address, setAddress] = useState(restaurant.address);
-    const [opens, setOpens] = useState(restaurant.opens);
-    const [closes, setCloses] = useState(restaurant.closes);
-    const [image, setImage] = useState(restaurant.image);
-    const [type, setType] = useState(restaurant.type);
-    const [price, setPrice] = useState(restaurant.price);
+    const [restaurantName, setRestaurantName] = useState('');
+    const [address, setAddress] = useState('');
+    const [opens, setOpens] = useState('');
+    const [closes, setCloses] = useState('');
+    const [image, setImage] = useState('');
+    const [type, setType] = useState('Casual');
+    const [priceLevel, setPriceLevel] = useState(0);
 
     const ButtonAddRestaurant = () => {
         return (
@@ -55,88 +58,137 @@ export default function RestaurantsManagerManage({restaurants}) {
         <div className={styles.container}>
             <div className={styles.gridContainer}>
                 <div>
-                    Name:
-                </div>
-                <div>
-                    <input
-                        type='text'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)} />
-                </div>
-
-                <div>
-                    Address:
-                </div>
-                <div>
-                    <input
-                        type='text'
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)} />
+                    <div className={styles.info}>
+                        <div>
+                            Name:
+                        </div>
+                        <div>
+                            {restaurant.restaurantName}
+                        </div>
+                    </div>
+                    <div className={styles.input}>
+                        <input
+                            type='text'
+                            value={restaurantName}
+                            onChange={(e) => setRestaurantName(e.target.value)} />
+                    </div>
                 </div>
 
                 <div>
-                    Opens:
-                </div>
-                <div>
-                    <input
-                        type='time'
-                        value={opens}
-                        onChange={(e) => setOpens(e.target.value)} />
-                </div>
-
-                <div>
-                    Closes:
-                </div>
-                <div>
-                    <input
-                        type='time'
-                        value={closes}
-                        onChange={(e) => setCloses(e.target.value)} />
+                    <div className={styles.info}>
+                        <div>
+                            Address:
+                        </div>
+                        <div>
+                            {restaurant.address}
+                        </div>
+                    </div>
+                    <div className={styles.input}>
+                        <input
+                            type='text'
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)} />
+                    </div>
                 </div>
 
                 <div>
-                    Image:
-                </div>
-                <div>
-                    <input
-                        type='url'
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)} />
-                </div>
-
-                <div>
-                    Type:
-                </div>
-                <div>
-                    <select
-                        name='type'
-                        id='cars'
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                    >
-                            <option value='casual'>Casual</option>
-                            <option value='fine_dining'>Fine dining</option>
-                            <option value='buffet'>Buffet</option>
-                            <option value='fast_food'>Fast food</option>
-                    </select>
+                    <div className={styles.info}>
+                        <div>
+                            Opens:
+                        </div>
+                        <div>
+                            {restaurant.opens}
+                        </div>
+                    </div>
+                    <div className={styles.input}>
+                        <input
+                            type='time'
+                            value={opens}
+                            onChange={(e) => setOpens(e.target.value)} />
+                    </div>
                 </div>
 
                 <div>
-                    Price:
+                    <div className={styles.info}>
+                        <div>
+                            Closes:
+                        </div>
+                        <div>
+                            {restaurant.closes}
+                        </div>
+                    </div>
+                    <div className={styles.input}>
+                        <input
+                            type='time'
+                            value={closes}
+                            onChange={(e) => setCloses(e.target.value)} />
+                    </div>
                 </div>
+
                 <div>
-                    <input
-                        type='range'
-                        min='0'
-                        max='5'
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)} />
+                    <div className={styles.info}>
+                        <div>
+                            Image:
+                        </div>
+                        <div>
+                            {restaurant.image}
+                        </div>
+                    </div>
+                    <div className={styles.input}>
+                        <input
+                            type='url'
+                            value={image}
+                            onChange={(e) => setImage(e.target.value)} />
+                    </div>
+                </div>
+
+                <div>
+                    <div className={styles.info}>
+                        <div>
+                            Type:
+                        </div>
+                        <div>
+                            {restaurant.type}
+                        </div>
+                    </div>
+                    <div className={styles.input}>
+                        <select
+                            name='type'
+                            id='cars'
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                        >
+                                <option value='casual'>Casual</option>
+                                <option value='fine_dining'>Fine dining</option>
+                                <option value='buffet'>Buffet</option>
+                                <option value='fast_food'>Fast food</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <div className={styles.info}>
+                        <div>
+                            Price Level:
+                        </div>
+                        <div>
+                            {restaurant.priceLevel}
+                        </div>
+                    </div>
+                    <div className={styles.input}>
+                        <input
+                            type='range'
+                            min='0'
+                            max='5'
+                            value={priceLevel}
+                            onChange={(e) => setPriceLevel(e.target.value)} />
+                    </div>
                 </div>
             </div>
 
             <div className={styles.buttons}>
                 <Link to='../..'>
-                    {(addingNewRestaurant) ? <ButtonAddRestaurant /> : <ButtonEditRestaurant />}
+                    {(foundRestaurant) ? <ButtonEditRestaurant /> : <ButtonAddRestaurant />}
                 </Link>
 
                 <Link to='../..'>
