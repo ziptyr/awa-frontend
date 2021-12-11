@@ -49,16 +49,18 @@ function App() {
     class Request {
         baseUrl;
         decoder;
-        thenFnc;
+        stateVarFnc;
+        stateVar;
 
-        constructor(thenFnc = false) {
+        constructor(stateVarFnc = false, stateVar = false) {
             if (this.constructor == Request) {
               throw new Error("Abstract classes can't be instantiated.");
             }
 
             this.baseUrl = Constants.API_ADDRESS;
             this.decoder = jwt;
-            this.thenFnc = thenFnc;
+            this.stateVarFnc = stateVarFnc;
+            this.stateVar = stateVar;
         }
 
         getHeaders(codedJWT) {
@@ -72,16 +74,32 @@ function App() {
 
         request() {
             /**
-             * make request
+             * must implement request function
              */
 
             throw new Error("Method 'get()' must be implemented.");
+        }
+
+        getStateVar() {
+            return this.stateVar;
+        }
+
+        setStateVar(stateVar) {
+            this.stateVar = stateVar;
+        }
+
+        getStateVarFnc() {
+            return this.stateVarFnc;
+        }
+
+        setStateVarFnc(stateVarFnc) {
+            this.stateVarFnc = stateVarFnc;
         }
     }
 
     class RequestGet extends Request {
 
-        request(codedJWT, apiRoute, thenFnc = false) {
+        request(codedJWT, apiRoute) {
             /**
              * perform axios get request
              */
@@ -89,8 +107,7 @@ function App() {
             axios.get(this.baseUrl + apiRoute, this.getHeaders(codedJWT))
                 .then((response) => {
                     console.log('RequestGet: ', response.data);
-                    if (thenFnc != false) thenFnc(response.data);
-                    else if (this.thenFnc != false) this.thenFnc(response.data);
+                    if (this.stateVarFnc != false) this.stateVarFnc(response.data);
                 })
                 .catch((error) => {
                     console.log('RequestGet: ', error);
@@ -129,7 +146,7 @@ function App() {
 
     class RequestPost extends Request {
 
-        request(codedJWT, apiRoute, thenFnc = false) {
+        request(codedJWT, apiRoute) {
             /**
              * perform axios post request
              */
@@ -137,8 +154,7 @@ function App() {
             axios.post(this.baseUrl + apiRoute, this.getHeaders(codedJWT))
                 .then((response) => {
                     console.log('RequestPost: ', response.data);
-                    if (thenFnc != false) thenFnc(response.data);
-                    else if (this.thenFnc != false) this.thenFnc(response.data);
+                    if (this.stateVarFnc != false) this.stateVarFnc(response.data);
                 })
                 .catch((error) => {
                     console.log('RequestPost: ', error);
@@ -190,7 +206,7 @@ function App() {
 
     const requestGetRestaurants = new RequestGetRestaurants();
 
-    const requestGet = new RequestGet();
+    const requestGetMenu = new RequestGet();
     //CONSTS END
 
     //FUNCTIONS
@@ -308,15 +324,14 @@ function App() {
 
                     <Route path="/restaurants/menu/:id"
                         element={<RestaurantManagerMenu
-                            requestGet={requestGet} />}
+                            requestGetMenu={requestGetMenu} />}
                     >
                         <Route path="new"
                             element={<RestaurantManagerMenuAdd
-                                requestGet={requestGet} />} />
+                                requestGetMenu={requestGetMenu} />} />
                         <Route path=":productId"
                             element={<RestaurantManagerProduct
-                                restaurants={restaurants}
-                                menuData={menuDataIds} /> } />
+                                requestGetMenu={requestGetMenu} /> } />
                     </Route>
                 </Route>
             </>
