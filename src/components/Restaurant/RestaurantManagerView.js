@@ -1,18 +1,26 @@
-import { React, useState} from 'react'
-import {GetRestaurant, GetNewOrders, GetInProgressOrders} from '../Tools';
-import { Link, Outlet } from 'react-router-dom';
+import { React, useEffect, useState} from 'react'
+import { Link, Outlet, useParams } from 'react-router-dom';
 import styles from './RestaurantManagerView.module.css'
+import {useData} from '../DataProvider';
 
 
-export const RestaurantManagerView = ({restaurants, orders}) => {
+export const RestaurantManagerView = ({requestGetRestaurants, requestGetOrders}) => {
 
-    console.log(restaurants)
+    const {userJWT} = useData();
+    const params = useParams();
+    const [orders, setOrders] = useState([]);
 
-    const restaurant = GetRestaurant(restaurants);
-    if (restaurant === null) return (<div>No restaurant found</div>);
+    let restaurant = requestGetRestaurants.getStateVar().find((r) => r.restaurantId = params.id);
+    if (typeof restaurant === 'undefined') {
+        restaurant = null;
+    }
 
-    const newOrders = GetNewOrders(orders);
-    const inProgressOrders = GetInProgressOrders(orders);
+    requestGetOrders.setStateVarFnc(setOrders);
+    requestGetOrders.setStateVar(orders);
+
+    useEffect(() => {
+        requestGetOrders.request(userJWT, '/manager/restaurants/' + params.id + '/orders');
+    }, [])
 
     const leftOrderKeys = {
         'orderId': 'ID',
@@ -35,12 +43,12 @@ export const RestaurantManagerView = ({restaurants, orders}) => {
 
                 {orders.map(order => {
                     return (
-                        <Link to={'' + order.details.orderId}>
+                        <Link to={'' + order.orderId}>
                             <div className={styles.leftRow}>
                                 {Object.keys(leftOrderKeys).map((key) => {
                                     return (
                                         <div className={styles.leftCell}>
-                                            {order.details[key]}
+                                            {order[key]}
                                         </div>
                                     )
                                 })}
