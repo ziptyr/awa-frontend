@@ -208,6 +208,7 @@ function App() {
 
     const requestGetRestaurants = new RequestGetRestaurants();
     const requestGetOrders = new RequestGet();
+    const requestPostOrders = new RequestPost();
 
     const requestGetMenu = new RequestGet();
     const requestPostMenu = new RequestPost();
@@ -304,7 +305,8 @@ function App() {
                     <Route path=":id"
                         element={<RestaurantManagerView
                             requestGetRestaurants={requestGetRestaurants}
-                            requestGetOrders={requestGetOrders} />
+                            requestGetOrders={requestGetOrders}
+                            requestPostOrders={requestPostOrders} />
                     }>
                         <Route path=":orderId"
                             element={<RestaurantManagerOrder
