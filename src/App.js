@@ -23,7 +23,9 @@ import SignUp from './components/SignUp';
 import Account from './components/Account';
 import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
-import Constants from './components/Constants.json'
+import Constants from './components/Constants.json';
+
+import {useData} from './components/DataProvider';
 
 
 // axios constants
@@ -45,34 +47,74 @@ const menuDataIds = menuData.map( data => {
 function App() {
 
     //CLASSES
-
-    class RequestGetRestaurants {
-        /**
-         * Requests and sets restaurants
-         */
-
-        #baseUrl;
-        #decoder;
-        #setData;
+    class Request {
+        baseUrl;
+        decoder;
 
         constructor() {
-            this.#baseUrl = Constants.API_ADDRESS;
-            this.#decoder = jwt;
-            this.#setData = setRestaurants;
+            if (this.constructor == Request) {
+              throw new Error("Abstract classes can't be instantiated.");
+            }
+
+            this.baseUrl = Constants.API_ADDRESS;
+            this.decoder = jwt;
         }
 
         getHeaders(codedJWT) {
             let axiosHeaders;
 
-            if (this.#decoder.decode(codedJWT) == null) axiosHeaders = null;
+            if (this.decoder.decode(codedJWT) == null) axiosHeaders = null;
             else axiosHeaders = {'headers': {'Authorization': 'Bearer ' + codedJWT}};
 
             return axiosHeaders;
         }
 
-        getUrl(codedJWT) {
+        request() {
+            /**
+             * make request
+             */
+
+            throw new Error("Method 'get()' must be implemented.");
+        }
+    }
+
+    class RequestGet extends Request {
+        fnc;
+        url;
+
+        constructor(fnc) {
+            super();
+            this.fnc = fnc;
+        }
+
+        request(codedJWT, apiRoute) {
+            /**
+             * perform axios get request
+             */
+
+            axios.get(this.baseUrl + apiRoute, this.getHeaders(codedJWT))
+                .then((response) => {
+                    //console.log('RequestGet', response.data);
+                    this.fnc(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .then(() => {
+                    console.log('RequestGet: ' + this.baseUrl + apiRoute);
+                });
+        }
+    }
+
+    class RequestGetRestaurants extends RequestGet {
+
+        constructor() {
+            super(setRestaurants);
+        }
+
+        getRestaurantsApiRoute(codedJWT) {
             let restaurantsUrl;
-            let decoded = this.#decoder.decode(codedJWT);
+            let decoded = this.decoder.decode(codedJWT);
 
             if (decoded == null) {
                 restaurantsUrl = '/public/restaurants';
@@ -82,31 +124,18 @@ function App() {
                 restaurantsUrl = '/manager/restaurants';
             }
 
-            return this.#baseUrl + restaurantsUrl;
+            return restaurantsUrl;
         }
 
-        get(codedJWT) {
-            /**
-             * request restaurants from backend and save results to useState
-             */
-
-            axios.get(this.getUrl(codedJWT), this.getHeaders(codedJWT))
-                .then((response) => {
-                    //console.log(response.data);
-                    this.#setData(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-                .then(() => {
-                    console.log('App.js requestRestaurants() executed');
-                });
+        request(codedJWT) {
+            super.request(codedJWT, this.getRestaurantsApiRoute(codedJWT));
         }
     }
-
     //CLASSES END
 
     //CONSTS
+
+    const {restaurants, setRestaurants} = useData();
 
     //State for storing JWT.
     const [userJWT, setUserJWT] = useState(jwtFromStorage);
@@ -117,21 +146,8 @@ function App() {
     //Decoded JWT using jsonwebtoken.decoder.
     const jwtDecoded = jwt.decode(userJWT);
 
-    //Restaurants useStates
-    // - useState needs empty array as initial value
-    const [restaurants, setRestaurants] = useState([]);
-
-    //Restaurants updating method
     const requestGetRestaurants = new RequestGetRestaurants();
-
     //CONSTS END
-
-    const editRestaurant = (restaurants, id, values) => {
-        let index = restaurants.findIndex((restaurant) => restaurant.restaurantId == id);
-        restaurants[index] = values;
-
-        setRestaurants(restaurants);
-    }
 
     //FUNCTIONS
 
@@ -190,16 +206,12 @@ function App() {
     //FUNCTIONS ENDS
     //requestRestaurants(getRequestPathRestaurants, Constants.API_ADDRESS, setRestaurants);
 
-    useEffect(() => {
-        requestGetRestaurants.get(userJWT);
-    }, []);
-
     let authRoutes = <>
             <Route path="/login" element={ <Login
                 login={ (newJWT) => {
                     setUserJWT(newJWT);
                     window.localStorage.setItem("userJWT", newJWT);
-                    requestGetRestaurants.get(newJWT);
+                    requestGetRestaurants.request(newJWT);
                 } }
             />} />
             <Route path="/signup" element={ <SignUp />} />
@@ -273,13 +285,13 @@ function App() {
     <Context.Provider value={{
         jwtDecoded, add,  remove, empty,
         getTotal,  cart,  setCart, currencyOptions,
-        userJWT
+        userJWT, restaurants
     }}>
         <BrowserRouter>
             <Header userJWT={userJWT != null} logOut={() => {
                 setUserJWT(null);
                 window.localStorage.removeItem("userJWT");
-                requestGetRestaurants.get(null);
+                requestGetRestaurants.request(null);
             }} />
 
             <Routes>
