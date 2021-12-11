@@ -146,12 +146,14 @@ function App() {
 
     class RequestPost extends Request {
 
-        request(codedJWT, apiRoute) {
+        request(codedJWT, apiRoute, sendData) {
             /**
              * perform axios post request
              */
 
-            axios.post(this.baseUrl + apiRoute, this.getHeaders(codedJWT))
+            console.log('RequestPost data', sendData);
+
+            axios.post(this.baseUrl + apiRoute, sendData, this.getHeaders(codedJWT))
                 .then((response) => {
                     console.log('RequestPost: ', response.data);
                     if (this.stateVarFnc != false) this.stateVarFnc(response.data);
@@ -207,6 +209,7 @@ function App() {
     const requestGetRestaurants = new RequestGetRestaurants();
 
     const requestGetMenu = new RequestGet();
+    const requestPostMenu = new RequestPost();
     //CONSTS END
 
     //FUNCTIONS
@@ -328,6 +331,7 @@ function App() {
                     >
                         <Route path="new"
                             element={<RestaurantManagerMenuAdd
+                                requestPostMenu={requestPostMenu}
                                 requestGetMenu={requestGetMenu} />} />
                         <Route path=":productId"
                             element={<RestaurantManagerProduct
