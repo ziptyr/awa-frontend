@@ -49,16 +49,16 @@ function App() {
     class Request {
         baseUrl;
         decoder;
-        fnc;
+        thenFnc;
 
-        constructor(fnc = null) {
+        constructor(thenFnc = false) {
             if (this.constructor == Request) {
               throw new Error("Abstract classes can't be instantiated.");
             }
 
             this.baseUrl = Constants.API_ADDRESS;
             this.decoder = jwt;
-            this.fnc = fnc;
+            this.thenFnc = thenFnc;
         }
 
         getHeaders(codedJWT) {
@@ -81,21 +81,22 @@ function App() {
 
     class RequestGet extends Request {
 
-        request(codedJWT, apiRoute) {
+        request(codedJWT, apiRoute, thenFnc = false) {
             /**
              * perform axios get request
              */
 
             axios.get(this.baseUrl + apiRoute, this.getHeaders(codedJWT))
                 .then((response) => {
-                    console.log(this.className + ': ', response.data);
-                    this.fnc(response.data);
+                    console.log('RequestGet: ', response.data);
+                    if (thenFnc != false) thenFnc(response.data);
+                    else if (this.thenFnc != false) this.thenFnc(response.data);
                 })
                 .catch((error) => {
-                    console.log(this.className + ': ', error);
+                    console.log('RequestGet: ', error);
                 })
                 .then(() => {
-                    console.log(this.className + ': ' + this.baseUrl + apiRoute);
+                    console.log('RequestGet: ' + this.baseUrl + apiRoute);
                 });
         }
     }
@@ -128,20 +129,22 @@ function App() {
 
     class RequestPost extends Request {
 
-        request(codedJWT, apiRoute) {
+        request(codedJWT, apiRoute, thenFnc = false) {
             /**
              * perform axios post request
              */
 
             axios.post(this.baseUrl + apiRoute, this.getHeaders(codedJWT))
                 .then((response) => {
-                    console.log(this.className + ': ', response.data);
+                    console.log('RequestPost: ', response.data);
+                    if (thenFnc != false) thenFnc(response.data);
+                    else if (this.thenFnc != false) this.thenFnc(response.data);
                 })
                 .catch((error) => {
-                    console.log(this.className + ': ', error);
+                    console.log('RequestPost: ', error);
                 })
                 .then(() => {
-                    console.log(this.className + ': ' + this.baseUrl + apiRoute);
+                    console.log('RequestPost: ' + this.baseUrl + apiRoute);
                 })
         }
     }
@@ -174,7 +177,6 @@ function App() {
     //CLASSES END
 
     //CONSTS
-
     const {restaurants, setRestaurants} = useData();
 
     //State for storing JWT.
@@ -187,10 +189,11 @@ function App() {
     const jwtDecoded = jwt.decode(userJWT);
 
     const requestGetRestaurants = new RequestGetRestaurants();
+
+    const requestGet = new RequestGet();
     //CONSTS END
 
     //FUNCTIONS
-
     //Getting cart total via .reduce()
     function getTotal(cart) {
         const total = cart.reduce((totalCost, item) => totalCost + item.price, 0);
@@ -242,7 +245,6 @@ function App() {
     function empty(data) {
         setCart({ data, type: 'empty' });
     }
-
     //FUNCTIONS ENDS
     //requestRestaurants(getRequestPathRestaurants, Constants.API_ADDRESS, setRestaurants);
 
@@ -306,10 +308,11 @@ function App() {
 
                     <Route path="/restaurants/menu/:id"
                         element={<RestaurantManagerMenu
-                            restaurants={restaurants}
-                            menuData={menuDataIds} />}
+                            requestGet={requestGet} />}
                     >
-                        <Route path="new" element={<RestaurantManagerMenuAdd />} />
+                        <Route path="new"
+                            element={<RestaurantManagerMenuAdd
+                                requestGet={requestGet} />} />
                         <Route path=":productId"
                             element={<RestaurantManagerProduct
                                 restaurants={restaurants}
