@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './RestaurantManager.module.css'
 
 
@@ -9,7 +9,9 @@ export default function RestaurantManager({data}) {
         <div className={styles.box}>
             <div key={data.id} style={{position: 'relative'}}>
                 <Link to={'' + data.restaurantId} style={{ textDecoration: 'none' }} >
-                    <img src={data.image} alt={data.image} width="225px" />
+                    <div style={{width: "231px", height: "231px"}}>
+                        <img src={data.image} alt={data.image} width="225px" />
+                    </div>
                 </Link>
         
                 <Link to={'manage/' + data.restaurantId}>

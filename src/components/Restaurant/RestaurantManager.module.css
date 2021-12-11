@@ -20,7 +20,7 @@
 }
 
 .box:hover {
-border-color: rgb(228, 0, 0);
+    border-color: rgb(228, 0, 0);
 }
 
 .box div {
