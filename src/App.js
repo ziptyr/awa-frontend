@@ -121,7 +121,7 @@ function App() {
     class RequestGetRestaurants extends RequestGet {
 
         constructor() {
-            super(setRestaurants);
+            super(setRestaurants, restaurants);
         }
 
         getRestaurantsApiRoute(codedJWT) {
@@ -207,6 +207,7 @@ function App() {
     const jwtDecoded = jwt.decode(userJWT);
 
     const requestGetRestaurants = new RequestGetRestaurants();
+    const requestGetOrders = new RequestGet();
 
     const requestGetMenu = new RequestGet();
     const requestPostMenu = new RequestPost();
@@ -302,15 +303,13 @@ function App() {
                     <Route path="" element={<RestaurantsManager restaurants={restaurants} /> }/>
                     <Route path=":id"
                         element={<RestaurantManagerView
-                            restaurants={restaurants}
-                            menuData={menuDataIds}
-                            orders={orders} />
+                            requestGetRestaurants={requestGetRestaurants}
+                            requestGetOrders={requestGetOrders} />
                     }>
                         <Route path=":orderId"
                             element={<RestaurantManagerOrder
-                                restaurants={restaurants}
-                                menuData={menuDataIds}
-                                orders={orders} />} />
+                                requestGetRestaurants={requestGetRestaurants}
+                                requestGetOrders={requestGetOrders} />} />
                     </Route>
 
                     <Route path="/restaurants/manage">
