@@ -16,7 +16,6 @@ import { RestaurantMenu } from './components/RestaurantMenu';
 import { RestaurantManagerView } from './components/Restaurant/RestaurantManagerView';
 import RestaurantManagerOrder from './components/Restaurant/RestaurantManagerOrder';
 import { menuData } from './data.menu';
-import { restaurantData } from './data.restaurants';
 import orders from './data.order.json';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
@@ -50,14 +49,16 @@ function App() {
     class Request {
         baseUrl;
         decoder;
+        fnc;
 
-        constructor() {
+        constructor(fnc = null) {
             if (this.constructor == Request) {
               throw new Error("Abstract classes can't be instantiated.");
             }
 
             this.baseUrl = Constants.API_ADDRESS;
             this.decoder = jwt;
+            this.fnc = fnc;
         }
 
         getHeaders(codedJWT) {
@@ -79,13 +80,6 @@ function App() {
     }
 
     class RequestGet extends Request {
-        fnc;
-        url;
-
-        constructor(fnc) {
-            super();
-            this.fnc = fnc;
-        }
 
         request(codedJWT, apiRoute) {
             /**
@@ -94,19 +88,65 @@ function App() {
 
             axios.get(this.baseUrl + apiRoute, this.getHeaders(codedJWT))
                 .then((response) => {
-                    //console.log('RequestGet', response.data);
+                    console.log(this.className + ': ', response.data);
                     this.fnc(response.data);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.log(this.className + ': ', error);
                 })
                 .then(() => {
-                    console.log('RequestGet: ' + this.baseUrl + apiRoute);
+                    console.log(this.className + ': ' + this.baseUrl + apiRoute);
                 });
         }
     }
 
     class RequestGetRestaurants extends RequestGet {
+
+        constructor() {
+            super(setRestaurants);
+        }
+
+        getRestaurantsApiRoute(codedJWT) {
+            let restaurantsUrl;
+            let decoded = this.decoder.decode(codedJWT);
+
+            if (decoded == null) {
+                restaurantsUrl = '/public/restaurants';
+            } else if (decoded.role === 'CUSTOMER') {
+                restaurantsUrl = '/public/restaurants';
+            } else if (decoded.role === 'MANAGER') {
+                restaurantsUrl = '/manager/restaurants';
+            }
+
+            return restaurantsUrl;
+        }
+
+        request(codedJWT) {
+            super.request(codedJWT, this.getRestaurantsApiRoute(codedJWT));
+        }
+    }
+
+    class RequestPost extends Request {
+
+        request(codedJWT, apiRoute) {
+            /**
+             * perform axios post request
+             */
+
+            axios.post(this.baseUrl + apiRoute, this.getHeaders(codedJWT))
+                .then((response) => {
+                    console.log(this.className + ': ', response.data);
+                })
+                .catch((error) => {
+                    console.log(this.className + ': ', error);
+                })
+                .then(() => {
+                    console.log(this.className + ': ' + this.baseUrl + apiRoute);
+                })
+        }
+    }
+
+    class RequestPostRestaurants extends RequestPost {
 
         constructor() {
             super(setRestaurants);
