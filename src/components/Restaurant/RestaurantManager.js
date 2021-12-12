@@ -6,37 +6,23 @@ import styles from './RestaurantManager.module.css'
 export default function RestaurantManager({data}) {
 
     return (
-        <div className={styles.box}>
-            <div key={data.id} style={{position: 'relative'}}>
-                <Link to={'' + data.restaurantId} style={{ textDecoration: 'none' }} >
+        <div style={{position: 'relative'}}>
+            <Link to={'' + data.restaurantId} style={{ textDecoration: 'none' }} >
+                <div className={styles.box}>
                     <div style={{width: "231px", height: "231px"}}>
                         <img src={data.image} alt={data.image} width="225px" />
                     </div>
-                </Link>
         
-                <Link to={'manage/' + data.restaurantId}>
-                    <button className={styles.buttonEdit}>
-                        E
-                    </button>
-                </Link>
         
-                <Link to={'' + data.restaurantId}>
                     <div className={styles.title}>
                         {data.restaurantName}
                     </div>
-          
-                    <div className={styles.marginDiv} />
-                </Link>
         
-                <Link to={'menu/' + data.restaurantId}>
-                    <button className={styles.buttonMenu}>
-                        Menu
-                    </button>
-                </Link>
-        
-                <Link to={'' + data.restaurantId}>
                     <div className={styles.marginDiv} />
-          
+        
+        
+                    <div className={styles.marginDiv} />
+        
                     <div className={styles.restInfo}>
                         <div>
                             Orders: X
@@ -44,8 +30,22 @@ export default function RestaurantManager({data}) {
                             New Orders: Y
                         </div>
                     </div>
-                </Link>
-            </div>
+                </div>
+            </Link>
+
+            <Link to={'manage/' + data.restaurantId}>
+                <button className={styles.buttonEdit}>
+                    E
+                </button>
+            </Link>
+
+            <Link to={'menu/' + data.restaurantId}>
+                <div className={styles.buttonMenuContainer}>
+                    <button className={styles.buttonMenu}>
+                        Menu
+                    </button>
+                </div>
+            </Link>
         </div>
     )
 }
