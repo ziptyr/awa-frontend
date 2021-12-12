@@ -1,3 +1,16 @@
+.orderValues {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.orderCol {
+    margin-right: 12px;
+}
+
+.orderCol > *:nth-child(1) {
+    font-weight: 900;
+}
+
 .headersRow, .productsRow {
     display: flex;
     flex-direction: row;
@@ -8,7 +21,7 @@
 }
 
 .headersCol, .productsCol {
-    width: 200px;
+    width: 150px;
 }
 
 .productsRow {

@@ -1,9 +1,24 @@
 import React from 'react';
+import { useParams } from 'react-router';
 import {GetProduct} from '../Tools';
 import styles from './RestaurantManagerProduct.module.css';
 
-export default function RestaurantManagerProduct({menuData}) {
-    const product = GetProduct(menuData);
+export default function RestaurantManagerProduct({requestGetMenu}) {
+
+    const params = useParams();
+
+    const menu = requestGetMenu.getStateVar();
+
+    let product = menu.find((p) => p.productId == params.productId);
+    if (typeof product === 'undefined') {
+        product = {
+            'name': '',
+            'category': '',
+            'description': '',
+            'image': '',
+            'price': ''
+        }
+    }
 
     return (
         <div className={styles.container}>

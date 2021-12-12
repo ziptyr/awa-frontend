@@ -1,15 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link, Outlet} from 'react-router-dom';
-import {GetRestaurant, GetMenu} from '../Tools';
 import styles from './RestaurantManagerMenu.module.css';
+import {useData} from '../DataProvider';
+import {useParams} from 'react-router';
 
-export default function RestaurantsManagerMenu({restaurants, menuData}) {
+export default function RestaurantsManagerMenu({requestGetMenu}) {
 
-    const restaurant = GetRestaurant(restaurants);
-    if (restaurant === null) return (<div>No restaurant found</div>);
+    const {userJWT, restaurants} = useData();
+    const params = useParams();
 
-    const menu = GetMenu(menuData, restaurant);
-    if (menu === null) return (<div>No menu found</div>);
+    //TODO: test if moving useState() to previous component forces reloading data if chaged
+    const [menu, setMenu] = useState([]);
+
+    requestGetMenu.setStateVar(menu);
+    requestGetMenu.setStateVarFnc(setMenu);
+
+    useEffect(() => {
+        requestGetMenu.request(userJWT, '/public/restaurants/' + params.id + '/menu');
+    }, [])
 
     return (
         <div className={styles.container}>
@@ -21,16 +29,15 @@ export default function RestaurantsManagerMenu({restaurants, menuData}) {
                 </Link>
 
                 {menu.map((item, i) =>
-                    <Link key={i} to={item.id}>
+                    <Link key={i} to={'' + item.productId}>
                         <div>
                             {item.name}
                         </div>
                     </Link>
                 )}
             </div>
-
-            <div className={styles.right}>
                 <Outlet />
+            <div className={styles.right}>
             </div>
         </div>
     )
