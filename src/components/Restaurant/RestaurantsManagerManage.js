@@ -4,12 +4,12 @@ import { useParams } from 'react-router';
 import styles from './RestaurantsManagerManage.module.css';
 import {useData} from '../DataProvider';
 
-export default function RestaurantsManagerManage({requestPostRestaurant, requestPutRestaurant}) {
+export default function RestaurantsManagerManage({requestGetRestaurants, requestPostRestaurant, requestPutRestaurant}) {
 
-    const {restaurants, getRestaurant, userJWT} = useData();
+    const {restaurants, userJWT} = useData();
     const params = useParams();
 
-    console.log('put', requestPutRestaurant)
+    console.log('put', requestGetRestaurants)
 
     let foundRestaurant = false;
     let restaurant = restaurants.find((r) => r.restaurantId == params.id);
@@ -51,6 +51,7 @@ export default function RestaurantsManagerManage({requestPostRestaurant, request
                         'priceLevel': parseInt(priceLevel)
                     }
                     requestPostRestaurant.request(userJWT, '/manager/restaurants', newRestaurant);
+                    requestGetRestaurants.request(userJWT);
                 }}>
                     OK
             </button>
@@ -75,6 +76,7 @@ export default function RestaurantsManagerManage({requestPostRestaurant, request
                         userJWT,
                         '/manager/restaurants/' + restaurant.restaurantId,
                         newRestaurant);
+                    requestGetRestaurants.request(userJWT);
                 }}>
                     OK
             </button>

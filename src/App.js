@@ -192,7 +192,7 @@ function App() {
     //CLASSES END
 
     //CONSTS
-    const {restaurants, setRestaurants} = useData([]);
+    const {restaurants, setRestaurants} = useData();
 
     //State for storing JWT.
     const [userJWT, setUserJWT] = useState(jwtFromStorage);
@@ -212,7 +212,7 @@ function App() {
     const requestPostMenu = new RequestPost();
 
     const requestPostRestaurant = new RequestPost();
-    const requestPutRestaurant = new RequestPut(restaurants, setRestaurants);
+    const requestPutRestaurant = new RequestPut(restaurants);
     //CONSTS END
 
     //FUNCTIONS
@@ -319,13 +319,14 @@ function App() {
                         <Route
                             path=""
                             element={<RestaurantsManagerManage
-                                restaurants={restaurants} 
+                                requestGetRestaurants={requestGetRestaurants} 
                                 requestPostRestaurant={requestPostRestaurant}
-                                 />} />
+                                requestPutRestaurant={requestPutRestaurant} />} />
                         <Route
                             path=":id"
                             element={<RestaurantsManagerManage
-                                restaurants={restaurants}
+                                requestGetRestaurants={requestGetRestaurants}
+                                requestPostRestaurant={requestPostRestaurant}
                                 requestPutRestaurant={requestPutRestaurant} />} />
                     </Route>
 
