@@ -49,18 +49,18 @@ function App() {
     class Request {
         baseUrl;
         decoder;
-        stateVarFnc;
         stateVar;
+        stateVarFnc;
 
-        constructor(stateVarFnc = false, stateVar = false) {
+        constructor(stateVar = false, stateVarFnc = false) {
             if (this.constructor == Request) {
               throw new Error("Abstract classes can't be instantiated.");
             }
 
             this.baseUrl = Constants.API_ADDRESS;
             this.decoder = jwt;
-            this.stateVarFnc = stateVarFnc;
             this.stateVar = stateVar;
+            this.stateVarFnc = stateVarFnc;
         }
 
         getHeaders(codedJWT) {
@@ -121,7 +121,7 @@ function App() {
     class RequestGetRestaurants extends RequestGet {
 
         constructor() {
-            super(setRestaurants, restaurants);
+            super(restaurants, setRestaurants);
         }
 
         getRestaurantsApiRoute(codedJWT) {
@@ -167,35 +167,32 @@ function App() {
         }
     }
 
-    class RequestPostRestaurants extends RequestPost {
+    class RequestPut extends Request {
 
-        constructor() {
-            super(setRestaurants);
-        }
+        request(codedJWT, apiRoute, sendData) {
+            /**
+             * perform axios post request
+             */
 
-        getRestaurantsApiRoute(codedJWT) {
-            let restaurantsUrl;
-            let decoded = this.decoder.decode(codedJWT);
+            console.log('RequestPost data', sendData);
 
-            if (decoded == null) {
-                restaurantsUrl = '/public/restaurants';
-            } else if (decoded.role === 'CUSTOMER') {
-                restaurantsUrl = '/public/restaurants';
-            } else if (decoded.role === 'MANAGER') {
-                restaurantsUrl = '/manager/restaurants';
-            }
-
-            return restaurantsUrl;
-        }
-
-        request(codedJWT) {
-            super.request(codedJWT, this.getRestaurantsApiRoute(codedJWT));
+            axios.put(this.baseUrl + apiRoute, sendData, this.getHeaders(codedJWT))
+                .then((response) => {
+                    console.log('RequestPut: ', response.data);
+                    if (this.stateVarFnc != false) this.stateVarFnc(response.data);
+                })
+                .catch((error) => {
+                    console.log('RequestPut: ', error);
+                })
+                .then(() => {
+                    console.log('RequestPut: ' + this.baseUrl + apiRoute);
+                })
         }
     }
     //CLASSES END
 
     //CONSTS
-    const {restaurants, setRestaurants} = useData();
+    const {restaurants, setRestaurants} = useData([]);
 
     //State for storing JWT.
     const [userJWT, setUserJWT] = useState(jwtFromStorage);
@@ -207,11 +204,15 @@ function App() {
     const jwtDecoded = jwt.decode(userJWT);
 
     const requestGetRestaurants = new RequestGetRestaurants();
+
     const requestGetOrders = new RequestGet();
-    const requestPostOrders = new RequestPost();
+    const requestPutOrders = new RequestPut();
 
     const requestGetMenu = new RequestGet();
     const requestPostMenu = new RequestPost();
+
+    const requestPostRestaurant = new RequestPost();
+    const requestPutRestaurant = new RequestPut(restaurants, setRestaurants);
     //CONSTS END
 
     //FUNCTIONS
@@ -305,25 +306,27 @@ function App() {
                     <Route path=":id"
                         element={<RestaurantManagerView
                             requestGetRestaurants={requestGetRestaurants}
-                            requestGetOrders={requestGetOrders}
-                            requestPostOrders={requestPostOrders} />
+                            requestGetOrders={requestGetOrders} />
                     }>
                         <Route path=":orderId"
                             element={<RestaurantManagerOrder
                                 requestGetRestaurants={requestGetRestaurants}
-                                requestGetOrders={requestGetOrders} />} />
+                                requestGetOrders={requestGetOrders}
+                                requestPutOrders={requestPutOrders} />} />
                     </Route>
 
                     <Route path="/restaurants/manage">
                         <Route
                             path=""
                             element={<RestaurantsManagerManage
-                                restaurants={restaurants} />} />
+                                restaurants={restaurants} 
+                                requestPostRestaurant={requestPostRestaurant}
+                                 />} />
                         <Route
                             path=":id"
                             element={<RestaurantsManagerManage
                                 restaurants={restaurants}
-                                menuData={menuDataIds} />} />
+                                requestPutRestaurant={requestPutRestaurant} />} />
                     </Route>
 
                     <Route path="/restaurants/menu/:id"
