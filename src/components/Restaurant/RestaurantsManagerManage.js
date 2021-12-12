@@ -4,10 +4,12 @@ import { useParams } from 'react-router';
 import styles from './RestaurantsManagerManage.module.css';
 import {useData} from '../DataProvider';
 
-export default function RestaurantsManagerManage() {
+export default function RestaurantsManagerManage({requestPostRestaurant, requestPutRestaurant}) {
 
-    const {restaurants, getRestaurant} = useData();
+    const {restaurants, getRestaurant, userJWT} = useData();
     const params = useParams();
+
+    console.log('put', requestPutRestaurant)
 
     let foundRestaurant = false;
     let restaurant = restaurants.find((r) => r.restaurantId == params.id);
@@ -38,7 +40,18 @@ export default function RestaurantsManagerManage() {
         return (
             <button
                 className = {styles.button}
-                onClick = {() => alert("add restaurant")}>
+                onClick = {() => {
+                    let newRestaurant = {
+                        'restaurantName': restaurantName,
+                        'address': address,
+                        'opens': opens,
+                        'closes': closes,
+                        'image': image,
+                        'type': type,
+                        'priceLevel': parseInt(priceLevel)
+                    }
+                    requestPostRestaurant.request(userJWT, '/manager/restaurants', newRestaurant);
+                }}>
                     OK
             </button>
         )
@@ -48,7 +61,21 @@ export default function RestaurantsManagerManage() {
         return (
             <button
                 className = {styles.button}
-                onClick = {() => alert("edit restaurant")}>
+                onClick = {() => {
+                    let newRestaurant = {
+                        'restaurantName': restaurantName,
+                        'address': address,
+                        'opens': opens,
+                        'closes': closes,
+                        'image': image,
+                        'type': type,
+                        'priceLevel': parseInt(priceLevel)
+                    }
+                    requestPutRestaurant.request(
+                        userJWT,
+                        '/manager/restaurants/' + restaurant.restaurantId,
+                        newRestaurant);
+                }}>
                     OK
             </button>
         )
@@ -158,10 +185,10 @@ export default function RestaurantsManagerManage() {
                             value={type}
                             onChange={(e) => setType(e.target.value)}
                         >
-                                <option value='casual'>Casual</option>
-                                <option value='fine_dining'>Fine dining</option>
-                                <option value='buffet'>Buffet</option>
-                                <option value='fast_food'>Fast food</option>
+                                <option value='Casual'>Casual</option>
+                                <option value='Fine dining'>Fine dining</option>
+                                <option value='Buffet'>Buffet</option>
+                                <option value='Fast food'>Fast food</option>
                         </select>
                     </div>
                 </div>
