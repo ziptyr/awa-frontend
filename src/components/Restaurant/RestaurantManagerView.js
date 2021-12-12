@@ -19,7 +19,9 @@ export const RestaurantManagerView = ({requestGetRestaurants, requestGetOrders})
     requestGetOrders.setStateVar(orders);
 
     useEffect(() => {
-        requestGetOrders.request(userJWT, '/manager/restaurants/' + params.id + '/orders');
+        requestGetOrders.request(
+            userJWT,
+            '/manager/restaurants/' + restaurant.restaurantId + '/orders');
     }, [])
 
     const leftOrderKeys = {
