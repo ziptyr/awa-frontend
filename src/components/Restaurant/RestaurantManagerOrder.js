@@ -7,7 +7,7 @@ import {useData} from '../DataProvider';
 export default function RestaurantManagerOrder({
     requestGetRestaurants,
     requestGetOrders,
-    requestPostOrders
+    requestPutOrders
 }) {
 
     const {userJWT} = useData();
@@ -87,22 +87,34 @@ export default function RestaurantManagerOrder({
                 })}
             </div>
 
-
-            {(order.orderStatus == 0) ? (
-                    <>
-                        <input
-                            type="time"
-                            value={eta}
-                            onChange={(e) => setEta(e.target.value)} />
-                        <br />
-                    </>
-                ) : null}
+            <input
+                type="time"
+                value={eta}
+                onChange={ (e) => setEta(e.target.value) } />
+            <br />
 
             <button onClick={() => {
-                alert('status ' + (order.orderStatus + 1) + ' eta ' + eta);
+                let route = '/manager/restaurants/orders/' + order.orderId;
+
+                requestPutOrders.request(
+                    userJWT,
+                    route,
+                    {'status': (order.orderStatus + 1), 'eta': eta }
+                );
             }}>
                 Status to: {orderStatuses[order.orderStatus + 1]}
             </button>
         </div>
     )
 }
+/*
+            {(order.orderStatus == 0) ? (
+                    <>
+                        <input
+                            type="time"
+                            value={eta}
+                            onChange={ (e) => setEta(e.target.value) } />
+                        <br />
+                    </>
+                ) : null}
+                */
