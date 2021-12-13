@@ -1,0 +1,21 @@
+.container {
+    margin-top: 25px;
+    display: flex;
+}
+
+.containerA {
+    background-color: rgba(0, 42, 255, 0.864);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 50px 0 50px 75px;
+    row-gap: 1.5rem;
+    border-right: 2px solid black;
+    border-radius: 0 1rem 1rem 0;
+    width: 275px;
+}
+
+.containerB {
+    padding: 5px 0px 0px 15px;
+}

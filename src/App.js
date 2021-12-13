@@ -19,7 +19,11 @@ import { menuData } from './data.menu';
 import orders from './data.order.json';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import Account from './components/Account';
+import Account from './components/Account/Account';
+import Settings from './components/Account/Settings';
+import OrderHistory from './components/Account/OrderHistory';
+import Profile from './components/Account/Profile';
+import Payment from './components/Account/Payment';
 import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
 
@@ -139,7 +143,12 @@ function App() {
 
     if(userJWT != null) {
         authRoutes =  <>
-        <Route path="/account" element={ <Account />  } />
+        <Route path="/account" element={ <Account />  }>
+            <Route path="settings" element={<Settings />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="history" element={<OrderHistory />} />
+            <Route path="payment" element={<Payment />} />
+        </Route>
         <Route path="/shoppingcart" element={ <ShoppingCart />} />
         </>
     }
