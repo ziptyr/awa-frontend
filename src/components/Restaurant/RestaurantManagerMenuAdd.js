@@ -17,7 +17,9 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
     return (
         <>
             <div className={styles.container}>
-                <div>Name:</div>
+                <div className={styles.foodName}>New Product</div>
+
+                <div className={styles.tag}>Name:</div>
                 <div>
                     <input
                         type="text"
@@ -25,7 +27,7 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         onChange={(e) => setName(e.target.value)}/>
                 </div>
 
-                <div>Category:</div>
+                <div className={styles.tag}>Category:</div>
                 <div>
                     <input
                         type="text"
@@ -33,15 +35,19 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         onChange={(e) => setCategory(e.target.value)}/>
                 </div>
 
-                <div>Description:</div>
+                <div className={styles.tag}>Description:</div>
                 <div>
                     <input
                         type="text"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}/>
+                    {/* <textarea
+                        type="text"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}/> */}
                 </div>
 
-                <div>Image:</div>
+                <div className={styles.tag}>Image:</div>
                 <div>
                     <input
                         type="url"
@@ -49,7 +55,7 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         onChange={(e) => setImage(e.target.value)}/>
                 </div>
 
-                <div>Price:</div>
+                <div className={styles.tag}>Price:</div>
                 <div>
                     <input
                         type="number"
@@ -59,11 +65,9 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         onChange={(e) => setPrice(e.target.value)}/>
                 </div>
 
-                <div>
-                </div>
-                <div>
+                <div className={styles.saveButtonBox}>
                     <button
-                        className={styles.buttonSave}
+                        // className={styles.buttonSave}
                         onClick={() => {
                             let newProduct = {
                                 'name': name,

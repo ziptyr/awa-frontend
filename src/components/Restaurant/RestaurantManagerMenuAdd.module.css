@@ -1,16 +1,27 @@
+
 .container {
-    display: grid;
-    grid-template-columns: 135px auto;
-    align-items: center;
-}
-
-.container > div {
+    width: 600px;
     display: flex;
-    height: 35px;
-    align-items: center;
+    flex-direction: column;
+
 }
 
-.buttonSave {
-    display: block;
-    width: 100%;
+.foodName {
+    font-size: 33px;
+}
+.tag {
+    margin-top: 3px;
+    font-weight: bold;
+    color: gray;
+    border-bottom: 1px dotted gray;
+}
+input {
+    margin-top: 3px;
+}
+.saveButtonBox {
+    margin-top: 10px;
+    padding: 3px;
+    border-top: 1px solid black ;
+    /* width: 100%; */
+
 }

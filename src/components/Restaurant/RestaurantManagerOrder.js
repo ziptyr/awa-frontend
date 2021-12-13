@@ -35,7 +35,7 @@ export default function RestaurantManagerOrder({
         o.orderId == params.orderId);
 
     const productKeys = {
-        'orderId': 'ID',
+        // 'orderId': 'ID',
         'productId': 'Product ID',
         'amount': 'Amount',
         'productPrice': 'Price'
@@ -77,24 +77,69 @@ export default function RestaurantManagerOrder({
     }
 
     return (
-        <div>
+        <div className={styles.container}>
             <div className={styles.order}>
+            <h3>Order Details</h3>
                 {Object.keys(orderKeys).map((key) => {
                     return (
-                        <div className={styles.orderCol}>
-                            <div className={styles.orderHeader}>
-                                {orderKeys[key]}
-                            </div>
-                            <div className={styles.orderOrder}>
-                                {order.details[key]}
-                            </div>
+                        // <div className={styles.orderCol}>
+                        //     <div className={styles.orderHeader}>
+                        //         {orderKeys[key]}
+                        //     </div>
+                        //     <div className={styles.orderOrder}>
+                        //         {order.details[key]}
+                        //     </div>
+                        // </div>
+                        <div>
+
+                        <div className={styles.tag}>{key}</div>
+                        <div >{order.details[key]}</div>
+                            
                         </div>
                     )
                 })}
+
+                <div className={styles.ButtonBox}>
+                <button onClick={() => {
+                    requestPutOrders.request(
+                        userJWT,
+                        '/manager/restaurants/orders/' + params.orderId,
+                        {'status': (parseInt(order.details.orderStatus) + 1), 'eta': eta }
+                    );
+                }}>
+                    Status to: {orderStatuses[order.details.orderStatus + 1]}
+                </button></div>
             </div>
 
             <div className={styles.products}>
-                {Object.keys(productKeys).map((key) => {
+            <div >
+
+                <h3>Products</h3>
+                <div className={styles.table}>
+                    <div className={styles.productsHeaderRow}>
+                    {Object.keys(productKeys).map((key) => {
+                        return(
+                                <div className={styles.productsCol}>{productKeys[key]}</div>               
+                        )
+                    })}
+                    </div>
+                    {order.products.map((p) => {
+                        return(
+                            <div className={styles.productRow}>
+                                {Object.keys(productKeys).map((key) => {
+                                return(
+                                    <div className={styles.productsCol}>               
+                                                {p[key]}
+                                    </div>
+                                )
+                                })}
+                            </div>
+                        )
+                    })}
+                    
+
+                </div>
+                {/* {Object.keys(productKeys).map((key) => {
                     return (
                         <div className={styles.productsCol}>
                             <div className={styles.productsHeader}>
@@ -105,7 +150,8 @@ export default function RestaurantManagerOrder({
                             </div>
                         </div>
                     )
-                })}
+                })} */}
+                </div>
             </div>
 
             {(order.details.orderStatus == 0) ? (
@@ -118,7 +164,7 @@ export default function RestaurantManagerOrder({
                     </>
                 ) : null}
 
-            <button onClick={() => {
+            {/* <button onClick={() => {
                 requestPutOrders.request(
                     userJWT,
                     '/manager/restaurants/orders/' + params.orderId,
@@ -126,7 +172,7 @@ export default function RestaurantManagerOrder({
                 );
             }}>
                 Status to: {orderStatuses[order.details.orderStatus + 1]}
-            </button>
+            </button> */}
         </div>
     )
 }
