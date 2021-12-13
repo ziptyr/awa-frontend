@@ -158,7 +158,7 @@ function App() {
         if (jwtDecoded.role === 'MANAGER') {
             restaurantsRoutes = <>
                 <Route path="/restaurants">
-                    <Route path="" element={<RestaurantsManager restaurants={restaurants} /> }/>
+                    <Route path="" element={<RestaurantsManager requestGetRestaurants={requestGetRestaurants} /> }/>
                     <Route path=":id"
                         element={<RestaurantManagerView
                             requestGetRestaurants={requestGetRestaurants}

@@ -2,6 +2,7 @@ import { React, useEffect, useState} from 'react'
 import { Link, Outlet, useParams } from 'react-router-dom';
 import styles from './RestaurantManagerOrder.module.css'
 import {useData} from '../DataProvider';
+import { RequestGet } from '../../Tools/requestClasses';
 
 
 export default function RestaurantManagerOrder({
@@ -10,48 +11,44 @@ export default function RestaurantManagerOrder({
     requestPutOrders
 }) {
 
-    const {userJWT} = useData();
+    const { userJWT } = useData();
     const params = useParams();
-    //const [orders, setOrders] = useState([]);
-    const [eta, setEta] = useState();
+    const [ eta, setEta ] = useState();
+    const [ order, setOrder ] = useState(
+        {
+            'details':
+                {
+                    'deliveryAddress': '',
+                    'eta': '',
+                    'orderDate': '',
+                    'orderStatus': 0,
+                    'restaurantId': params.id,
+                    'total': 0,
+                    'username': ''
+                },
+            'products': []
+        });
+    const requestGetOrder = new RequestGet();
+    const restaurant = requestGetRestaurants.getStateVar().find((r) => 
+        r.restaurantId == params.id);
+    const foundOrder = requestGetOrders.getStateVar().find((o) =>
+        o.orderId == params.orderId);
 
-    let restaurant = requestGetRestaurants.getStateVar().find((r) => r.restaurantId = params.id);
-    if (typeof restaurant === 'undefined') {
-        restaurant = null;
+    const productKeys = {
+        'orderId': 'ID',
+        'productId': 'Product ID',
+        'amount': 'Amount',
+        'productPrice': 'Price'
     }
-
-    let order = requestGetOrders.getStateVar().find((o) => o.orderId = params.orderId);
-    if (typeof order === 'undefined') {
-        order = {
-            'deliveryAddress': '',
-            'eta': '',
-            'orderDate': '',
-            'orderStatus': '',
-            'restaurantId': params.id,
-            'total': 0,
-            'username': ''
-        };
-    }
-
-    console.log('order', order)
-
     const orderKeys = {
         'orderId': 'ID',
         'username': 'Customer',
-        'status': 'Status',
+        'orderStatus': 'Status',
         'orderDate': 'Date',
         'total': 'Total',
         'deliveryAddress': 'Address',
         'eta': 'ETA'
     };
-
-    const productKeys = {
-        'amount': 'Amount',
-        'orderId': 'Order ID',
-        'productId': 'Product ID',
-        'productPrice': 'Price'
-    }
-
     const orderStatuses = {
         0: 'Received',
         1: 'Preparing',
@@ -60,55 +57,58 @@ export default function RestaurantManagerOrder({
         4: 'Delivered'
     }
 
+    requestGetOrder.setStateVar(order);
+    requestGetOrder.setStateVarFnc(setOrder);
+
+    useEffect(() => {
+        requestGetOrder.request(
+            userJWT,
+            '/manager/restaurant/orders/' + params.orderId
+        )
+        console.log('order', order)
+    }, [])
+
+    if (typeof restaurant === 'undefined' || typeof foundOrder === 'undefined') {
+        return (
+            <div>
+                Restaurant or order not found
+            </div>
+        )
+    }
+
     return (
         <div>
-            <div className={styles.orderValues}>
+            <div className={styles.order}>
                 {Object.keys(orderKeys).map((key) => {
                     return (
                         <div className={styles.orderCol}>
-                            <div>
+                            <div className={styles.orderHeader}>
                                 {orderKeys[key]}
                             </div>
-                            <div>
-                                {order[key]}
+                            <div className={styles.orderOrder}>
+                                {order.details[key]}
                             </div>
                         </div>
                     )
                 })}
             </div>
 
-            <div className={styles.headersRow}>
-                {Object.values(productKeys).map((key) => {
+            <div className={styles.products}>
+                {Object.keys(productKeys).map((key) => {
                     return (
-                        <div className={styles.headersCol}>
-                            {key}
+                        <div className={styles.productsCol}>
+                            <div className={styles.productsHeader}>
+                                {productKeys[key]}
+                            </div>
+                            <div className={styles.productsProduct}>
+                                {order.products.map((p) => p[key])}
+                            </div>
                         </div>
                     )
                 })}
             </div>
 
-            <input
-                type="time"
-                value={eta}
-                onChange={ (e) => setEta(e.target.value) } />
-            <br />
-
-            <button onClick={() => {
-                let route = '/manager/restaurants/orders/' + order.orderId;
-
-                requestPutOrders.request(
-                    userJWT,
-                    route,
-                    {'status': (order.orderStatus + 1), 'eta': eta }
-                );
-            }}>
-                Status to: {orderStatuses[order.orderStatus + 1]}
-            </button>
-        </div>
-    )
-}
-/*
-            {(order.orderStatus == 0) ? (
+            {(order.details.orderStatus == 0) ? (
                     <>
                         <input
                             type="time"
@@ -117,4 +117,16 @@ export default function RestaurantManagerOrder({
                         <br />
                     </>
                 ) : null}
-                */
+
+            <button onClick={() => {
+                requestPutOrders.request(
+                    userJWT,
+                    '/manager/restaurants/orders/' + params.orderId,
+                    {'status': (parseInt(order.details.orderStatus) + 1), 'eta': eta }
+                );
+            }}>
+                Status to: {orderStatuses[order.details.orderStatus + 1]}
+            </button>
+        </div>
+    )
+}
