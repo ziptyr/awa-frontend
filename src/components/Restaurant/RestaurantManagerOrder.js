@@ -77,20 +77,38 @@ export default function RestaurantManagerOrder({
     }
 
     return (
-        <div>
+        <div className={styles.container}>
+        {/* <div > */}
             <div className={styles.order}>
                 {Object.keys(orderKeys).map((key) => {
                     return (
-                        <div className={styles.orderCol}>
-                            <div className={styles.orderHeader}>
-                                {orderKeys[key]}
-                            </div>
-                            <div className={styles.orderOrder}>
-                                {order.details[key]}
-                            </div>
+                        // <div className={styles.orderCol}>
+                        //     <div className={styles.orderHeader}>
+                        //         {orderKeys[key]}
+                        //     </div>
+                        //     <div className={styles.orderOrder}>
+                        //         {order.details[key]}
+                        //     </div>
+                        // </div>
+                        <div>
+
+                        <div className={styles.tag}>{key}</div>
+                        <div >{order.details[key]}</div>
+                            
                         </div>
                     )
                 })}
+
+                <div className={styles.ButtonBox}>
+                <button onClick={() => {
+                    requestPutOrders.request(
+                        userJWT,
+                        '/manager/restaurants/orders/' + params.orderId,
+                        {'status': (parseInt(order.details.orderStatus) + 1), 'eta': eta }
+                    );
+                }}>
+                    Status to: {orderStatuses[order.details.orderStatus + 1]}
+                </button></div>
             </div>
 
             <div className={styles.products}>
@@ -118,7 +136,7 @@ export default function RestaurantManagerOrder({
                     </>
                 ) : null}
 
-            <button onClick={() => {
+            {/* <button onClick={() => {
                 requestPutOrders.request(
                     userJWT,
                     '/manager/restaurants/orders/' + params.orderId,
@@ -126,7 +144,7 @@ export default function RestaurantManagerOrder({
                 );
             }}>
                 Status to: {orderStatuses[order.details.orderStatus + 1]}
-            </button>
+            </button> */}
         </div>
     )
 }
