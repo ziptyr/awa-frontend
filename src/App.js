@@ -40,9 +40,9 @@ const currencyOptions = {
 const jwtFromStorage = window.localStorage.getItem("userJWT");
 
 //Adding unique ids to menuData.
-const menuDataIds = menuData.map( data => {
-    return { ...data, id: uuidv4()}
-});
+// const menuDataIds = menuData.map( data => {
+//     return { ...data, id: uuidv4()}
+// });
 
 
 function App() {
@@ -147,9 +147,13 @@ function App() {
     // Restaurants routes for customers and non-logged in
     let restaurantsRoutes = <>
             <Route path="/restaurants">
-                <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
-                <Route path=":name" element={
-                    <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds}  /> } />
+                <Route path="" element={ <Restaurants
+                    restaurants={restaurants}
+                    /> }/>
+                <Route path=":id" element={
+                    <RestaurantMenu  
+                        restaurants={restaurants}
+                        requestGetMenu={requestGetMenu}  /> } />
             </Route>
         </>
 
