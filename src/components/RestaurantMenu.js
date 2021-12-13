@@ -1,13 +1,16 @@
-import { React, useState, useContext} from 'react'
+import { React, useState, useContext, useEffect} from 'react'
 import { useParams } from 'react-router'
 import styles from './RestaurantMenu.module.css'
 import { Context } from './Context'
+import {useData} from './DataProvider';
+
+export const RestaurantMenu = ({ requestGetMenu }) => {
+
     
-
-export const RestaurantMenu = ({menuData, restaurants}) => {
-
     //Using context.
     const context = useContext(Context);
+
+    const [menu, setMenu] = useState([]);
     
     //useState for categories
     const [category, setCategory] = useState("Show All");
@@ -15,15 +18,26 @@ export const RestaurantMenu = ({menuData, restaurants}) => {
     //Finding the correct restaurant to display using useParams().
     const index = useParams(); 
 
-    const restaurant = restaurants.find(restaurant => restaurant.name === index.name );
-    if ( restaurant == null) {
-        return <div>No matching restaurant</div>
-    }
+    //
+    const {userJWT, restaurants} = useData();
 
-    //Filtering the correct menu to display using the above function result.
-    const specificMenu = menuData.filter(menu => 
-        menu.restaurant === restaurant.name
-    )
+    requestGetMenu.setStateVar(menu);
+    requestGetMenu.setStateVarFnc(setMenu);
+
+    useEffect(() => {
+        requestGetMenu.request(userJWT, '/public/restaurants/' + index.id + '/menu');
+    }, [index.id])
+    
+
+    
+    let restaurant = restaurants.filter(restaurant => restaurant.restaurantId === parseInt(index.id) ); 
+        if ( restaurant == null) {
+                return <div>No matching restaurant</div>
+    }
+    const cRestaurant = restaurant[parseInt(index.id) - parseInt(index.id)];
+    console.log(restaurants);
+    console.log(cRestaurant);
+    
 
     //Filtering with state to display All or specific category.
     let categoryVar;
@@ -44,8 +58,10 @@ export const RestaurantMenu = ({menuData, restaurants}) => {
             categoryVar = "";
     }
     
+    
+    
     //Filtering to display categories
-    const categoryMenu = specificMenu.filter(menu => 
+    const categoryMenu = menu.filter(menu => 
      menu.category.includes(categoryVar)
     )
     
@@ -53,11 +69,11 @@ export const RestaurantMenu = ({menuData, restaurants}) => {
         <div className={styles.wrapper}>
             <div className={styles.container}>
                 <div className={styles.restaurantInfoContainer}>
-                    <div className={styles.restaurantName}>{restaurant.name}{context.getTotal(context.cart)}</div>
+                    <div className={styles.restaurantName}>{cRestaurant.restaurantName} {context.getTotal(context.cart)}</div>
                         <div>{restaurant.type}  ·</div>
                             <div className={styles.restaurantFlex}>
-                                <div>{restaurant.price}  ·</div>
-                                <div>{restaurant.openHrs}  ·</div>
+                                <div>{cRestaurant.priceLevel}  ·</div>
+                                <div>{cRestaurant.opens}  ·</div>
                             </div>
                         </div>
                     <div className={styles.categoriesWrapper}>
@@ -76,7 +92,7 @@ export const RestaurantMenu = ({menuData, restaurants}) => {
                                                         <div className={styles.menuItems}>
                                                             <div>{data.name}</div>
                                                                 <div>{data.description}</div>
-                                                                    <span>{data.price}$</span>
+                                                                    <span>{data.price} $</span>
                                                                         <div className={styles.menuItemsFlex}>
                                                                             <button onClick={()=> context.remove(data)}>-</button>
                                                                             <div></div>
