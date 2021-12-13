@@ -14,14 +14,6 @@ export default function Account(props) {
             <div className={styles.container}>
                 <div className={styles.containerA}>
                     Role: {jwtDecoded.role}
-                        <Link to='settings'>
-                            <div>Account Settings</div>
-                        </Link>
-
-                        <Link to='profile'>
-                            <div>Profile</div>
-                        </Link>
-
                         <Link to='history'>
                             <div>Order History</div>
                         </Link>
