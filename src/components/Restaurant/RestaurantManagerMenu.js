@@ -22,22 +22,28 @@ export default function RestaurantsManagerMenu({requestGetMenu}) {
     return (
         <div className={styles.container}>
             <div className={styles.left}>
-                <Link to="new">
-                    <button className={styles.buttonAdd}>
-                        Add
-                    </button>
-                </Link>
-
-                {menu.map((item, i) =>
-                    <Link key={i} to={'' + item.productId}>
-                        <div>
-                            {item.name}
-                        </div>
+                <div className={styles.buttonAddBox}>
+                    <Link to="new">
+                        <button className={styles.buttonAdd}>
+                            Add
+                        </button>
                     </Link>
-                )}
+                </div>
+
+                <div className={styles.menuList}>
+
+                    {menu.map((item, i) =>
+                        <Link key={i} to={'' + item.productId}>
+                            <div className={styles.menuItem}>
+                                {item.name}
+                            </div>
+                        </Link>
+                    )}
+
+                </div>
             </div>
-                <Outlet />
             <div className={styles.right}>
+                <Outlet />
             </div>
         </div>
     )
