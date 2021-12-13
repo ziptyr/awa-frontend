@@ -8,7 +8,7 @@ import { Link, Outlet } from 'react-router-dom';
 export default function Account(props) {
 
     const { jwtDecoded } = useData();
-    
+
     return (
         <>
             <div className={styles.container}>
