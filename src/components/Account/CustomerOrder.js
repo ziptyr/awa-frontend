@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { RequestGet } from '../../Tools/requestClasses';
+import { RequestGet, RequestPut } from '../../Tools/requestClasses';
 import { useData } from '../DataProvider';
 import styles from './CustomerOrder.module.css';
 
@@ -29,10 +29,10 @@ export default function CustomerOrder() {
     const [ order, setOrder ] = useState({'details': detailsKeys, 'products': []});
     const requestGetOrder = new RequestGet(order, setOrder);
 
+    const requestPutConfirm = new RequestPut();
+
     useEffect(() => {
-        //requestGetOrders.request(userJWT, '/customer/orders');
-        requestGetOrder.request(userJWT, '/customer/orders/' + params.id)
-        console.log('order', requestGetOrder)
+        requestGetOrder.request(userJWT, '/customer/orders/' + params.id);
     }, [])
 
     const foundOrder = requestGetOrders.getStateVar().map((o) => o.orderId == params.id);
@@ -42,6 +42,21 @@ export default function CustomerOrder() {
                 Order not found
             </div>
         )
+    }
+
+    function ConfirmDelivery() {
+        return (
+            <button
+                style={{marginTop: "50px"}}
+                onClick={() => {
+                    requestPutConfirm.request(
+                        userJWT,
+                        '/customer/orders/' + params.id + '/confirm');
+                    requestGetOrder.request(userJWT, '/customer/orders/' + params.id);
+                }}>
+                    Confirm
+            </button>
+        );
     }
 
     return (
@@ -81,6 +96,8 @@ export default function CustomerOrder() {
                     )
                 })}
             </div>
+
+            {(order.details.orderStatus == 3) ? <ConfirmDelivery /> : null}
         </div>
     )
 }
