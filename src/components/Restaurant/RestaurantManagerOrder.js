@@ -35,7 +35,7 @@ export default function RestaurantManagerOrder({
         o.orderId == params.orderId);
 
     const productKeys = {
-        'orderId': 'ID',
+        // 'orderId': 'ID',
         'productId': 'Product ID',
         'amount': 'Amount',
         'productPrice': 'Price'
@@ -112,7 +112,31 @@ export default function RestaurantManagerOrder({
             </div>
 
             <div className={styles.products}>
-                {Object.keys(productKeys).map((key) => {
+                <div className={styles.table}>
+                    <div className={styles.productsHeaderRow}>
+                    {Object.keys(productKeys).map((key) => {
+                        return(
+                                <div className={styles.productsCol}>{productKeys[key]}</div>               
+                        )
+                    })}
+                    </div>
+                    {order.products.map((p) => {
+                        return(
+                            <div className={styles.productRow}>
+                                {Object.keys(productKeys).map((key) => {
+                                return(
+                                    <div className={styles.productsCol}>               
+                                                {p[key]}
+                                    </div>
+                                )
+                                })}
+                            </div>
+                        )
+                    })}
+                    
+
+                </div>
+                {/* {Object.keys(productKeys).map((key) => {
                     return (
                         <div className={styles.productsCol}>
                             <div className={styles.productsHeader}>
@@ -123,7 +147,7 @@ export default function RestaurantManagerOrder({
                             </div>
                         </div>
                     )
-                })}
+                })} */}
             </div>
 
             {(order.details.orderStatus == 0) ? (
