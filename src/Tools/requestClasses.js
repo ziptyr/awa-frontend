@@ -67,6 +67,7 @@ class RequestGet extends Request {
             .then((response) => {
                 console.log('RequestGet: ', response.data);
                 if (this.stateVarFnc != false) this.stateVarFnc(response.data);
+                else this.stateVar = response.data;
             })
             .catch((error) => {
                 console.log('RequestGet: ', error);
