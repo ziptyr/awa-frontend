@@ -37,6 +37,7 @@ export const RestaurantManagerView = ({requestGetRestaurants, requestGetOrders})
     return (
         <div className={styles.container}>
             <div className={styles.left}>
+                <h3>Orders</h3>
                 <div className={styles.leftRowHeader}>
                     {Object.values(leftOrderKeys).map((key) => {
                         return (

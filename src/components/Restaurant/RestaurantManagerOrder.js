@@ -78,8 +78,8 @@ export default function RestaurantManagerOrder({
 
     return (
         <div className={styles.container}>
-        {/* <div > */}
             <div className={styles.order}>
+            <h3>Order Details</h3>
                 {Object.keys(orderKeys).map((key) => {
                     return (
                         // <div className={styles.orderCol}>
@@ -112,6 +112,9 @@ export default function RestaurantManagerOrder({
             </div>
 
             <div className={styles.products}>
+            <div >
+
+                <h3>Products</h3>
                 <div className={styles.table}>
                     <div className={styles.productsHeaderRow}>
                     {Object.keys(productKeys).map((key) => {
@@ -148,6 +151,7 @@ export default function RestaurantManagerOrder({
                         </div>
                     )
                 })} */}
+                </div>
             </div>
 
             {(order.details.orderStatus == 0) ? (
