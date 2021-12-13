@@ -1,0 +1,14 @@
+.details {
+    display: flex;
+    flex-direction: row;
+}
+
+.details div {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+}
+
+.detailsHeader {
+    font-weight: 900;
+}
