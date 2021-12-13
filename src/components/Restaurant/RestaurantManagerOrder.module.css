@@ -27,3 +27,12 @@
 .productsRow {
     border-bottom: 1px solid lightgray;
 }
+
+.order, .products {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.orderHeader, .productsHeader {
+    font-weight: 900;
+}
