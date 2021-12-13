@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+}
+
+.header {
+    display: flex;
+    font-weight: 900;
+    width: 200px;
+}
+
+.dataRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.dataCol {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
