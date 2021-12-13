@@ -11,7 +11,7 @@ export default function Account(props) {
     return (
         <div className={styles.wrapper}>
             <div className={styles.containerA}>
-                Role: {context.jwtDecoded.user.role}
+                Role: {context.jwtDecoded.role}
                 <div>Account Settings</div>
                 <div>Profile</div>
                 <div>Order History</div>
