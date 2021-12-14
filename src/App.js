@@ -19,7 +19,12 @@ import { menuData } from './data.menu';
 import orders from './data.order.json';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import Account from './components/Account';
+import Account from './components/Account/Account';
+import Settings from './components/Account/Settings';
+import Profile from './components/Account/Profile';
+import OrderHistory from './components/Account/OrderHistory';
+import CustomerOrder from './components/Account/CustomerOrder';
+import Payment from './components/Account/Payment';
 import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
 
@@ -71,6 +76,8 @@ function App() {
     const requestPutRestaurant = new RequestPut();
 
     const requestPostOrder = new RequestPost();
+    const requestGetUsers = new RequestGet();
+
     //CONSTS END
 
     //FUNCTIONS
@@ -142,8 +149,16 @@ function App() {
 
     if(userJWT != null) {
         authRoutes =  <>
-        <Route path="/account" element={ <Account />  } />
-        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder}/>} />
+        <Route path="/account" element={ <Account />  }>
+            <Route path='settings' element={<Settings />} />
+            <Route path='profile' element={<Profile />} />
+            <Route path='history'>
+                <Route path='' element={<OrderHistory userJWT={userJWT} />} />
+                <Route path=':id' element={<CustomerOrder />} />
+            </Route>
+            <Route path='payment' element={<Payment />} />
+        </Route>
+        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder}/> />} />
         </>
     }
 
@@ -165,7 +180,7 @@ function App() {
         if (jwtDecoded.role === 'MANAGER') {
             restaurantsRoutes = <>
                 <Route path="/restaurants">
-                    <Route path="" element={<RestaurantsManager restaurants={restaurants} /> }/>
+                    <Route path="" element={<RestaurantsManager requestGetRestaurants={requestGetRestaurants} /> }/>
                     <Route path=":id"
                         element={<RestaurantManagerView
                             requestGetRestaurants={requestGetRestaurants}

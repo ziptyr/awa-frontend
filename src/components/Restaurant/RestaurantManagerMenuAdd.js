@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router'
 import styles from './RestaurantManagerMenuAdd.module.css';
 import {useData} from '../DataProvider';
+import axios from 'axios';
 
 export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMenu}) {
 
@@ -17,7 +18,9 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
     return (
         <>
             <div className={styles.container}>
-                <div>Name:</div>
+                <div className={styles.foodName}>New Product</div>
+
+                <div className={styles.tag}>Name:</div>
                 <div>
                     <input
                         type="text"
@@ -25,7 +28,7 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         onChange={(e) => setName(e.target.value)}/>
                 </div>
 
-                <div>Category:</div>
+                <div className={styles.tag}>Category:</div>
                 <div>
                     <input
                         type="text"
@@ -33,23 +36,52 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         onChange={(e) => setCategory(e.target.value)}/>
                 </div>
 
-                <div>Description:</div>
+                <div className={styles.tag}>Description:</div>
                 <div>
                     <input
                         type="text"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}/>
+                    {/* <textarea
+                        type="text"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}/> */}
                 </div>
 
-                <div>Image:</div>
+                <div className={styles.tag}>Image:</div>
                 <div>
                     <input
+                        id = "imageUrl"
                         type="url"
                         value={image}
                         onChange={(e) => setImage(e.target.value)}/>
+                        <form id="imageUpload">
+                            <input type="file" id="myFile" name="file"></input>
+                        </form>
+                            <button type="button" onClick={() => {
+                                let files = document.getElementById("myFile")
+                                if (files.files.length != 0) {
+                                    let element = document.getElementById("imageUpload")
+                                    let data = new FormData(element)
+                                    console.log(data)
+                                    axios({
+                                        method: "post",
+                                        url: "https://awa-2021-t35.herokuapp.com/manager/image",
+                                        data: data,
+                                        headers: {'Authorization': 'Bearer ' + userJWT}
+                                    })
+                                        .then((res) => {
+                                            console.log(res.data.image_url)
+                                            setImage(res.data.image_url)
+                                        })
+                                        .catch((err) => {
+                                            throw err;
+                                        });
+                                }
+                            }}>upload</button>
                 </div>
 
-                <div>Price:</div>
+                <div className={styles.tag}>Price:</div>
                 <div>
                     <input
                         type="number"
@@ -59,11 +91,9 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         onChange={(e) => setPrice(e.target.value)}/>
                 </div>
 
-                <div>
-                </div>
-                <div>
+                <div className={styles.saveButtonBox}>
                     <button
-                        className={styles.buttonSave}
+                        // className={styles.buttonSave}
                         onClick={() => {
                             let newProduct = {
                                 'name': name,

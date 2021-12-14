@@ -1,28 +1,32 @@
-import { React, useEffect, useState} from 'react'
+import { React, useEffect, useState} from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
-import styles from './RestaurantManagerView.module.css'
+import styles from './RestaurantManagerView.module.css';
 import {useData} from '../DataProvider';
 
 
 export const RestaurantManagerView = ({requestGetRestaurants, requestGetOrders}) => {
 
-    const {userJWT} = useData();
+    useEffect(() => {
+        requestGetOrders.request(
+            userJWT,
+            '/manager/restaurants/' + params.id + '/orders');
+    }, []);
+
+    const { userJWT } = useData();
     const params = useParams();
-    const [orders, setOrders] = useState([]);
+    const [ orders, setOrders ] = useState([]);
 
     let restaurant = requestGetRestaurants.getStateVar().find((r) => r.restaurantId = params.id);
     if (typeof restaurant === 'undefined') {
-        restaurant = null;
+        return (
+            <div>
+                Restaurant not found
+            </div>
+        )
     }
 
     requestGetOrders.setStateVarFnc(setOrders);
     requestGetOrders.setStateVar(orders);
-
-    useEffect(() => {
-        requestGetOrders.request(
-            userJWT,
-            '/manager/restaurants/' + restaurant.restaurantId + '/orders');
-    }, [])
 
     const leftOrderKeys = {
         'orderId': 'ID',
@@ -33,6 +37,7 @@ export const RestaurantManagerView = ({requestGetRestaurants, requestGetOrders})
     return (
         <div className={styles.container}>
             <div className={styles.left}>
+                <h3>Orders</h3>
                 <div className={styles.leftRowHeader}>
                     {Object.values(leftOrderKeys).map((key) => {
                         return (

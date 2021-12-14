@@ -50,6 +50,7 @@ export default function DataProvider({children}) {
 
     return (
         <DataContext.Provider value={{
+            jwtDecoded,
             userJWT,
             restaurants,
             setRestaurants

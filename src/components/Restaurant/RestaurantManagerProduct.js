@@ -21,21 +21,34 @@ export default function RestaurantManagerProduct({requestGetMenu}) {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.left}>Name:</div>
-            <div className={styles.right}>{product.name}</div>
+        // <div className={styles.container}>
+        //     <div className={styles.left}>Name:</div>
+        //     <div className={styles.right}>{product.name}</div>
 
-            <div className={styles.left}>Category:</div>
-            <div className={styles.right}>{product.category}</div>
+        //     <div className={styles.left}>Category:</div>
+        //     <div className={styles.right}>{product.category}</div>
 
-            <div className={styles.left}>Description:</div>
-            <div className={styles.right}>{product.description}</div>
+        //     <div className={styles.left}>Description:</div>
+        //     <div className={styles.right}>{product.description}</div>
 
-            <div className={styles.left}>Image:</div>
-            <div className={styles.right}>{product.image}</div>
+        //     <div className={styles.left}>Image:</div>
+        //     <div className={styles.right}>{product.image}</div>
         
-            <div className={styles.left}>Price:</div>
-            <div className={styles.right}>{product.price}</div>
+        //     <div className={styles.left}>Price:</div>
+        //     <div className={styles.right}>{product.price}</div>
+        // </div>
+        <div className={styles.container}>
+            <div className={styles.product}>
+                <div className={styles.foodName}>{product.name}</div>
+                <div className={styles.tag}>Price</div>
+                <div >{product.price}</div>
+                <div className={styles.tag}>Category</div>
+                <div >{product.category}</div>
+                <div className={styles.tag}>Description</div>
+                <div >{product.description}</div>
+                <img src={product.image}></img>
+            </div>
+
         </div>
     )
 }
