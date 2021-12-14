@@ -78,9 +78,9 @@ function App() {
     const requestPostOrder = new RequestPost();
     const requestGetUsers = new RequestGet();
 
-    const [payment, setPayment] = useState();
+    const [payment, setPayment] = useState(false);
     //CONSTS END
-
+    
     //FUNCTIONS
     //Getting cart total via .reduce()
     function getTotal(cart) {
@@ -159,7 +159,7 @@ function App() {
                     <Route path=':id' element={<CustomerOrder />} />
                 </Route>
             </Route>
-        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder} />} />
+        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder} setPayment={setPayment} payment={payment} />} />
          
         </>
     }
