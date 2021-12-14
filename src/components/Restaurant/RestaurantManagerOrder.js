@@ -1,5 +1,5 @@
 import { React, useEffect, useState} from 'react'
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styles from './RestaurantManagerOrder.module.css'
 import {useData} from '../DataProvider';
 import { RequestGet } from '../../Tools/requestClasses';
@@ -22,17 +22,18 @@ export default function RestaurantManagerOrder({
                     'eta': '',
                     'orderDate': '',
                     'orderStatus': 0,
-                    'restaurantId': params.id,
+                    'restaurantId': parseInt(params.id),
                     'total': 0,
                     'username': ''
                 },
             'products': []
-        });
+        }
+        );
     const requestGetOrder = new RequestGet();
     const restaurant = requestGetRestaurants.getStateVar().find((r) => 
         r.restaurantId == params.id);
     const foundOrder = requestGetOrders.getStateVar().find((o) =>
-        o.orderId == params.orderId);
+        o.orderId === parseInt(params.orderId));
 
     const productKeys = {
         // 'orderId': 'ID',
@@ -65,7 +66,6 @@ export default function RestaurantManagerOrder({
             userJWT,
             '/manager/restaurant/orders/' + params.orderId
         )
-        console.log('order', order)
     }, [])
 
     if (typeof restaurant === 'undefined' || typeof foundOrder === 'undefined') {
@@ -80,7 +80,7 @@ export default function RestaurantManagerOrder({
         <div className={styles.container}>
             <div className={styles.order}>
             <h3>Order Details</h3>
-                {Object.keys(orderKeys).map((key) => {
+                {Object.keys(orderKeys).map((key, b) => {
                     return (
                         // <div className={styles.orderCol}>
                         //     <div className={styles.orderHeader}>
@@ -90,10 +90,10 @@ export default function RestaurantManagerOrder({
                         //         {order.details[key]}
                         //     </div>
                         // </div>
-                        <div>
+                        <div key={b}>
 
-                        <div className={styles.tag}>{key}</div>
-                        <div >{order.details[key]}</div>
+                            <div className={styles.tag}>{key}</div>
+                            <div>{order.details[key]}</div>
                             
                         </div>
                     )
@@ -117,21 +117,23 @@ export default function RestaurantManagerOrder({
                 <h3>Products</h3>
                 <div className={styles.table}>
                     <div className={styles.productsHeaderRow}>
-                    {Object.keys(productKeys).map((key) => {
+                    {Object.keys(productKeys).map((key, a) => {
                         return(
-                                <div className={styles.productsCol}>{productKeys[key]}</div>               
+                            <div className={styles.productsCol} key={a}>
+                                {productKeys[key]}
+                            </div>
                         )
                     })}
                     </div>
-                    {order.products.map((p) => {
+                    {order.products.map((p, i) => {
                         return(
-                            <div className={styles.productRow}>
-                                {Object.keys(productKeys).map((key) => {
-                                return(
-                                    <div className={styles.productsCol}>               
-                                                {p[key]}
-                                    </div>
-                                )
+                            <div className={styles.productRow} key={i}>
+                                {Object.keys(productKeys).map((key, m) => {
+                                    return(
+                                        <div className={styles.productsCol} key={m}>
+                                            {p[key]}
+                                        </div>
+                                    )
                                 })}
                             </div>
                         )
@@ -154,7 +156,7 @@ export default function RestaurantManagerOrder({
                 </div>
             </div>
 
-            {(order.details.orderStatus == 0) ? (
+            {(order.details.orderStatus === 0) ? (
                     <>
                         <input
                             type="time"

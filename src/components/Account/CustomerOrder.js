@@ -35,7 +35,7 @@ export default function CustomerOrder() {
         requestGetOrder.request(userJWT, '/customer/orders/' + params.id);
     }, [])
 
-    const foundOrder = requestGetOrders.getStateVar().map((o) => o.orderId == params.id);
+    const foundOrder = requestGetOrders.getStateVar().map((o) => o.orderId === params.id);
     if (typeof foundOrder === 'undefined') {
         return (
             <div>
@@ -63,9 +63,9 @@ export default function CustomerOrder() {
         <div>
             <h3>Order</h3>
             <div className={styles.details}>
-                {Object.keys(detailsKeys).map((key) => {
+                {Object.keys(detailsKeys).map((key, h) => {
                     return (
-                            <div>
+                            <div key={'h' + h}>
                                 <div className={styles.detailsHeader}>
                                     {detailsKeys[key]}
                                 </div>
@@ -79,25 +79,25 @@ export default function CustomerOrder() {
 
             <h3>Products</h3>
             <div className={styles.details}>
-                {Object.keys(productsKeys).map((key) => {
+                {Object.keys(productsKeys).map((key, i) => {
                     return (
-                            <div>
-                                <div className={styles.detailsHeader}>
-                                    {productsKeys[key]}
-                                </div>
-                                <div className={styles.detailsValue}>
-                                    {requestGetOrder.getStateVar().products.map((product) => {
-                                        return (
-                                            product[key]
-                                        )
-                                    })}
-                                </div>
+                        <div key={'i' + i}>
+                            <div className={styles.detailsHeader}>
+                                {productsKeys[key]}
                             </div>
+                            <div className={styles.detailsValue}>
+                                {requestGetOrder.getStateVar().products.map((product, a) => {
+                                    return (
+                                        product[key]
+                                    )
+                                })}
+                            </div>
+                        </div>
                     )
                 })}
             </div>
 
-            {(order.details.orderStatus == 3) ? <ConfirmDelivery /> : null}
+            {(order.details.orderStatus === 3) ? <ConfirmDelivery /> : null}
         </div>
     )
 }

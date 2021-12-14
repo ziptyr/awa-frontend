@@ -84,9 +84,9 @@ export const RestaurantMenu = ({ requestGetMenu }) => {
                                         </div>
                                     <div className={styles.menuContainer}>
                                         <div className={styles.menuHeader}>{category}</div>
-                                            {categoryMenu.map( data => {
+                                            {categoryMenu.map((data, i) => {
                                                 return (
-                                                    <div key={data.id} className={styles.menuItemsContainer}>
+                                                    <div key={i} className={styles.menuItemsContainer}>
                                                         <div className={styles.menuItems}>
                                                             <div className={styles.imagebox}>
                                                                 <img src={data.image} alt=""/>

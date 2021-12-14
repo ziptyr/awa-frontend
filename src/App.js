@@ -1,6 +1,5 @@
 import { useState, useReducer } from 'react';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import  { v4 as uuidv4 } from 'uuid';
 import  jwt  from 'jsonwebtoken';
 import { Context } from './components/Context';
 
@@ -15,8 +14,6 @@ import RestaurantManagerProduct from './components/Restaurant/RestaurantManagerP
 import { RestaurantMenu } from './components/RestaurantMenu';
 import { RestaurantManagerView } from './components/Restaurant/RestaurantManagerView';
 import RestaurantManagerOrder from './components/Restaurant/RestaurantManagerOrder';
-import { menuData } from './data.menu';
-import orders from './data.order.json';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Account from './components/Account/Account';
@@ -24,17 +21,12 @@ import Settings from './components/Account/Settings';
 import Profile from './components/Account/Profile';
 import OrderHistory from './components/Account/OrderHistory';
 import CustomerOrder from './components/Account/CustomerOrder';
-import Payment from './components/Account/Payment';
+import Payment from './components/Payment';
 import ShoppingCart from './components/ShoppingCart'
-import Footer from './components/Footer';
 
 import {useData} from './components/DataProvider';
 
 import {RequestGet, RequestGetRestaurants, RequestPost, RequestPut} from './Tools/requestClasses';
-
-
-// axios constants
-const axios = require('axios').default;
 
 
 const currencyOptions = {
@@ -76,11 +68,20 @@ function App() {
     const requestPutRestaurant = new RequestPut();
 
     const requestPostOrder = new RequestPost();
-    const requestGetUsers = new RequestGet();
 
+    const [payment, setPayment] = useState(false);
+    const [ search, setSearch ] = useState('');
     //CONSTS END
-
+    
     //FUNCTIONS
+    function getJwtRole() {
+        if (jwtDecoded === null) {
+            return null;
+        } else {
+            return jwtDecoded.role;
+        }
+    }
+
     //Getting cart total via .reduce()
     function getTotal(cart) {
         const total = cart.reduce((totalCost, item) => totalCost + item.price, 0);
@@ -115,7 +116,7 @@ function App() {
              setCart({ data, type: 'add' })
         } else {
             let id = cart.length -1;
-            if(cart[id].restaurantId != restaurant)
+            if(cart[id].restaurantId !== restaurant)
                 alert("Cart contains products from multiple restaurants, please empty cart before continuing.");
             else
             setCart({ data, type: 'add' }) 
@@ -149,16 +150,17 @@ function App() {
 
     if(userJWT != null) {
         authRoutes =  <>
-        <Route path="/account" element={ <Account />  }>
-            <Route path='settings' element={<Settings />} />
-            <Route path='profile' element={<Profile />} />
-            <Route path='history'>
-                <Route path='' element={<OrderHistory userJWT={userJWT} />} />
-                <Route path=':id' element={<CustomerOrder />} />
+            <Route path='/payment' element={<Payment payment={payment} setPayment={setPayment} />} />
+            <Route path='/account' element={ <Account />  }>
+                <Route path='settings' element={<Settings />} />
+                <Route path='profile' element={<Profile />} />
+                <Route path='history'>
+                    <Route path='' element={<OrderHistory userJWT={userJWT} />} />
+                    <Route path=':id' element={<CustomerOrder />} />
+                </Route>
             </Route>
-            <Route path='payment' element={<Payment />} />
-        </Route>
-        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder}/> />} />
+        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder} setPayment={setPayment} payment={payment} />} />
+         
         </>
     }
 
@@ -167,7 +169,7 @@ function App() {
             <Route path="/restaurants">
                 <Route path="" element={ <Restaurants
                     restaurants={restaurants}
-                    /> }/>
+                    search={search} /> }/>
                 <Route path=":id" element={
                     <RestaurantMenu  
                         restaurants={restaurants}
@@ -225,7 +227,6 @@ function App() {
         }
     }
 
-
   return (
     <Context.Provider value={{
         jwtDecoded, add,  remove, empty,
@@ -233,7 +234,7 @@ function App() {
         userJWT, restaurants
     }}>
         <BrowserRouter>
-            <Header userJWT={userJWT != null} logOut={() => {
+            <Header userJWT={getJwtRole()} search={search} setSearch={setSearch} logOut={() => {
                 setUserJWT(null);
                 window.localStorage.removeItem("userJWT");
                 requestGetRestaurants.request(null);
@@ -243,8 +244,8 @@ function App() {
                 <Route path="/" element={ <Home /> } />
                     { authRoutes }
                     { restaurantsRoutes }
-                    <Route path="*" element={ <Home /> } />
-                </Routes>
+                <Route path="*" element={ <Home /> } />
+            </Routes>
 
             {/* <Footer /> */}
         </BrowserRouter>

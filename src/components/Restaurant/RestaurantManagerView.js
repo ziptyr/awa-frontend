@@ -39,22 +39,22 @@ export const RestaurantManagerView = ({requestGetRestaurants, requestGetOrders})
             <div className={styles.left}>
                 <h3>Orders</h3>
                 <div className={styles.leftRowHeader}>
-                    {Object.values(leftOrderKeys).map((key) => {
+                    {Object.values(leftOrderKeys).map((key, i) => {
                         return (
-                            <div className={styles.leftCellHeader}>
+                            <div className={styles.leftCellHeader} key={i}>
                                 {key}
                             </div>
                         )
                     })}
                 </div>
 
-                {orders.map(order => {
+                {orders.map((order, a) => {
                     return (
-                        <Link to={'' + order.orderId}>
+                        <Link to={'' + order.orderId} key={a}>
                             <div className={styles.leftRow}>
-                                {Object.keys(leftOrderKeys).map((key) => {
+                                {Object.keys(leftOrderKeys).map((key, i) => {
                                     return (
-                                        <div className={styles.leftCell}>
+                                        <div className={styles.leftCell} key={i}>
                                             {order[key]}
                                         </div>
                                     )
