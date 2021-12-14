@@ -1,5 +1,9 @@
 # Getting Started with Create React App
 
+## Video
+
+[https://oamk-my.sharepoint.com/:f:/g/personal/t1liva02_students_oamk_fi/EnKUht0P1fFHoDNPRN9tWMkBnBekHpphqd7xtwxknrfRlQ?e=9oNjPX](Video)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
