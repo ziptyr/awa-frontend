@@ -59,25 +59,25 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                             <input type="file" id="myFile" name="file"></input>
                         </form>
                             <button type="button" onClick={() => {
-                                let element = document.getElementById("imageUpload")
-                                let data = new FormData(element)
-                                console.log(data)
-                                axios({
-                                    method: "post",
-                                    url: "https://awa-2021-t35.herokuapp.com/manager/image",
-                                    data: data,
-                                    headers: {'Authorization': 'Bearer ' + userJWT}
-                                })
-                                    .then((res) => {
-                                        console.log(res.data.image_url)
-                                        setImage(res.data.image_url)
+                                let files = document.getElementById("myFile")
+                                if (files.files.length != 0) {
+                                    let element = document.getElementById("imageUpload")
+                                    let data = new FormData(element)
+                                    console.log(data)
+                                    axios({
+                                        method: "post",
+                                        url: "https://awa-2021-t35.herokuapp.com/manager/image",
+                                        data: data,
+                                        headers: {'Authorization': 'Bearer ' + userJWT}
                                     })
-                                    .catch((err) => {
-                                        throw err;
-                                    });
-
-
-
+                                        .then((res) => {
+                                            console.log(res.data.image_url)
+                                            setImage(res.data.image_url)
+                                        })
+                                        .catch((err) => {
+                                            throw err;
+                                        });
+                                }
                             }}>upload</button>
                 </div>
 
