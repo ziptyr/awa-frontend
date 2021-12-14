@@ -13,8 +13,9 @@ export default function Restaurant({data}) {
       <div className={styles.box}>
         <div key={data.restaurantId}>
           <img src={data.image} alt=""/>
+
           <div className={styles.title}>
-            {data.name}
+            <bold>{data.restaurantName}</bold>
           </div>
 
           <div className={styles.restInfo}>
@@ -22,7 +23,7 @@ export default function Restaurant({data}) {
               {data.address}
             </div>
             <div>
-              Avoinna: {data.opens}
+              Avoinna: {data.opens} - {data.closes}
             </div>
             <div>
               Hinta: {data.priceLevel}
