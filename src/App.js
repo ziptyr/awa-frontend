@@ -78,6 +78,7 @@ function App() {
     const requestPostOrder = new RequestPost();
     const requestGetUsers = new RequestGet();
 
+    const [payment, setPayment] = useState();
     //CONSTS END
 
     //FUNCTIONS
@@ -149,7 +150,7 @@ function App() {
 
     if(userJWT != null) {
         authRoutes =  <>
-            <Route path='/payment' element={<Payment />} />
+            <Route path='/payment' element={<Payment payment={payment} setPayment={setPayment} />} />
             <Route path='/account' element={ <Account />  }>
                 <Route path='settings' element={<Settings />} />
                 <Route path='profile' element={<Profile />} />
