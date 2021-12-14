@@ -244,8 +244,8 @@ function App() {
                 <Route path="/" element={ <Home /> } />
                     { authRoutes }
                     { restaurantsRoutes }
-                    <Route path="*" element={ <Home /> } />
-                </Routes>
+                <Route path="*" element={ <Home /> } />
+            </Routes>
 
             {/* <Footer /> */}
         </BrowserRouter>
