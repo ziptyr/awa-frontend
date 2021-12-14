@@ -70,6 +70,7 @@ function App() {
     const requestPostOrder = new RequestPost();
 
     const [payment, setPayment] = useState(false);
+    const [ search, setSearch ] = useState('');
     //CONSTS END
     
     //FUNCTIONS
@@ -168,7 +169,7 @@ function App() {
             <Route path="/restaurants">
                 <Route path="" element={ <Restaurants
                     restaurants={restaurants}
-                    /> }/>
+                    search={search} /> }/>
                 <Route path=":id" element={
                     <RestaurantMenu  
                         restaurants={restaurants}
@@ -233,7 +234,7 @@ function App() {
         userJWT, restaurants
     }}>
         <BrowserRouter>
-            <Header userJWT={getJwtRole()} logOut={() => {
+            <Header userJWT={getJwtRole()} search={search} setSearch={setSearch} logOut={() => {
                 setUserJWT(null);
                 window.localStorage.removeItem("userJWT");
                 requestGetRestaurants.request(null);

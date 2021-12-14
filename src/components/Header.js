@@ -10,7 +10,11 @@ export default function Header(props) {
         <div className={styles.container}>
             <Link to="/">Home</Link>
                 <Link to="/restaurants">Restaurants</Link>
-            <input className={styles.search} type='text' />
+            <input
+                className={styles.search}
+                type='text'
+                value={props.search}
+                onChange={(e) => props.setSearch(e.target.value)} />
 
                 
             {(props.userJWT) ? (
