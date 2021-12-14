@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: hidden;
 }
 
 .container {
@@ -10,7 +11,6 @@
     width: 800px;
     display: flex;
     justify-content: center;
-
 }
 
 .shoppingCartContainer {
@@ -21,6 +21,8 @@
     align-items: center;
     border: 2px solid black;
     border-radius: 2em;
+    overflow-y: scroll;
+    
 }
 
 .cartHeader {
@@ -30,21 +32,22 @@
 }
 
 .cartInfo {
+    margin-top: 40px;
     display: flex;
-    gap: 5rem;
+    gap: 2rem;
     margin-bottom: 30px;
 }
 .cartInfo div {
     text-align: center;
-    width: 70px;
-    border: 1px solid black;
+    width: 80px;
 }
 
 .cartItems {
     font-size: 20px;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: 400;
-    height: 100%;
+    height: 80%;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 .cartItemsFlex {
@@ -52,9 +55,49 @@
     gap: 2rem;
     padding: 3px;
     border: 0.7px solid black;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
 }
 
 .cartTotal {
     font-size: 20px;
+}
+
+.deliveryAddress {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.addText {
+    height: 30%;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.addText div {
+    margin-bottom: 3px;
+}
+.addText div div {
+    margin-right: 3px;
+}
+.inputLength{
+    width: 25px;
+}
+.orderButton {
+    display: flex;
+    margin: 0px auto 20px auto;
+    background-color: rgb(17, 222, 68);
+}
+
+.greenMarker {
+    background-color: rgb(44, 255, 2);
+    height: 5px;
+    width: 5px;
+    border-radius: 2rem;
+}
+.redMarker {
+    background-color: rgb(241, 3, 3);
+    height: 5px;
+    width: 5px;
+    border-radius: 2rem;
 }

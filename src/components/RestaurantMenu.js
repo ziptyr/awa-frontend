@@ -35,8 +35,7 @@ export const RestaurantMenu = ({ requestGetMenu }) => {
                 return <div>No matching restaurant</div>
     }
     const cRestaurant = restaurant[parseInt(index.id) - parseInt(index.id)];
-    console.log(restaurants);
-    console.log(cRestaurant);
+    
     
 
     //Filtering with state to display All or specific category.
@@ -57,7 +56,6 @@ export const RestaurantMenu = ({ requestGetMenu }) => {
         default:
             categoryVar = "";
     }
-    
     
     
     //Filtering to display categories
@@ -90,14 +88,17 @@ export const RestaurantMenu = ({ requestGetMenu }) => {
                                                 return (
                                                     <div key={data.id} className={styles.menuItemsContainer}>
                                                         <div className={styles.menuItems}>
-                                                            <div>{data.name}</div>
-                                                                <div>{data.description}</div>
-                                                                    <span>{data.price} $</span>
-                                                                        <div className={styles.menuItemsFlex}>
-                                                                            <button onClick={()=> context.remove(data)}>-</button>
-                                                                            <div></div>
-                                                                            <button onClick={()=> context.add(data)}>+</button>
-                                                                        </div>
+                                                            <div className={styles.imagebox}>
+                                                                <img src={data.image} alt=""/>
+                                                            </div>
+                                                            <div><bold>{data.name}</bold></div>
+                                                            <div>{data.description}</div>
+                                                            <span>{data.price} $</span>
+                                                            <div className={styles.menuItemsFlex}>
+                                                                <button onClick={()=> context.remove(data)}>-</button>
+                                                                <div></div>
+                                                                <button onClick={()=> context.add(data)}>+</button>
+                                                            </div>
                                                             </div>
                                                     </div>       
                                             )})}
