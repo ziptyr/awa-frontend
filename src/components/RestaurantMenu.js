@@ -35,8 +35,7 @@ export const RestaurantMenu = ({ requestGetMenu }) => {
                 return <div>No matching restaurant</div>
     }
     const cRestaurant = restaurant[parseInt(index.id) - parseInt(index.id)];
-    console.log(restaurants);
-    console.log(cRestaurant);
+    
     
 
     //Filtering with state to display All or specific category.
@@ -57,7 +56,6 @@ export const RestaurantMenu = ({ requestGetMenu }) => {
         default:
             categoryVar = "";
     }
-    
     
     
     //Filtering to display categories
