@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import Home from './Home';
+import { Context } from './Context';
 import styles from './Payment.module.css';
-import App from '../App';
 
 export default function Payment({payment, setPayment}) {
+
+    const context = useContext(Context);
 
     const inputs = {
         'online_bank': 'Online Bank',
@@ -36,16 +40,18 @@ export default function Payment({payment, setPayment}) {
             <PaymentOptions />
 
             {(payment) ? (
-                <button
-                    onClick={() => {
-                        if (payment) {
-                            alert(payment);
-                        } else {
-                            alert("Choose a payment method first");
-                        }
-                    }}>
-                        Pay
-                </button>
+                <Link to='/'>
+                    <button
+                        onClick={() => {
+                            if (payment) {
+                                context.empty();
+                            } else {
+                                alert("Choose a payment method first");
+                            }
+                        }}>
+                            Pay
+                    </button>
+                </Link>
             ) : null}
         </div>
     )
