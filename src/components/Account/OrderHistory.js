@@ -18,7 +18,7 @@ export default function OrderHistory({userJWT}) {
     };
 
     useEffect(() => {
-        requestGetOrders.request(userJWT, '/customer/orders')
+        requestGetOrders.request(userJWT, '/customer/orders');
         console.log('requestGetOrders', requestGetOrders);
     }, [])
 
