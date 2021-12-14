@@ -73,6 +73,14 @@ function App() {
     //CONSTS END
     
     //FUNCTIONS
+    function getJwtRole() {
+        if (jwtDecoded === null) {
+            return null;
+        } else {
+            return jwtDecoded.role;
+        }
+    }
+
     //Getting cart total via .reduce()
     function getTotal(cart) {
         const total = cart.reduce((totalCost, item) => totalCost + item.price, 0);
@@ -218,7 +226,6 @@ function App() {
         }
     }
 
-
   return (
     <Context.Provider value={{
         jwtDecoded, add,  remove, empty,
@@ -226,7 +233,7 @@ function App() {
         userJWT, restaurants
     }}>
         <BrowserRouter>
-            <Header userJWT={userJWT != null} logOut={() => {
+            <Header userJWT={getJwtRole()} logOut={() => {
                 setUserJWT(null);
                 window.localStorage.removeItem("userJWT");
                 requestGetRestaurants.request(null);
