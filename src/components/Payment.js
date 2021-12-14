@@ -1,12 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Home from './Home';
-import { Context } from './Context';
 import styles from './Payment.module.css';
 
 export default function Payment({payment, setPayment}) {
-
-    const context = useContext(Context);
 
     const [card, setCard] = useState('');
     const [name, setName] = useState('');
@@ -16,7 +12,7 @@ export default function Payment({payment, setPayment}) {
     let values = []
     const marker = [];
         
-        if(card.length == 16) {
+        if(card.length === 16) {
         marker[0] = <span className={styles.greenMarker}></span>
         values[0] = 1
             }else {
@@ -32,7 +28,7 @@ export default function Payment({payment, setPayment}) {
                 values[1] = 0;
                 }
 
-                if(cvc.length == 3) {
+                if(cvc.length === 3) {
                 marker[2] = <span className={styles.greenMarker}></span>
                 values[2] = 1
                 }else {
@@ -126,9 +122,9 @@ export default function Payment({payment, setPayment}) {
         <div className={styles.container}>
             <div className={styles.payments}>
                 <PaymentOptions />
-                {(paymentType == "online_bank") ? nullPaymentFields : (paymentCardFields)}
+                {(paymentType === "online_bank") ? nullPaymentFields : (paymentCardFields)}
  
-                {(paymentType === "online_bank" ||(paymentType && values[0]==1 && values[1]==1 && values[2]==1 )) ? <PayButton/> : <GreyButton/>}       
+                {(paymentType === "online_bank" ||(paymentType && values[0]===1 && values[1]===1 && values[2]===1 )) ? <PayButton/> : <GreyButton/>}       
                 
             </div>
             

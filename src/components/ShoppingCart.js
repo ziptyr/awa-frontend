@@ -22,9 +22,9 @@ export default function ShoppingCart({requestPostOrder, payment, setPayment}) {
                     let sendData = {"products": {},"deliveryAddress": address};
                         context.cart.map((x) => {
                             if (x.productId in sendData.products) {
-                                sendData.products[x.productId] += 1;
+                                return sendData.products[x.productId] += 1;
                             } else {
-                                sendData.products[x.productId] = 1;
+                                return sendData.products[x.productId] = 1;
                             }
                             
                         });
@@ -70,7 +70,7 @@ export default function ShoppingCart({requestPostOrder, payment, setPayment}) {
                                                     value={address}
                                                     onChange={ (e) => setAddress(e.target.value) } />
                                             </div>
-                                            {(payment == false ? (
+                                            {(payment === false ? (
                                             <>
                                             <Link to='/payment'>
                                                 <button>
@@ -80,7 +80,7 @@ export default function ShoppingCart({requestPostOrder, payment, setPayment}) {
                                             </>)   : null)}
                              
                         </div>
-                        {(payment != false ? (
+                        {(payment !== false ? (
                             (order)
                         )   : null)}
                     </div>

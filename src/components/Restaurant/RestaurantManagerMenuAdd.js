@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router'
 import styles from './RestaurantManagerMenuAdd.module.css';
 import {useData} from '../DataProvider';
@@ -60,7 +60,7 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         </form>
                             <button type="button" onClick={() => {
                                 let files = document.getElementById("myFile")
-                                if (files.files.length != 0) {
+                                if (files.files.length !== 0) {
                                     let element = document.getElementById("imageUpload")
                                     let data = new FormData(element)
                                     console.log(data)
@@ -108,14 +108,8 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                                 + '/products';
 
                             requestPostMenu.request(userJWT, route, newProduct);
-                            let stateVarFnc = requestGetMenu.getStateVarFnc();
-                            let stateVar = requestGetMenu.getStateVar();
 
-                            // i can either request new data or locally show added data
                             requestGetMenu.request(userJWT, '/manager/restaurants');
-                            //requestGetMenu.stateVarFnc([
-                            //    ...requestGetMenu.getStateVar(),
-                            //    newProduct]);
                     }}>
                         Save product
                     </button>

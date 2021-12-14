@@ -42,7 +42,7 @@ function GetOrder(orders) {
     const index = useParams();
 
 
-    const order = orders.find(order => order.details.orderId == index.orderId);
+    const order = orders.find(order => order.details.orderId === index.orderId);
     if (typeof order === 'undefined') return (null)
     else return (order)
 }

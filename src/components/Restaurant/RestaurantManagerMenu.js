@@ -6,11 +6,11 @@ import {useParams} from 'react-router';
 
 export default function RestaurantsManagerMenu({requestGetMenu}) {
 
-    const {userJWT, restaurants} = useData();
+    const { userJWT } = useData();
     const params = useParams();
 
     //TODO: test if moving useState() to previous component forces reloading data if chaged
-    const [menu, setMenu] = useState([]);
+    const [ menu, setMenu ] = useState([]);
 
     requestGetMenu.setStateVar(menu);
     requestGetMenu.setStateVarFnc(setMenu);
