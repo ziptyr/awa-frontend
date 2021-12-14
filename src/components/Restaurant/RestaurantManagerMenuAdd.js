@@ -53,6 +53,17 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                         type="url"
                         value={image}
                         onChange={(e) => setImage(e.target.value)}/>
+                        <form id="imageUpload">
+                            <input type="file" id="myFile" name="file"></input>
+                        </form>
+                            <button type="button" onClick={() => {
+                                let element = document.getElementById("imageUpload")
+                                let data = new FormData(element)
+                                console.log(data)
+
+
+
+                            }}>upload</button>
                 </div>
 
                 <div className={styles.tag}>Price:</div>
