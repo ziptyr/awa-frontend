@@ -13,10 +13,11 @@ export default function SignUp() {
         setSignupProcessState("processing");
          
         try {
-            const result = await axios.post(Constants.API_ADDRESS + '/registerBasic',
+            const result = await axios.post(Constants.API_ADDRESS + '/public/users',
             {
-                username: event.target.username.value,
-                email: event.target.email.value,
+                userName: event.target.username.value,
+                address: event.target.address.value,
+                manager: event.target.manager.checked,
                 password: event.target.password.value
             })
             console.log(result);
@@ -65,8 +66,12 @@ export default function SignUp() {
                             <input type="text" name="username"/>
                         </div>
                         <div
-                            >Email: <br />
-                            <input type="text" name="email"/>
+                            >Address: <br />
+                            <input type="text" name="address"/>
+                        </div>
+                        <div
+                            >Manager: 
+                            <input type="checkbox" name="manager"/>
                         </div>
                         <div>  
                             Password: <br />
