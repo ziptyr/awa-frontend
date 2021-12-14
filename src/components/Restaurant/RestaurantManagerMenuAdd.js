@@ -70,7 +70,7 @@ export default function RestaurantManagerMenuAdd({requestPostMenu, requestGetMen
                                 })
                                     .then((res) => {
                                         console.log(res.data.image_url)
-                                        document.getElementById("imageUrl").value = res.data.image_url
+                                        setImage(res.data.image_url)
                                     })
                                     .catch((err) => {
                                         throw err;
