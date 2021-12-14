@@ -17,10 +17,6 @@ export default function Account(props) {
                         <Link to='history'>
                             <div>Order History</div>
                         </Link>
-                        
-                        <Link to='payment'>
-                            <div>Payment</div>
-                        </Link>
                     </div>
                 
 

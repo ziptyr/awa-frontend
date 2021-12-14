@@ -24,7 +24,7 @@ import Settings from './components/Account/Settings';
 import Profile from './components/Account/Profile';
 import OrderHistory from './components/Account/OrderHistory';
 import CustomerOrder from './components/Account/CustomerOrder';
-import Payment from './components/Account/Payment';
+import Payment from './components/Payment';
 import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
 
@@ -149,16 +149,17 @@ function App() {
 
     if(userJWT != null) {
         authRoutes =  <>
-        <Route path="/account" element={ <Account />  }>
-            <Route path='settings' element={<Settings />} />
-            <Route path='profile' element={<Profile />} />
-            <Route path='history'>
-                <Route path='' element={<OrderHistory userJWT={userJWT} />} />
-                <Route path=':id' element={<CustomerOrder />} />
+            <Route path='/payment' element={<Payment />} />
+            <Route path='/account' element={ <Account />  }>
+                <Route path='settings' element={<Settings />} />
+                <Route path='profile' element={<Profile />} />
+                <Route path='history'>
+                    <Route path='' element={<OrderHistory userJWT={userJWT} />} />
+                    <Route path=':id' element={<CustomerOrder />} />
+                </Route>
             </Route>
-            <Route path='payment' element={<Payment />} />
-        </Route>
-        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder}/> />} />
+        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder} />} />
+         
         </>
     }
 
