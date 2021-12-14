@@ -19,7 +19,12 @@ import { menuData } from './data.menu';
 import orders from './data.order.json';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import Account from './components/Account';
+import Account from './components/Account/Account';
+import Settings from './components/Account/Settings';
+import Profile from './components/Account/Profile';
+import OrderHistory from './components/Account/OrderHistory';
+import CustomerOrder from './components/Account/CustomerOrder';
+import Payment from './components/Account/Payment';
 import ShoppingCart from './components/ShoppingCart'
 import Footer from './components/Footer';
 
@@ -40,9 +45,9 @@ const currencyOptions = {
 const jwtFromStorage = window.localStorage.getItem("userJWT");
 
 //Adding unique ids to menuData.
-const menuDataIds = menuData.map( data => {
-    return { ...data, id: uuidv4()}
-});
+// const menuDataIds = menuData.map( data => {
+//     return { ...data, id: uuidv4()}
+// });
 
 
 function App() {
@@ -69,6 +74,8 @@ function App() {
 
     const requestPostRestaurant = new RequestPost();
     const requestPutRestaurant = new RequestPut();
+
+    const requestGetUsers = new RequestGet();
     //CONSTS END
 
     //FUNCTIONS
@@ -139,7 +146,15 @@ function App() {
 
     if(userJWT != null) {
         authRoutes =  <>
-        <Route path="/account" element={ <Account />  } />
+        <Route path="/account" element={ <Account />  }>
+            <Route path='settings' element={<Settings />} />
+            <Route path='profile' element={<Profile />} />
+            <Route path='history'>
+                <Route path='' element={<OrderHistory userJWT={userJWT} />} />
+                <Route path=':id' element={<CustomerOrder />} />
+            </Route>
+            <Route path='payment' element={<Payment />} />
+        </Route>
         <Route path="/shoppingcart" element={ <ShoppingCart />} />
         </>
     }
@@ -147,9 +162,13 @@ function App() {
     // Restaurants routes for customers and non-logged in
     let restaurantsRoutes = <>
             <Route path="/restaurants">
-                <Route path="" element={ <Restaurants restaurants={restaurants} /> }/>
-                <Route path=":name" element={
-                    <RestaurantMenu  restaurants={restaurants} menuData={menuDataIds}  /> } />
+                <Route path="" element={ <Restaurants
+                    restaurants={restaurants}
+                    /> }/>
+                <Route path=":id" element={
+                    <RestaurantMenu  
+                        restaurants={restaurants}
+                        requestGetMenu={requestGetMenu}  /> } />
             </Route>
         </>
 

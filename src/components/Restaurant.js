@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom'
 import styles from './Restaurant.module.css'
 
 
+
 export default function Restaurant({data}) {
 
+  
+  
   return (
-    <Link to={data.name } style={{ textDecoration: 'none' }} >
+    <Link to={'' + data.restaurantId} style={{ textDecoration: 'none' }} >
       <div className={styles.box}>
-        <div key={data.name}>
+        <div key={data.restaurantId}>
           <img src={data.image} alt=""/>
           <div className={styles.title}>
             {data.name}
@@ -19,10 +22,10 @@ export default function Restaurant({data}) {
               {data.address}
             </div>
             <div>
-              Avoinna: {data.openHrs}
+              Avoinna: {data.opens}
             </div>
             <div>
-              Hinta: {data.price}
+              Hinta: {data.priceLevel}
             </div>
             <div>
               Tyyli: {data.type}
