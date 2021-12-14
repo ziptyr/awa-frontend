@@ -57,18 +57,6 @@ export const RestaurantMenu = ({ requestGetMenu }) => {
             categoryVar = "";
     }
     
-    function restaurantForCart(cart, restaurantData) {
-        let restaurant;
-        if (cart.length <= 0) {
-            console.log(cart)
-            return restaurant = null;
-        } else if (cart.length > 0) {
-            console.log(cart)
-            return restaurant = restaurantData.restaurantName;
-        }
-    }
-
-    
     
     //Filtering to display categories
     const categoryMenu = menu.filter(menu => 
