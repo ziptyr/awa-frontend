@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Context } from './Context';
 import styles from './ShoppingCart.module.css'
 import {useData} from './DataProvider';
@@ -123,6 +124,12 @@ export default function ShoppingCart({requestPostOrder}) {
                         
                     </div>
                 </div>
+
+                <Link to='/payment'>
+                    <button>
+                        payment page
+                    </button>
+                </Link>
         </div>
     )
 }
