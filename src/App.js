@@ -54,8 +54,8 @@ function App() {
     const [userJWT, setUserJWT] = useState(jwtFromStorage);
 
     //useState for shopping cart
-    const [cart, setCart] = useReducer(cartReducer, []);  
-
+    const [cart, setCart] = useReducer(cartReducer, []);
+    
     //Decoded JWT using jsonwebtoken.decoder.
     const jwtDecoded = jwt.decode(userJWT);
 
@@ -69,6 +69,8 @@ function App() {
 
     const requestPostRestaurant = new RequestPost();
     const requestPutRestaurant = new RequestPut();
+
+    const requestPostOrder = new RequestPost();
     //CONSTS END
 
     //FUNCTIONS
@@ -101,18 +103,19 @@ function App() {
 
     //Function for adding products to cart.
     function add(data) {
-        const restaurant = data.restaurant;
+        const restaurant = data.restaurantId;
         if(cart.length < 1) {
              setCart({ data, type: 'add' })
         } else {
             let id = cart.length -1;
-            if(cart[id].restaurant != restaurant)
+            if(cart[id].restaurantId != restaurant)
                 alert("Cart contains products from multiple restaurants, please empty cart before continuing.");
             else
             setCart({ data, type: 'add' }) 
          
         }
     }
+    
 
     //Function for removing products from cart.
     function remove(data) {
@@ -140,7 +143,7 @@ function App() {
     if(userJWT != null) {
         authRoutes =  <>
         <Route path="/account" element={ <Account />  } />
-        <Route path="/shoppingcart" element={ <ShoppingCart />} />
+        <Route path="/shoppingcart" element={ <ShoppingCart requestPostOrder={requestPostOrder}/>} />
         </>
     }
 
