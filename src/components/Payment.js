@@ -77,9 +77,9 @@ export default function Payment({payment, setPayment}) {
     function PaymentOptions() {
         return (
             <div className={styles.inputs}>
-                {Object.keys(inputs).map((key) => {
+                {Object.keys(inputs).map((key, i) => {
                     return (
-                        <>
+                        <div key={i}>
                             <input
                                 onChange={(e) => setPaymentType(e.target.value)}
                                 type='radio'
@@ -87,8 +87,8 @@ export default function Payment({payment, setPayment}) {
                                 id={key}
                                 checked={(paymentType === key) ? 'checked' : null}
                                 value={key} />
-                            <label for={key}>{inputs[key]}</label>
-                        </>
+                            <label htmlFor={key}>{inputs[key]}</label>
+                        </div>
                     )
                 })}
             </div>
