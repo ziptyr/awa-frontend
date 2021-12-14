@@ -62,8 +62,42 @@
     font-size: 20px;
 }
 
+.deliveryAddress {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.addText {
+    height: 30%;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.addText div {
+    margin-bottom: 3px;
+}
+.addText div div {
+    margin-right: 3px;
+}
+.inputLength{
+    width: 25px;
+}
 .orderButton {
     display: flex;
-    margin-left: 30%;
+    margin: 0px auto 20px auto;
     background-color: rgb(17, 222, 68);
+}
+
+.greenMarker {
+    background-color: rgb(44, 255, 2);
+    height: 5px;
+    width: 5px;
+    border-radius: 2rem;
+}
+.redMarker {
+    background-color: rgb(241, 3, 3);
+    height: 5px;
+    width: 5px;
+    border-radius: 2rem;
 }
