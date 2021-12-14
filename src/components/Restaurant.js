@@ -14,8 +14,8 @@ export default function Restaurant({data}) {
         <div key={data.restaurantId}>
           <img src={data.image} alt=""/>
 
-          <div className={styles.title}>
-            <bold>{data.restaurantName}</bold>
+          <div className={styles.title} style={{fontWeight: "900"}}>
+            {data.restaurantName}
           </div>
 
           <div className={styles.restInfo}>
