@@ -16,7 +16,7 @@ export default function Payment({payment, setPayment}) {
 
     function PaymentOptions() {
         return (
-            <div>
+            <div className={styles.inputs}>
                 {Object.keys(inputs).map((key) => {
                     return (
                         <>
@@ -36,23 +36,27 @@ export default function Payment({payment, setPayment}) {
     }
 
     return (
-        <div>
-            <PaymentOptions />
+        <div className={styles.container}>
+            <div className={styles.payments}>
+                <PaymentOptions />
 
-            {(payment) ? (
-                <Link to='/'>
-                    <button
-                        onClick={() => {
-                            if (payment) {
-                                context.empty();
-                            } else {
-                                alert("Choose a payment method first");
-                            }
-                        }}>
-                            Pay
-                    </button>
-                </Link>
-            ) : null}
+                {(payment) ? (
+                    <Link to='/'>
+                        <div className={styles.buttonDiv}>
+                            <button
+                                onClick={() => {
+                                    if (payment) {
+                                        context.empty();
+                                    } else {
+                                        alert("Choose a payment method first");
+                                    }
+                                }}>
+                                    Pay
+                            </button>
+                        </div>
+                    </Link>
+                ) : null}
+            </div>
         </div>
     )
 }
