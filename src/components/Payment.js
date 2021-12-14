@@ -21,6 +21,7 @@ export default function Payment({payment, setPayment}) {
                                 type='radio'
                                 name='payment'
                                 id={key}
+                                checked={(payment === key) ? 'checked' : null}
                                 value={key} />
                             <label for={key}>{inputs[key]}</label>
                         </>
@@ -34,16 +35,18 @@ export default function Payment({payment, setPayment}) {
         <div>
             <PaymentOptions />
 
-            <button
-                onClick={() => {
-                    if (payment) {
-                        alert(payment);
-                    } else {
-                        alert("Choose a payment method first");
-                    }
-                }}>
-                    Pay
-            </button>
+            {(payment) ? (
+                <button
+                    onClick={() => {
+                        if (payment) {
+                            alert(payment);
+                        } else {
+                            alert("Choose a payment method first");
+                        }
+                    }}>
+                        Pay
+                </button>
+            ) : null}
         </div>
     )
 }
