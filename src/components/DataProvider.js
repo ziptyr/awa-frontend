@@ -1,60 +1,33 @@
-import React, {createContext, useState, useContext} from 'react';
-import axios from 'axios';
-import Constants from './Constants';
-import jwt from 'jsonwebtoken';
+import React, { createContext, useState, useContext } from 'react';
+
+import { isExpired, decodeToken } from 'react-jwt';
+
 
 const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
-const jwtFromStorage = window.localStorage.getItem("userJWT");
+const jwtFromStorage = window.localStorage.getItem('userJwt');
 
 
 export default function DataProvider({children}) {
 
-    //CONSTANTS
-    const [ userJWT ] = useState(jwtFromStorage);
-    const jwtDecoded = jwt.decode(userJWT);
+  const [ restaurants, setRestaurants ] = useState([]);
 
-    const [ restaurants, setRestaurants ] = useState([]);
-    //CONSTANTS END
+  const decodedToken = decodeToken(jwtFromStorage);
+  //const tokenExpired = isExpired(jwtFromStorage);
+  const role = (() => {
+    if (decodedToken) return decodedToken.role;
+    else return null;
+  });
 
-    React.useEffect(() => {
-        function getRestaurantsRoute() {
-            let restaurantsUrl;
 
-            if (jwtDecoded == null) {
-                restaurantsUrl = '/public/restaurants';
-            } else if (jwtDecoded.role === 'CUSTOMER') {
-                restaurantsUrl = '/public/restaurants';
-            } else if (jwtDecoded.role === 'MANAGER') {
-                restaurantsUrl = '/manager/restaurants';
-            }
-
-            return restaurantsUrl;
-        }
-
-        let axiosHeaders = {'headers': {'Authorization': 'Bearer ' + userJWT}};
-
-        axios.get(Constants.API_ADDRESS + getRestaurantsRoute(), axiosHeaders)
-            .then((response) => {
-                setRestaurants(response.data);
-            })
-            .catch((error) => {
-                console.log('DataProvider: ', error);
-            })
-            .then(() => {
-                console.log('DataProvider: ' + Constants.API_ADDRESS + getRestaurantsRoute());
-            });
-    }, []);
-
-    return (
-        <DataContext.Provider value={{
-            jwtDecoded,
-            userJWT,
-            restaurants,
-            setRestaurants
-        }}>
-            {children}
-        </DataContext.Provider>
-    )
+  return (
+    <DataContext.Provider value={{
+      restaurants,
+      setRestaurants,
+      role
+    }}>
+      {children}
+    </DataContext.Provider>
+  )
 }
