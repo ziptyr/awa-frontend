@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.line {
+    display: flex;
+}
+
+.line div:first-child {
+    width: 150px;
+}
