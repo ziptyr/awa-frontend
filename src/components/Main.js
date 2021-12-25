@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import { Outlet } from 'react-router-dom';
 
@@ -18,5 +18,5 @@ export default function Main(props) {
         <Outlet />
       </main>
     </div>
-  )
+  );
 }
