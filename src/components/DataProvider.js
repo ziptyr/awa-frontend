@@ -11,21 +11,31 @@ const jwtFromStorage = window.localStorage.getItem('userJwt');
 
 export default function DataProvider({children}) {
 
+  const [ codedToken ] = useState(jwtFromStorage);
+
+  const decodedToken = decodeToken(codedToken);
+  //const tokenExpired = isExpired(jwtFromStorage);
+
   const [ restaurants, setRestaurants ] = useState([]);
 
-  const decodedToken = decodeToken(jwtFromStorage);
-  //const tokenExpired = isExpired(jwtFromStorage);
   const role = (() => {
     if (decodedToken) return decodedToken.role;
     else return null;
   });
+
+  const jwtHeaders = {
+    'headers': {
+      'Authorization': 'Bearer ' + codedToken
+    }
+  };
 
 
   return (
     <DataContext.Provider value={{
       restaurants,
       setRestaurants,
-      role
+      role,
+      jwtHeaders
     }}>
       {children}
     </DataContext.Provider>
