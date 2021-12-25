@@ -1,0 +1,7 @@
+.inputLine {
+    display: flex;
+}
+
+.inputLabel {
+    width: 150px;
+}
