@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -29,11 +29,16 @@ export default function Header({search, setSearch}) {
       </div>
 
       <div>
+        <Link to="/login">
+          Login
+        </Link>
       </div>
 
       <div>
-        hello
+        <Link to="/signup">
+          Sign Up
+        </Link>
       </div>
     </div>
-  )
+  );
 }
