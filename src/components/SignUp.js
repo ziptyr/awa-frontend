@@ -1,54 +1,84 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import Constants from './Constants.json';
 
 import styles from './SignUp.module.css';
 
 
-function sendSignUp(
-    username,
-    setUsername,
-    role,
-    setRole,
-    address,
-    setAddress,
-    password,
-    setPassword) {
-
-  axios.post(
-      Constants.API_ADDRESS + '/public/users',
-      {
-        'username': username,
-        'role': role,
-        'address': address,
-        'password': password
-      }
-    )
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-    .then(() => {
-      setUsername('');
-      setRole('CUSTOMER');
-      setAddress('');
-      setPassword('');
-    })
-}
 
 
 export default function SignUp() {
 
+  const [ signupProcessState, setSignupProcessState ] = useState('idle');
   const [ username, setUsername ] = useState('');
   const [ role, setRole ] = useState('CUSTOMER');
   const [ address, setAddress ] = useState('');
   const [ password, setPassword ] = useState('');
 
+  let navigate = useNavigate();
+
+  const sendSignUp = async(event) => {
+    event.preventDefault();
+    setSignupProcessState('processing');
+
+    try {
+      const result = await axios.post(
+          Constants.API_ADDRESS + '/public/users',
+          {
+            'username': username,
+            'role': role,
+            'address': address,
+            'password': password
+          }
+        )
+
+        console.log(result);
+        setSignupProcessState('success');
+        setUsername('');
+        setRole('CUSTOMER');
+        setAddress('');
+        setPassword('');
+
+        setTimeout(() => {
+          setSignupProcessState('idle')
+          navigate('/login', {replace: true});
+        }, 1500);
+    } catch (error) {
+      console.log(error);
+      setSignupProcessState('error');
+      setTimeout(() => setSignupProcessState('idle'), 1500);
+    }
+  }
+
+  let signupUiControls = null;
+
+  switch(signupProcessState) {
+    case 'idle':
+      signupUiControls = <button type='submit'>Sign Up</button>
+      break;
+
+    case 'processing':
+      signupUiControls = <span style={{color: 'blue'}}>Processing signup...</span>
+      break;
+
+    case 'success':
+      signupUiControls = <span style={{color: 'green'}}>User created</span>
+      break;
+
+    case 'error':
+      signupUiControls = <span style={{color: 'red'}}>Error</span>
+      break;
+
+    default:
+      signupUiControls = <button type='submit'>Sign Up</button>
+  }
+
   return (
     <div className={styles.container}>
+      <form onSubmit={ sendSignUp }>
       <div className={styles.inputLine}>
         <div className={styles.inputLabel}>
           Username
@@ -104,20 +134,10 @@ export default function SignUp() {
         </div>
       </div>
 
-      <button
-        onClick={() => {
-          sendSignUp(
-            username,
-            setUsername,
-            role,
-            setRole,
-            address,
-            setAddress,
-            password,
-            setPassword)}
-        }>
-        Sign Up
-      </button>
+      <div>
+        { signupUiControls }
+      </div>
+      </form>
     </div>
   );
 }
