@@ -1,75 +1,79 @@
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import React, { useState } from 'react';
-
-import Constants from './Constants.json';
-import { useData } from './DataProvider';
 
 import styles from './Login.module.css';
+import Constants from './Constants.json';
+import { UserAuthContext } from './Contexts'
 
+export default function LoginView(props) {
 
-function sendLogin(jwtHeaders, username, password) {
-  axios.post(
-      Constants.API_HEADERS + '/login',
-      {
+  const UserAuthContextValue = useContext(UserAuthContext);
+  let navigate = useNavigate();
+  const [ loginProcessState, setLoginProcessState ] = useState("idle");
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setLoginProcessState("processing");
+
+    try {
+      const result = await axios.post(Constants.API_ADDRESS + '/login', null, {
         'auth': {
-          'username': username,
-          'password': password}
-      },
-      jwtHeaders
-    )
+          'username': event.target.username.value,
+          'password': event.target.password.value
+        }
+      })
 
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-    .then(() => {
-      console.log('login');
-    })
-}
+      setLoginProcessState("success");
+      setTimeout(() => {
+        setLoginProcessState("idle")
+        UserAuthContextValue.login(result.data.access_token);
+        navigate("/", { replace: true });
+      }, 1500);
+    } catch (error) {
+      console.error(error.message);
+      setLoginProcessState("error");
+      setTimeout(() => setLoginProcessState("idle"), 1500);
+    }
+  }
 
+  let loginUIControls = null;
+  switch(loginProcessState) {
+    case "idle":
+      loginUIControls = <button type="submit">Login</button>
+      break;
 
-export default function Login() {
+    case "processing":
+      loginUIControls = <span style={{color: 'blue'}}>Processing login...</span>
+      break;
 
-  const { jwtHeaders } = useData();
+    case "success":
+      loginUIControls = <span style={{color: 'green'}}>Login successful</span>
+      break;
 
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
+    case "error":
+      loginUIControls = <span style={{color: 'red'}}>Error</span>
+      break;
+
+    default:
+      loginUIControls = <button type="submit">Login</button>
+  }
+
 
   return (
-    <>
-      <div className={styles.container}>
-        <div className={styles.line}>
-          <div>
-            Username
-          </div>
-
-          <div>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)} />
-          </div>
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={ onSubmit }>
+        <div>
+          Username <input type="text" name="username"/>
         </div>
-
-        <div className={styles.line}>
-          <div>
-            Password
-          </div>
-
-          <div>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)} />
-          </div>
+        <div>
+          Password <input type="password" name="password"/>
         </div>
-      </div>
-
-      <button onClick={() => sendLogin(username, password)}>
-        Login
-      </button>
-    </>
-  );
+        <div>
+          { loginUIControls }
+        </div>
+      </form>
+    </div>
+  )
 }
